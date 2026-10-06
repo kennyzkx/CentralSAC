@@ -1552,6 +1552,7 @@
       }
 
     }
+
   </style>
 
 
@@ -1565,8 +1566,9 @@
 
 
   <!-- =====================================================
-     TOPO
-====================================================== -->
+       TOPO
+  ====================================================== -->
+
   <header class="topbar">
 
     <button class="menu-button" id="menuButton" aria-label="Abrir menu">
@@ -1584,9 +1586,11 @@
 
   </header>
 
+
   <!-- =====================================================
      MENU LATERAL
-====================================================== -->
+  ====================================================== -->
+
   <aside class="sidebar" id="sidebar">
 
     <div class="menu-title">
@@ -1613,6 +1617,15 @@
       Sistemas
     </button>
 
+    <button
+      class="menu-item"
+      onclick="window.location.href='indisponibilidade.html'"
+      type="button"
+    >
+      <span class="menu-icon" aria-hidden="true">📊</span>
+      Análise de Consumo
+    </button>
+
     <button class="menu-item" onclick="window.location.href='escala.html'">
       <span class="menu-icon" aria-hidden="true">📅</span>
       Escala
@@ -1623,40 +1636,28 @@
   <div class="overlay" id="overlay"></div>
 
 
-
   <!-- =====================================================
      CONTEÚDO
-====================================================== -->
+  ====================================================== -->
 
   <main>
-
 
     <section>
 
       <div class="kicker">
-
         BASE DE CONHECIMENTO
-
       </div>
 
-
       <h1>
-
         Procedimentos
-
       </h1>
 
-
       <p class="description">
-
         Encontre rapidamente os procedimentos
         necessários durante o atendimento.
-
       </p>
 
-
     </section>
-
 
 
     <!-- =================================================
@@ -1665,28 +1666,30 @@
 
     <div class="toolbar">
 
-
       <div class="search-box">
 
         <span>
           🔎
         </span>
 
-
-        <input type="text" id="searchInput" placeholder="Pesquisar procedimento..." autocomplete="off">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Pesquisar procedimento..."
+          autocomplete="off"
+        >
 
       </div>
 
-
-      <button class="btn btn-primary gestao-only" id="btnNovoProcedimento" onclick="abrirNovoProcedimento()">
-
+      <button
+        class="btn btn-primary gestao-only"
+        id="btnNovoProcedimento"
+        onclick="abrirNovoProcedimento()"
+      >
         + Novo procedimento
-
       </button>
 
-
     </div>
-
 
 
     <!-- =================================================
@@ -1695,18 +1698,18 @@
 
     <div class="filters" id="filters">
 
-      <button class="filter active" data-category="Todos" onclick="selecionarCategoria('Todos', this)">
-
+      <button
+        class="filter active"
+        data-category="Todos"
+        onclick="selecionarCategoria('Todos', this)"
+      >
         Todos
-
       </button>
 
     </div>
 
 
-
     <div class="divider"></div>
-
 
 
     <!-- =================================================
@@ -1715,270 +1718,392 @@
 
     <div class="results-header">
 
-
       <div class="section-title">
-
         Procedimentos cadastrados
-
       </div>
-
 
       <div class="results-count" id="resultsCount">
-
         Carregando...
-
       </div>
-
 
     </div>
 
 
-    <div class="procedimentos-grid" id="procedimentosGrid">
+    <div
+      class="procedimentos-grid"
+      id="procedimentosGrid"
+    >
 
       <div class="loading">
-
         Carregando procedimentos...
-
       </div>
 
     </div>
-
 
   </main>
 
 
-
   <!-- =====================================================
      MODAL NOVO / EDITAR
-====================================================== -->
+  ====================================================== -->
 
   <div class="modal-overlay" id="formModal">
 
-
     <div class="modal">
-
 
       <div class="modal-header">
 
-
         <h2 id="formTitle">
-
           Novo procedimento
-
         </h2>
 
-
-        <button class="close" onclick="fecharModal('formModal')">
-
+        <button
+          class="close"
+          onclick="fecharModal('formModal')"
+        >
           ×
-
         </button>
-
 
       </div>
 
 
       <form id="procedimentoForm">
 
-
         <div class="modal-body">
 
-
-          <input type="hidden" id="editId">
+          <input
+            type="hidden"
+            id="editId"
+          >
 
 
           <div class="form-group">
 
             <label for="titulo">
-
               Título
-
             </label>
 
-
-            <input class="form-control" id="titulo" type="text" placeholder="Ex.: Internet lenta" required>
+            <input
+              class="form-control"
+              id="titulo"
+              type="text"
+              placeholder="Ex.: Internet lenta"
+              required
+            >
 
           </div>
-
 
 
           <div class="form-group">
 
             <label for="categoria">
-
               Categoria
-
             </label>
 
-
-            <input class="form-control" id="categoria" type="text" placeholder="Ex.: Suporte técnico" required>
+            <input
+              class="form-control"
+              id="categoria"
+              type="text"
+              placeholder="Ex.: Suporte técnico"
+              required
+            >
 
           </div>
-
 
 
           <div class="form-group">
 
             <label for="descricao">
-
               Descrição
-
             </label>
 
-
-            <input class="form-control" id="descricao" type="text" placeholder="Breve descrição do procedimento">
+            <input
+              class="form-control"
+              id="descricao"
+              type="text"
+              placeholder="Breve descrição do procedimento"
+            >
 
           </div>
-
 
 
           <div class="form-group">
 
             <label for="conteudo">
-
               Conteúdo do procedimento
-
             </label>
 
+            <div
+              class="editor-toolbar"
+              id="editorToolbar"
+            >
 
-            <div class="editor-toolbar" id="editorToolbar">
-              <button type="button" class="editor-tool" data-command="bold" title="Negrito"><strong>B</strong></button>
-              <button type="button" class="editor-tool" data-command="italic" title="Itálico"><em>I</em></button>
-              <button type="button" class="editor-tool" data-command="underline" title="Sublinhado"><u>U</u></button>
+              <button
+                type="button"
+                class="editor-tool"
+                data-command="bold"
+                title="Negrito"
+              >
+                <strong>B</strong>
+              </button>
+
+              <button
+                type="button"
+                class="editor-tool"
+                data-command="italic"
+                title="Itálico"
+              >
+                <em>I</em>
+              </button>
+
+              <button
+                type="button"
+                class="editor-tool"
+                data-command="underline"
+                title="Sublinhado"
+              >
+                <u>U</u>
+              </button>
+
               <div class="editor-divider"></div>
-              <button type="button" class="editor-tool" data-command="insertUnorderedList" title="Lista com marcadores">•</button>
-              <button type="button" class="editor-tool" data-command="insertOrderedList" title="Lista numerada">1.</button>
+
+              <button
+                type="button"
+                class="editor-tool"
+                data-command="insertUnorderedList"
+                title="Lista com marcadores"
+              >
+                •
+              </button>
+
+              <button
+                type="button"
+                class="editor-tool"
+                data-command="insertOrderedList"
+                title="Lista numerada"
+              >
+                1.
+              </button>
+
               <div class="editor-divider"></div>
-              <div class="editor-colors" title="Cor do texto">
-                <button type="button" class="editor-color" data-color="#FF5A00" title="Laranja" style="background:#FF5A00"></button>
-                <button type="button" class="editor-color" data-color="#EF4444" title="Vermelho" style="background:#EF4444"></button>
-                <button type="button" class="editor-color" data-color="#FACC15" title="Amarelo" style="background:#FACC15"></button>
-                <button type="button" class="editor-color" data-color="#22C55E" title="Verde" style="background:#22C55E"></button>
-                <button type="button" class="editor-color" data-color="#3B82F6" title="Azul" style="background:#3B82F6"></button>
-                <button type="button" class="editor-color" data-color="#A855F7" title="Roxo" style="background:#A855F7"></button>
-                <button type="button" class="editor-color white" data-color="#FFFFFF" title="Branco" style="background:#FFFFFF"></button>
+
+              <div
+                class="editor-colors"
+                title="Cor do texto"
+              >
+
+                <button
+                  type="button"
+                  class="editor-color"
+                  data-color="#FF5A00"
+                  title="Laranja"
+                  style="background:#FF5A00"
+                ></button>
+
+                <button
+                  type="button"
+                  class="editor-color"
+                  data-color="#EF4444"
+                  title="Vermelho"
+                  style="background:#EF4444"
+                ></button>
+
+                <button
+                  type="button"
+                  class="editor-color"
+                  data-color="#FACC15"
+                  title="Amarelo"
+                  style="background:#FACC15"
+                ></button>
+
+                <button
+                  type="button"
+                  class="editor-color"
+                  data-color="#22C55E"
+                  title="Verde"
+                  style="background:#22C55E"
+                ></button>
+
+                <button
+                  type="button"
+                  class="editor-color"
+                  data-color="#3B82F6"
+                  title="Azul"
+                  style="background:#3B82F6"
+                ></button>
+
+                <button
+                  type="button"
+                  class="editor-color"
+                  data-color="#A855F7"
+                  title="Roxo"
+                  style="background:#A855F7"
+                ></button>
+
+                <button
+                  type="button"
+                  class="editor-color white"
+                  data-color="#FFFFFF"
+                  title="Branco"
+                  style="background:#FFFFFF"
+                ></button>
+
               </div>
+
               <div class="editor-divider"></div>
-              <button type="button" class="editor-tool" id="btnHighlight" title="Marca-texto amarelo">🖍️</button>
-              <button type="button" class="editor-tool" id="btnClearFormat" title="Limpar formatação">Tx</button>
-              <button type="button" class="editor-tool" data-command="undo" title="Desfazer">↶</button>
-              <button type="button" class="editor-tool" data-command="redo" title="Refazer">↷</button>
+
+              <button
+                type="button"
+                class="editor-tool"
+                id="btnHighlight"
+                title="Marca-texto amarelo"
+              >
+                🖍️
+              </button>
+
+              <button
+                type="button"
+                class="editor-tool"
+                id="btnClearFormat"
+                title="Limpar formatação"
+              >
+                Tx
+              </button>
+
+              <button
+                type="button"
+                class="editor-tool"
+                data-command="undo"
+                title="Desfazer"
+              >
+                ↶
+              </button>
+
+              <button
+                type="button"
+                class="editor-tool"
+                data-command="redo"
+                title="Refazer"
+              >
+                ↷
+              </button>
+
             </div>
-            <div class="rich-editor" id="conteudo" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Digite o passo a passo do procedimento..."></div>
+
+
+            <div
+              class="rich-editor"
+              id="conteudo"
+              contenteditable="true"
+              role="textbox"
+              aria-multiline="true"
+              data-placeholder="Digite o passo a passo do procedimento..."
+            ></div>
 
           </div>
 
-
         </div>
-
 
 
         <div class="modal-footer">
 
-
-          <button type="button" class="btn btn-secondary" onclick="fecharModal('formModal')">
-
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="fecharModal('formModal')"
+          >
             Cancelar
-
           </button>
 
-
-          <button type="submit" class="btn btn-primary" id="saveButton">
-
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="saveButton"
+          >
             Salvar
-
           </button>
-
 
         </div>
 
-
       </form>
-
 
     </div>
 
   </div>
 
 
-
   <!-- =====================================================
      MODAL VISUALIZAÇÃO
-====================================================== -->
+  ====================================================== -->
 
   <div class="modal-overlay" id="viewModal">
 
-
     <div class="modal">
-
 
       <div class="modal-header">
 
-
         <h2 id="viewTitle">
-
           Procedimento
-
         </h2>
 
-
-        <button class="close" onclick="fecharModal('viewModal')">
-
+        <button
+          class="close"
+          onclick="fecharModal('viewModal')"
+        >
           ×
-
         </button>
-
 
       </div>
 
 
       <div class="modal-body">
 
+        <div
+          class="view-category"
+          id="viewCategory"
+        ></div>
 
-        <div class="view-category" id="viewCategory"></div>
+        <div
+          class="view-description"
+          id="viewDescription"
+        ></div>
 
-
-        <div class="view-description" id="viewDescription"></div>
-
-
-        <div class="view-content" id="viewContent"></div>
-
+        <div
+          class="view-content"
+          id="viewContent"
+        ></div>
 
       </div>
 
 
       <div class="modal-footer">
 
-
-        <button class="btn btn-copy" onclick="copiarProcedimento()">
-
+        <button
+          class="btn btn-copy"
+          onclick="copiarProcedimento()"
+        >
           📋 Copiar procedimento
-
         </button>
 
-
-        <button class="btn btn-secondary" onclick="fecharModal('viewModal')">
-
+        <button
+          class="btn btn-secondary"
+          onclick="fecharModal('viewModal')"
+        >
           Fechar
-
         </button>
-
 
       </div>
-
 
     </div>
 
   </div>
 
 
-
   <!-- =====================================================
      TOAST
-====================================================== -->
+  ====================================================== -->
 
   <div class="toast" id="toast"></div>
-
 
 
   <script>
@@ -1986,9 +2111,7 @@
 
     /* =====================================================
        SUPABASE
-
-       COLOQUE AQUI OS DADOS DO SEU PROJETO
-    ====================================================== */
+    ===================================================== */
 
     const SUPABASE_URL =
       "https://adjrbgwnvagdqbqzfgwf.supabase.co";
@@ -2013,7 +2136,6 @@
       );
 
 
-
     /* =====================================================
        VARIÁVEIS
     ====================================================== */
@@ -2027,7 +2149,6 @@
     let perfilUsuario = null;
 
     let isGestao = false;
-
 
 
     /* =====================================================
@@ -2054,7 +2175,6 @@
 
     const conteudoEditor =
       document.getElementById("conteudo");
-
 
 
     /* =====================================================
@@ -2095,7 +2215,6 @@
     }
 
 
-
     /* =====================================================
        ESC FECHA MENU / MODAIS
     ====================================================== */
@@ -2116,7 +2235,6 @@
 
       }
     );
-
 
 
     /* =====================================================
@@ -2152,7 +2270,10 @@
 
       if (erroPerfil || !perfil) {
 
-        console.error("Erro ao carregar perfil:", erroPerfil);
+        console.error(
+          "Erro ao carregar perfil:",
+          erroPerfil
+        );
 
         mostrarToast(
           "Não foi possível identificar seu perfil.",
@@ -2166,17 +2287,22 @@
 
       perfilUsuario = perfil;
 
-      isGestao = perfil.perfil === "gestao";
+      isGestao =
+        perfil.perfil === "gestao";
 
 
       const botaoNovo =
-        document.getElementById("btnNovoProcedimento");
+        document.getElementById(
+          "btnNovoProcedimento"
+        );
 
 
       if (botaoNovo) {
 
         botaoNovo.style.display =
-          isGestao ? "inline-flex" : "none";
+          isGestao
+            ? "inline-flex"
+            : "none";
 
       }
 
@@ -2206,7 +2332,6 @@
     }
 
 
-
     /* =====================================================
        CARREGAR PROCEDIMENTOS
     ====================================================== */
@@ -2216,21 +2341,18 @@
 
       grid.innerHTML = `
 
-            <div class="loading">
+        <div class="loading">
 
-                Carregando procedimentos...
+          Carregando procedimentos...
 
-            </div>
+        </div>
 
-        `;
+      `;
 
 
       const {
-
         data,
-
         error
-
       } = await supabaseClient
 
         .from("procedimentos")
@@ -2252,24 +2374,24 @@
 
         grid.innerHTML = `
 
-                <div class="empty">
+          <div class="empty">
 
-                    <div class="empty-icon">
-                        ⚠️
-                    </div>
+            <div class="empty-icon">
+              ⚠️
+            </div>
 
-                    <h3>
-                        Não foi possível carregar os procedimentos
-                    </h3>
+            <h3>
+              Não foi possível carregar os procedimentos
+            </h3>
 
-                    <p>
-                        Verifique a conexão com o Supabase
-                        e as configurações de acesso.
-                    </p>
+            <p>
+              Verifique a conexão com o Supabase
+              e as configurações de acesso.
+            </p>
 
-                </div>
+          </div>
 
-            `;
+        `;
 
 
         resultsCount.textContent =
@@ -2292,7 +2414,6 @@
     }
 
 
-
     /* =====================================================
        CRIAR FILTROS
     ====================================================== */
@@ -2301,14 +2422,19 @@
 
 
       const container =
-        document.getElementById("filters");
+        document.getElementById(
+          "filters"
+        );
 
 
       const categorias =
         [
           ...new Set(
             procedimentos
-              .map(item => item.categoria)
+              .map(
+                item =>
+                  item.categoria
+              )
               .filter(Boolean)
           )
         ]
@@ -2317,15 +2443,15 @@
 
       container.innerHTML = `
 
-            <button
-                class="filter active"
-                data-category="Todos"
-                onclick="selecionarCategoria('Todos', this)"
-            >
-                Todos
-            </button>
+        <button
+          class="filter active"
+          data-category="Todos"
+          onclick="selecionarCategoria('Todos', this)"
+        >
+          Todos
+        </button>
 
-        `;
+      `;
 
 
       categorias.forEach(
@@ -2333,7 +2459,9 @@
 
 
           const button =
-            document.createElement("button");
+            document.createElement(
+              "button"
+            );
 
 
           button.className =
@@ -2359,13 +2487,14 @@
             };
 
 
-          container.appendChild(button);
+          container.appendChild(
+            button
+          );
 
         }
       );
 
     }
-
 
 
     /* =====================================================
@@ -2401,7 +2530,6 @@
       renderizarProcedimentos();
 
     }
-
 
 
     /* =====================================================
@@ -2467,24 +2595,24 @@
 
         grid.innerHTML = `
 
-                <div class="empty">
+          <div class="empty">
 
-                    <div class="empty-icon">
-                        🔎
-                    </div>
+            <div class="empty-icon">
+              🔎
+            </div>
 
-                    <h3>
-                        Nenhum procedimento encontrado
-                    </h3>
+            <h3>
+              Nenhum procedimento encontrado
+            </h3>
 
-                    <p>
-                        Tente pesquisar outro termo
-                        ou selecione outra categoria.
-                    </p>
+            <p>
+              Tente pesquisar outro termo
+              ou selecione outra categoria.
+            </p>
 
-                </div>
+          </div>
 
-            `;
+        `;
 
         return;
 
@@ -2498,7 +2626,9 @@
         function (item) {
 
           const card =
-            document.createElement("article");
+            document.createElement(
+              "article"
+            );
 
 
           card.className =
@@ -2507,83 +2637,70 @@
 
           card.innerHTML = `
 
-                    <div class="procedimento-icon">
-
-                        📋
-
-                    </div>
+            <div class="procedimento-icon">
+              📋
+            </div>
 
 
-                    <div class="procedimento-titulo">
-
-                        ${escaparHTML(item.titulo)}
-
-                    </div>
+            <div class="procedimento-titulo">
+              ${escaparHTML(item.titulo)}
+            </div>
 
 
-                    <div class="procedimento-categoria">
-
-                        ${escaparHTML(item.categoria)}
-
-                    </div>
+            <div class="procedimento-categoria">
+              ${escaparHTML(item.categoria)}
+            </div>
 
 
-                    <p class="procedimento-descricao">
-
-                        ${escaparHTML(
-            item.descricao ||
-            "Sem descrição cadastrada."
-          )}
-
-                    </p>
+            <p class="procedimento-descricao">
+              ${escaparHTML(
+                item.descricao ||
+                "Sem descrição cadastrada."
+              )}
+            </p>
 
 
-                    <div class="card-footer">
+            <div class="card-footer">
+
+              <button
+                class="card-link"
+                onclick="visualizarProcedimento('${item.id}')"
+              >
+                Ver procedimento →
+              </button>
 
 
-                        <button
-                            class="card-link"
-                            onclick="visualizarProcedimento('${item.id}')"
-                        >
+              ${
+                isGestao
+                  ? `
+                    <div class="card-actions">
 
-                            Ver procedimento →
-
-                        </button>
-
-
-                        ${isGestao ? `
-                        <div class="card-actions">
-
-
-                            <button
-                                class="mini-btn"
-                                title="Editar"
-                                onclick="editarProcedimento('${item.id}')"
-                            >
-
-                                ✏️
-
-                            </button>
+                      <button
+                        class="mini-btn"
+                        title="Editar"
+                        onclick="editarProcedimento('${item.id}')"
+                      >
+                        ✏️
+                      </button>
 
 
-                            <button
-                                class="mini-btn"
-                                title="Excluir"
-                                onclick="excluirProcedimento('${item.id}')"
-                            >
-
-                                🗑️
-
-                            </button>
-
-
-                        </div>
-                        ` : ""}
-
+                      <button
+                        class="mini-btn"
+                        title="Excluir"
+                        onclick="excluirProcedimento('${item.id}')"
+                      >
+                        🗑️
+                      </button>
 
                     </div>
+                  `
+                  : ""
+              }
 
-                `;
+
+            </div>
+
+          `;
 
 
           grid.appendChild(card);
@@ -2594,7 +2711,6 @@
     }
 
 
-
     /* =====================================================
        PESQUISA
     ====================================================== */
@@ -2603,7 +2719,6 @@
       "input",
       renderizarProcedimentos
     );
-
 
 
     /* =====================================================
@@ -2624,7 +2739,9 @@
         .reset();
 
       conteudoEditor.innerHTML = "";
+
       selecaoEditor = null;
+
 
       document
         .getElementById("editId")
@@ -2646,7 +2763,6 @@
       abrirModal("formModal");
 
     }
-
 
 
     /* =====================================================
@@ -2706,7 +2822,9 @@
         item.descricao || "";
 
 
-      carregarConteudoNoEditor(item.conteudo || "");
+      carregarConteudoNoEditor(
+        item.conteudo || ""
+      );
 
 
       document
@@ -2726,7 +2844,6 @@
     }
 
 
-
     /* =====================================================
        SALVAR
     ====================================================== */
@@ -2738,6 +2855,7 @@
         async function (event) {
 
           event.preventDefault();
+
 
           if (!exigirGestao()) {
 
@@ -2775,10 +2893,15 @@
 
 
           const conteudo =
-            sanitizarRichHTML(conteudoEditor.innerHTML).trim();
+            sanitizarRichHTML(
+              conteudoEditor.innerHTML
+            ).trim();
+
 
           const textoConteudo =
-            conteudoEditor.textContent.replace(/\u00a0/g, " ").trim();
+            conteudoEditor.textContent
+              .replace(/\u00a0/g, " ")
+              .trim();
 
 
           if (
@@ -2822,15 +2945,23 @@
                 .update({
 
                   titulo,
+
                   categoria,
+
                   descricao,
+
                   conteudo,
+
                   atualizado_em:
-                    new Date().toISOString()
+                    new Date()
+                      .toISOString()
 
                 })
 
-                .eq("id", id);
+                .eq(
+                  "id",
+                  id
+                );
 
 
           } else {
@@ -2844,8 +2975,11 @@
                 .insert({
 
                   titulo,
+
                   categoria,
+
                   descricao,
+
                   conteudo
 
                 });
@@ -2893,7 +3027,6 @@
 
         }
       );
-
 
 
     /* =====================================================
@@ -2944,13 +3077,14 @@
       document
         .getElementById("viewContent")
         .innerHTML =
-        sanitizarRichHTML(item.conteudo || "");
+        sanitizarRichHTML(
+          item.conteudo || ""
+        );
 
 
       abrirModal("viewModal");
 
     }
-
 
 
     /* =====================================================
@@ -2982,7 +3116,10 @@
 
         "\n\n" +
 
-        htmlParaTexto(procedimentoVisualizado.conteudo || "");
+        htmlParaTexto(
+          procedimentoVisualizado.conteudo ||
+          ""
+        );
 
 
       try {
@@ -3009,7 +3146,6 @@
       }
 
     }
-
 
 
     /* =====================================================
@@ -3061,7 +3197,10 @@
 
         .delete()
 
-        .eq("id", id);
+        .eq(
+          "id",
+          id
+        );
 
 
       if (error) {
@@ -3088,7 +3227,6 @@
       await carregarProcedimentos();
 
     }
-
 
 
     /* =====================================================
@@ -3139,7 +3277,6 @@
       );
 
 
-
     /* =====================================================
        TOAST
     ====================================================== */
@@ -3188,142 +3325,513 @@
     }
 
 
-
     /* =====================================================
        EDITOR DE TEXTO RICO
     ====================================================== */
 
     let selecaoEditor = null;
 
+
     function salvarSelecaoEditor() {
-      const selecao = window.getSelection();
-      if (!selecao || !selecao.rangeCount) return;
-      const range = selecao.getRangeAt(0);
-      if (conteudoEditor.contains(range.commonAncestorContainer)) {
-        selecaoEditor = range.cloneRange();
+
+      const selecao =
+        window.getSelection();
+
+
+      if (
+        !selecao ||
+        !selecao.rangeCount
+      ) {
+
+        return;
+
       }
+
+
+      const range =
+        selecao.getRangeAt(0);
+
+
+      if (
+        conteudoEditor.contains(
+          range.commonAncestorContainer
+        )
+      ) {
+
+        selecaoEditor =
+          range.cloneRange();
+
+      }
+
     }
+
 
     function restaurarSelecaoEditor() {
+
       conteudoEditor.focus();
-      if (!selecaoEditor) return;
-      const selecao = window.getSelection();
-      selecao.removeAllRanges();
-      selecao.addRange(selecaoEditor);
-    }
 
-    function executarComando(comando, valor = null) {
-      restaurarSelecaoEditor();
-      try { document.execCommand(comando, false, valor); }
-      catch (erro) { console.error("Erro ao aplicar formatação:", erro); }
-      salvarSelecaoEditor();
-      atualizarBotoesEditor();
-    }
 
-    function atualizarBotoesEditor() {
-      document.querySelectorAll('.editor-tool[data-command="bold"], .editor-tool[data-command="italic"], .editor-tool[data-command="underline"]').forEach(botao => {
-        try { botao.classList.toggle("active", document.queryCommandState(botao.dataset.command)); }
-        catch (erro) { botao.classList.remove("active"); }
-      });
-    }
+      if (!selecaoEditor) {
 
-    function carregarConteudoNoEditor(conteudo) {
-      conteudoEditor.innerHTML = sanitizarRichHTML(conteudo || "");
-      selecaoEditor = null;
-    }
+        return;
 
-    function aplicarCor(cor) {
-      restaurarSelecaoEditor();
-      document.execCommand("styleWithCSS", false, true);
-      document.execCommand("foreColor", false, cor);
-      salvarSelecaoEditor();
-    }
-
-    function aplicarMarcaTexto() {
-      restaurarSelecaoEditor();
-      document.execCommand("styleWithCSS", false, true);
-      document.execCommand("hiliteColor", false, "#FFF59D");
-      salvarSelecaoEditor();
-    }
-
-    function limparFormatacao() {
-      restaurarSelecaoEditor();
-      document.execCommand("removeFormat", false, null);
-      salvarSelecaoEditor();
-      atualizarBotoesEditor();
-    }
-
-    function sanitizarRichHTML(html) {
-      if (!html) return "";
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(String(html), "text/html");
-      const permitidas = new Set(["B", "STRONG", "I", "EM", "U", "SPAN", "BR", "P", "DIV", "UL", "OL", "LI"]);
-
-      function limparNo(no) {
-        if (no.nodeType === Node.TEXT_NODE) return document.createTextNode(no.nodeValue || "");
-        if (no.nodeType !== Node.ELEMENT_NODE) return document.createDocumentFragment();
-        const tag = no.tagName.toUpperCase();
-        if (!permitidas.has(tag)) {
-          const fragmento = document.createDocumentFragment();
-          Array.from(no.childNodes).forEach(filho => fragmento.appendChild(limparNo(filho)));
-          return fragmento;
-        }
-        const elemento = document.createElement(tag.toLowerCase());
-        if (tag === "SPAN") {
-          if (no.style.color) elemento.style.color = no.style.color;
-          if (no.style.backgroundColor) elemento.style.backgroundColor = no.style.backgroundColor;
-        }
-        Array.from(no.childNodes).forEach(filho => elemento.appendChild(limparNo(filho)));
-        return elemento;
       }
 
-      const container = document.createElement("div");
-      Array.from(doc.body.childNodes).forEach(no => container.appendChild(limparNo(no)));
-      return container.innerHTML;
+
+      const selecao =
+        window.getSelection();
+
+
+      selecao.removeAllRanges();
+
+      selecao.addRange(
+        selecaoEditor
+      );
+
     }
+
+
+    function executarComando(
+      comando,
+      valor = null
+    ) {
+
+      restaurarSelecaoEditor();
+
+
+      try {
+
+        document.execCommand(
+          comando,
+          false,
+          valor
+        );
+
+      } catch (erro) {
+
+        console.error(
+          "Erro ao aplicar formatação:",
+          erro
+        );
+
+      }
+
+
+      salvarSelecaoEditor();
+
+      atualizarBotoesEditor();
+
+    }
+
+
+    function atualizarBotoesEditor() {
+
+      document
+        .querySelectorAll(
+          '.editor-tool[data-command="bold"], .editor-tool[data-command="italic"], .editor-tool[data-command="underline"]'
+        )
+        .forEach(
+          botao => {
+
+            try {
+
+              botao.classList.toggle(
+                "active",
+                document.queryCommandState(
+                  botao.dataset.command
+                )
+              );
+
+            } catch (erro) {
+
+              botao.classList.remove(
+                "active"
+              );
+
+            }
+
+          }
+        );
+
+    }
+
+
+    function carregarConteudoNoEditor(
+      conteudo
+    ) {
+
+      conteudoEditor.innerHTML =
+        sanitizarRichHTML(
+          conteudo || ""
+        );
+
+      selecaoEditor = null;
+
+    }
+
+
+    function aplicarCor(cor) {
+
+      restaurarSelecaoEditor();
+
+      document.execCommand(
+        "styleWithCSS",
+        false,
+        true
+      );
+
+      document.execCommand(
+        "foreColor",
+        false,
+        cor
+      );
+
+      salvarSelecaoEditor();
+
+    }
+
+
+    function aplicarMarcaTexto() {
+
+      restaurarSelecaoEditor();
+
+      document.execCommand(
+        "styleWithCSS",
+        false,
+        true
+      );
+
+      document.execCommand(
+        "hiliteColor",
+        false,
+        "#FFF59D"
+      );
+
+      salvarSelecaoEditor();
+
+    }
+
+
+    function limparFormatacao() {
+
+      restaurarSelecaoEditor();
+
+      document.execCommand(
+        "removeFormat",
+        false,
+        null
+      );
+
+      salvarSelecaoEditor();
+
+      atualizarBotoesEditor();
+
+    }
+
+
+    function sanitizarRichHTML(html) {
+
+      if (!html) {
+
+        return "";
+
+      }
+
+
+      const parser =
+        new DOMParser();
+
+
+      const doc =
+        parser.parseFromString(
+          String(html),
+          "text/html"
+        );
+
+
+      const permitidas =
+        new Set([
+          "B",
+          "STRONG",
+          "I",
+          "EM",
+          "U",
+          "SPAN",
+          "BR",
+          "P",
+          "DIV",
+          "UL",
+          "OL",
+          "LI"
+        ]);
+
+
+      function limparNo(no) {
+
+        if (
+          no.nodeType ===
+          Node.TEXT_NODE
+        ) {
+
+          return document.createTextNode(
+            no.nodeValue || ""
+          );
+
+        }
+
+
+        if (
+          no.nodeType !==
+          Node.ELEMENT_NODE
+        ) {
+
+          return document.createDocumentFragment();
+
+        }
+
+
+        const tag =
+          no.tagName.toUpperCase();
+
+
+        if (
+          !permitidas.has(tag)
+        ) {
+
+          const fragmento =
+            document.createDocumentFragment();
+
+
+          Array.from(
+            no.childNodes
+          ).forEach(
+            filho =>
+              fragmento.appendChild(
+                limparNo(filho)
+              )
+          );
+
+
+          return fragmento;
+
+        }
+
+
+        const elemento =
+          document.createElement(
+            tag.toLowerCase()
+          );
+
+
+        if (
+          tag === "SPAN"
+        ) {
+
+          if (
+            no.style.color
+          ) {
+
+            elemento.style.color =
+              no.style.color;
+
+          }
+
+
+          if (
+            no.style.backgroundColor
+          ) {
+
+            elemento.style.backgroundColor =
+              no.style.backgroundColor;
+
+          }
+
+        }
+
+
+        Array.from(
+          no.childNodes
+        ).forEach(
+          filho =>
+            elemento.appendChild(
+              limparNo(filho)
+            )
+        );
+
+
+        return elemento;
+
+      }
+
+
+      const container =
+        document.createElement(
+          "div"
+        );
+
+
+      Array.from(
+        doc.body.childNodes
+      ).forEach(
+        no =>
+          container.appendChild(
+            limparNo(no)
+          )
+      );
+
+
+      return container.innerHTML;
+
+    }
+
 
     function htmlParaTexto(html) {
-      const container = document.createElement("div");
-      container.innerHTML = sanitizarRichHTML(html || "");
-      return (container.innerText || container.textContent || "").replace(/\n{3,}/g, "\n\n").trim();
+
+      const container =
+        document.createElement(
+          "div"
+        );
+
+
+      container.innerHTML =
+        sanitizarRichHTML(
+          html || ""
+        );
+
+
+      return (
+        container.innerText ||
+        container.textContent ||
+        ""
+      )
+        .replace(
+          /\n{3,}/g,
+          "\n\n"
+        )
+        .trim();
+
     }
 
-    document.querySelectorAll(".editor-tool[data-command]").forEach(botao => {
-      botao.addEventListener("mousedown", event => {
-        event.preventDefault();
-        executarComando(botao.dataset.command);
-      });
-    });
 
-    document.querySelectorAll(".editor-color").forEach(botao => {
-      botao.addEventListener("mousedown", event => {
-        event.preventDefault();
-        aplicarCor(botao.dataset.color);
-      });
-    });
+    document
+      .querySelectorAll(
+        ".editor-tool[data-command]"
+      )
+      .forEach(
+        botao => {
 
-    document.getElementById("btnHighlight").addEventListener("mousedown", event => {
-      event.preventDefault();
-      aplicarMarcaTexto();
-    });
+          botao.addEventListener(
+            "mousedown",
+            event => {
 
-    document.getElementById("btnClearFormat").addEventListener("mousedown", event => {
-      event.preventDefault();
-      limparFormatacao();
-    });
+              event.preventDefault();
 
-    conteudoEditor.addEventListener("mouseup", salvarSelecaoEditor);
-    conteudoEditor.addEventListener("keyup", () => {
-      salvarSelecaoEditor();
-      atualizarBotoesEditor();
-    });
-    conteudoEditor.addEventListener("focus", atualizarBotoesEditor);
-    conteudoEditor.addEventListener("paste", () => {
-      setTimeout(() => {
-        conteudoEditor.innerHTML = sanitizarRichHTML(conteudoEditor.innerHTML);
+              executarComando(
+                botao.dataset.command
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(".editor-color")
+      .forEach(
+        botao => {
+
+          botao.addEventListener(
+            "mousedown",
+            event => {
+
+              event.preventDefault();
+
+              aplicarCor(
+                botao.dataset.color
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById("btnHighlight")
+      .addEventListener(
+        "mousedown",
+        event => {
+
+          event.preventDefault();
+
+          aplicarMarcaTexto();
+
+        }
+      );
+
+
+    document
+      .getElementById("btnClearFormat")
+      .addEventListener(
+        "mousedown",
+        event => {
+
+          event.preventDefault();
+
+          limparFormatacao();
+
+        }
+      );
+
+
+    conteudoEditor.addEventListener(
+      "mouseup",
+      salvarSelecaoEditor
+    );
+
+
+    conteudoEditor.addEventListener(
+      "keyup",
+      () => {
+
         salvarSelecaoEditor();
-      }, 0);
-    });
+
+        atualizarBotoesEditor();
+
+      }
+    );
+
+
+    conteudoEditor.addEventListener(
+      "focus",
+      atualizarBotoesEditor
+    );
+
+
+    conteudoEditor.addEventListener(
+      "paste",
+      () => {
+
+        setTimeout(
+          () => {
+
+            conteudoEditor.innerHTML =
+              sanitizarRichHTML(
+                conteudoEditor.innerHTML
+              );
+
+            salvarSelecaoEditor();
+
+          },
+          0
+        );
+
+      }
+    );
+
 
     /* =====================================================
        PROTEÇÃO CONTRA HTML
@@ -3356,7 +3864,6 @@
     }
 
 
-
     /* =====================================================
        INICIALIZAÇÃO
     ====================================================== */
@@ -3379,6 +3886,7 @@
     })();
 
   </script>
+
   <script src="auth.js?v=2"></script>
 
 </body>
