@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -6,18 +7,19 @@
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Alcans | Portal do Atendente</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
 
         :root {
 
@@ -53,6 +55,10 @@
 
         }
 
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
 
         .topbar {
 
@@ -242,6 +248,10 @@
         }
 
 
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
         .sidebar {
 
             position: fixed;
@@ -392,6 +402,10 @@
 
         }
 
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
 
         main {
 
@@ -632,6 +646,10 @@
         }
 
 
+        /* =====================================================
+           SOBRE A ALCANS
+        ===================================================== */
+
         .sobre-alcans {
 
             margin-top: 50px;
@@ -789,9 +807,11 @@
             border-radius: 14px;
 
             background:
-                linear-gradient(135deg,
+                linear-gradient(
+                    135deg,
                     rgba(255, 90, 0, 0.13),
-                    rgba(255, 90, 0, 0.03));
+                    rgba(255, 90, 0, 0.03)
+                );
 
             border:
                 1px solid rgba(255, 90, 0, 0.28);
@@ -919,6 +939,7 @@
 
         }
 
+
         @media (min-width: 801px) and (max-width: 1050px) {
 
             .cards {
@@ -928,6 +949,7 @@
             }
 
         }
+
     </style>
 
 </head>
@@ -936,16 +958,27 @@
 <body>
 
 
+    <!-- =====================================================
+         TOPBAR
+    ===================================================== -->
+
     <header class="topbar">
 
-        <button class="menu-button" id="menuButton" aria-label="Abrir menu">
+        <button
+            class="menu-button"
+            id="menuButton"
+            aria-label="Abrir menu"
+        >
             ☰
         </button>
 
 
         <div class="logo">
 
-            <img src="logo-alcans.png" alt="Alcans">
+            <img
+                src="logo-alcans.png"
+                alt="Alcans"
+            >
 
             <small>
                 PORTAL DO ATENDENTE
@@ -958,26 +991,43 @@
 
             🔎
 
-            <input type="text" id="searchInput" placeholder="Buscar no portal...">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Buscar no portal..."
+            >
 
         </div>
 
 
-        <button class="ask-button" onclick="focarBusca()">
+        <button
+            class="ask-button"
+            onclick="focarBusca()"
+        >
             ✦ Perguntar
         </button>
 
     </header>
 
 
-    <aside class="sidebar" id="sidebar">
+    <!-- =====================================================
+         SIDEBAR
+    ===================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
 
         <div class="menu-title">
             Portal do Atendente
         </div>
 
 
-        <button class="menu-item active" onclick="window.location.href='index.html'">
+        <button
+            class="menu-item active"
+            onclick="window.location.href='index.html'"
+        >
 
             <span class="menu-icon">
                 🏠
@@ -988,45 +1038,105 @@
         </button>
 
 
-        <button class="menu-item" onclick="window.location.href='calculadora.html'">
+        <button
+            class="menu-item"
+            onclick="window.location.href='calculadora.html'"
+        >
 
-            <span class="menu-icon" aria-hidden="true">🧮</span>
+            <span
+                class="menu-icon"
+                aria-hidden="true"
+            >
+                🧮
+            </span>
 
             Calcular multas
 
         </button>
 
 
-        <button class="menu-item" onclick="window.location.href='procedimentos.html'">
+        <button
+            class="menu-item"
+            onclick="window.location.href='procedimentos.html'"
+        >
 
-            <span class="menu-icon" aria-hidden="true">📋</span>
+            <span
+                class="menu-icon"
+                aria-hidden="true"
+            >
+                📋
+            </span>
 
             Procedimentos
 
         </button>
 
 
-        <button class="menu-item" onclick="window.location.href='sistemas.html'">
+        <button
+            class="menu-item"
+            onclick="window.location.href='sistemas.html'"
+        >
 
-            <span class="menu-icon" aria-hidden="true">🖥️</span>
+            <span
+                class="menu-icon"
+                aria-hidden="true"
+            >
+                🖥️
+            </span>
 
             Sistemas
 
         </button>
 
-        <button class="menu-item" onclick="window.location.href='escala.html'">
 
-            <span class="menu-icon" aria-hidden="true">📅</span>
+        <!-- NOVA PÁGINA -->
+
+        <button
+            class="menu-item"
+            onclick="window.location.href='indisponibilidade.html'"
+        >
+
+            <span
+                class="menu-icon"
+                aria-hidden="true"
+            >
+                📊
+            </span>
+
+            Análise de Consumo
+
+        </button>
+
+
+        <button
+            class="menu-item"
+            onclick="window.location.href='escala.html'"
+        >
+
+            <span
+                class="menu-icon"
+                aria-hidden="true"
+            >
+                📅
+            </span>
 
             Escala
 
         </button>
 
+
     </aside>
 
 
-    <div class="overlay" id="overlay"></div>
+    <div
+        class="overlay"
+        id="overlay"
+    ></div>
 
+
+    <!-- =====================================================
+         CONTEÚDO
+    ===================================================== -->
 
     <main id="conteudo">
 
@@ -1310,9 +1420,17 @@
             <div class="cards">
 
 
-                <article class="card clickable" onclick="window.location.href='procedimentos.html'">
+                <article
+                    class="card clickable"
+                    onclick="window.location.href='procedimentos.html'"
+                >
 
-                    <div class="card-icon" aria-hidden="true">📋</div>
+                    <div
+                        class="card-icon"
+                        aria-hidden="true"
+                    >
+                        📋
+                    </div>
 
 
                     <h3>
@@ -1333,9 +1451,17 @@
                 </article>
 
 
-                <article class="card clickable" onclick="window.location.href='calculadora.html'">
+                <article
+                    class="card clickable"
+                    onclick="window.location.href='calculadora.html'"
+                >
 
-                    <div class="card-icon" aria-hidden="true">🧮</div>
+                    <div
+                        class="card-icon"
+                        aria-hidden="true"
+                    >
+                        🧮
+                    </div>
 
 
                     <h3>
@@ -1355,9 +1481,17 @@
                 </article>
 
 
-                <article class="card clickable" onclick="window.location.href='sistemas.html'">
+                <article
+                    class="card clickable"
+                    onclick="window.location.href='sistemas.html'"
+                >
 
-                    <div class="card-icon" aria-hidden="true">🖥️</div>
+                    <div
+                        class="card-icon"
+                        aria-hidden="true"
+                    >
+                        🖥️
+                    </div>
 
 
                     <h3>
@@ -1376,9 +1510,17 @@
                 </article>
 
 
-                <article class="card clickable" onclick="window.location.href='escala.html'">
+                <article
+                    class="card clickable"
+                    onclick="window.location.href='escala.html'"
+                >
 
-                    <div class="card-icon" aria-hidden="true">📅</div>
+                    <div
+                        class="card-icon"
+                        aria-hidden="true"
+                    >
+                        📅
+                    </div>
 
 
                     <h3>
@@ -1479,7 +1621,11 @@
 
     </script>
 
+
+    <!-- AUTENTICAÇÃO -->
     <script src="auth.js?v=2"></script>
+
 </body>
 
 </html>
+```
