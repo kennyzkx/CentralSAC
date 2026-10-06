@@ -1504,6 +1504,7 @@
       }
 
     }
+
   </style>
 
 </head>
@@ -1571,6 +1572,11 @@
       Sistemas
     </button>
 
+    <button class="menu-item" onclick="window.location.href='indisponibilidade.html'" type="button">
+      <span class="menu-icon" aria-hidden="true">📊</span>
+      Análise de Consumo
+    </button>
+
     <button class="menu-item active">
       <span class="menu-icon" aria-hidden="true">📅</span>
       Escala
@@ -1618,7 +1624,12 @@
 
           <div class="search-box">
 
-            <input type="text" id="searchInput" placeholder="🔎 Buscar atendente..." autocomplete="off">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="🔎 Buscar atendente..."
+              autocomplete="off"
+            >
 
           </div>
 
@@ -1710,7 +1721,12 @@
       </p>
 
 
-      <input type="file" id="excelFile" class="file-input" accept=".xlsx,.xls">
+      <input
+        type="file"
+        id="excelFile"
+        class="file-input"
+        accept=".xlsx,.xls"
+      >
 
 
       <div class="preview-list" id="previewList"></div>
@@ -2135,8 +2151,8 @@
 
           tableContainer.innerHTML =
             `<div class="empty">
-                            Nenhuma escala foi importada ainda.
-                        </div>`;
+              Nenhuma escala foi importada ainda.
+            </div>`;
 
           legend.innerHTML =
             "";
@@ -2159,8 +2175,8 @@
 
         tableContainer.innerHTML =
           `<div class="empty">
-                        Não foi possível carregar a escala.
-                    </div>`;
+            Não foi possível carregar a escala.
+          </div>`;
 
         mostrarErro(
           "Erro ao carregar a escala."
@@ -2200,7 +2216,7 @@
 
           button.textContent =
             `${nomesMeses[escala.mes - 1]}
-                         ${escala.ano}`;
+             ${escala.ano}`;
 
 
           button.addEventListener(
@@ -2292,8 +2308,7 @@
           .map(Number);
 
 
-      return `${String(dia).padStart(2, "0")}/${String(mes).padStart(2, "0")
-        }`;
+      return `${String(dia).padStart(2, "0")}/${String(mes).padStart(2, "0")}`;
 
     }
 
@@ -2319,7 +2334,7 @@
 
       scaleTitle.textContent =
         `${nomesMeses[
-        escalaSelecionada.mes - 1
+          escalaSelecionada.mes - 1
         ]} ${escalaSelecionada.ano}`;
 
 
@@ -2377,8 +2392,8 @@
 
         tableContainer.innerHTML =
           `<div class="empty">
-                        Nenhum atendente encontrado.
-                    </div>`;
+            Nenhum atendente encontrado.
+          </div>`;
 
         renderizarLegenda();
 
@@ -2389,29 +2404,29 @@
 
       let html = `
 
-                <div class="table-wrapper">
+        <div class="table-wrapper">
 
-                    <table>
+          <table>
 
-                        <thead>
+            <thead>
 
-                            <tr>
+              <tr>
 
-                                <th
-                                    class="fixed-column name-column"
-                                >
-                                    ATENDENTE
-                                </th>
+                <th
+                  class="fixed-column name-column"
+                >
+                  ATENDENTE
+                </th>
 
-                                <th class="shift-column">
-                                    ESCALA
-                                </th>
+                <th class="shift-column">
+                  ESCALA
+                </th>
 
-                                <th class="time-column">
-                                    HORÁRIO
-                                </th>
+                <th class="time-column">
+                  HORÁRIO
+                </th>
 
-            `;
+      `;
 
 
       dados.datas.forEach(
@@ -2419,24 +2434,24 @@
 
           html += `
 
-                        <th>
+            <th>
 
-                            ${formatarData(data.iso)}
+              ${formatarData(data.iso)}
 
-                            <br>
+              <br>
 
-                            <span
-                                style="
-                                    color:#9BA3AE;
-                                    font-size:9px;
-                                "
-                            >
-                                ${data.diaSemana}
-                            </span>
+              <span
+                style="
+                  color:#9BA3AE;
+                  font-size:9px;
+                "
+              >
+                ${data.diaSemana}
+              </span>
 
-                        </th>
+            </th>
 
-                    `;
+          `;
 
         }
       );
@@ -2444,13 +2459,13 @@
 
       html += `
 
-                            </tr>
+              </tr>
 
-                        </thead>
+            </thead>
 
-                        <tbody>
+            <tbody>
 
-            `;
+      `;
 
 
       colaboradores.forEach(
@@ -2458,36 +2473,36 @@
 
           html += `
 
-                        <tr>
+            <tr>
 
-                            <td
-                                class="fixed-column name-column employee-name"
-                                title="${escaparHTML(
-            colaborador.nome
-          )}"
-                            >
-                                ${escaparHTML(
-            colaborador.nome
-          )}
-                            </td>
+              <td
+                class="fixed-column name-column employee-name"
+                title="${escaparHTML(
+                  colaborador.nome
+                )}"
+              >
+                ${escaparHTML(
+                  colaborador.nome
+                )}
+              </td>
 
-                            <td class="shift-column">
+              <td class="shift-column">
 
-                                ${escaparHTML(
-            colaborador.escala || "-"
-          )}
+                ${escaparHTML(
+                  colaborador.escala || "-"
+                )}
 
-                            </td>
+              </td>
 
-                            <td class="time-column">
+              <td class="time-column">
 
-                                ${escaparHTML(
-            colaborador.horario || "-"
-          )}
+                ${escaparHTML(
+                  colaborador.horario || "-"
+                )}
 
-                            </td>
+              </td>
 
-                    `;
+          `;
 
 
           dados.datas.forEach(
@@ -2495,7 +2510,7 @@
 
               const codigo =
                 colaborador.status[
-                data.iso
+                  data.iso
                 ] || "";
 
 
@@ -2507,18 +2522,19 @@
 
               html += `
 
-                                <td>
+                <td>
 
-                                    ${codigo
-                  ? `<span class="status ${classe}">
-                                                ${escaparHTML(codigo)}
-                                               </span>`
-                  : `<span class="status-empty">—</span>`
-                }
+                  ${
+                    codigo
+                      ? `<span class="status ${classe}">
+                          ${escaparHTML(codigo)}
+                        </span>`
+                      : `<span class="status-empty">—</span>`
+                  }
 
-                                </td>
+                </td>
 
-                            `;
+              `;
 
             }
           );
@@ -2526,9 +2542,9 @@
 
           html += `
 
-                        </tr>
+            </tr>
 
-                    `;
+          `;
 
         }
       );
@@ -2536,13 +2552,13 @@
 
       html += `
 
-                        </tbody>
+            </tbody>
 
-                    </table>
+          </table>
 
-                </div>
+        </div>
 
-            `;
+      `;
 
 
       tableContainer.innerHTML =
@@ -2627,19 +2643,19 @@
 
               return `
 
-                                <div class="legend-item">
+                <div class="legend-item">
 
-                                    <span
-                                        class="legend-dot ${classeStatus(codigo)}"
-                                    >
-                                        ${codigo}
-                                    </span>
+                  <span
+                    class="legend-dot ${classeStatus(codigo)}"
+                  >
+                    ${codigo}
+                  </span>
 
-                                    ${descricao}
+                  ${descricao}
 
-                                </div>
+                </div>
 
-                            `;
+              `;
 
             }
           )
@@ -2793,8 +2809,8 @@
 
         previewList.innerHTML =
           `<div class="loading">
-                        Lendo arquivo...
-                     </div>`;
+            Lendo arquivo...
+          </div>`;
 
         previewList.style.display =
           "block";
@@ -2834,10 +2850,10 @@
 
             previewList.innerHTML =
               `<div class="preview-item">
-                                <span class="preview-skip">
-                                    Nenhuma aba mensal de SAC com datas válidas foi encontrada.
-                                </span>
-                             </div>`;
+                <span class="preview-skip">
+                  Nenhuma aba mensal de SAC com datas válidas foi encontrada.
+                </span>
+              </div>`;
 
             return;
 
@@ -2859,10 +2875,10 @@
 
           previewList.innerHTML =
             `<div class="preview-item">
-                            <span style="color:#ff9da5">
-                                Não foi possível ler o arquivo Excel.
-                            </span>
-                         </div>`;
+              <span style="color:#ff9da5">
+                Não foi possível ler o arquivo Excel.
+              </span>
+            </div>`;
 
         }
 
@@ -2918,7 +2934,7 @@
 
           const worksheet =
             workbook.Sheets[
-            nomeAba
+              nomeAba
             ];
 
 
@@ -3286,7 +3302,7 @@
 
               diaSemana:
                 nomesDias[
-                item.data.getDay()
+                  item.data.getDay()
                 ]
 
             };
@@ -3315,7 +3331,7 @@
 
         const nomeBruto =
           linhas[r]?.[
-          colunaNome
+            colunaNome
           ];
 
 
@@ -3371,13 +3387,13 @@
 
         const escalaValor =
           linhas[r]?.[
-          colunaEscala
+            colunaEscala
           ];
 
 
         const horarioValor =
           linhas[r]?.[
-          colunaHorario
+            colunaHorario
           ];
 
 
@@ -3416,7 +3432,7 @@
             const codigo =
               limparValor(
                 linhas[r]?.[
-                item.coluna
+                  item.coluna
                 ]
               );
 
@@ -3792,27 +3808,28 @@
 
           div.innerHTML = `
 
-                        <span>
-                            ${escaparHTML(
-            item.nomeAba
-          )}
-                        </span>
+            <span>
+              ${escaparHTML(
+                item.nomeAba
+              )}
+            </span>
 
-                        <span class="preview-ok">
+            <span class="preview-ok">
 
-                            ${nomesMeses[
-            item.mes - 1
-            ]}
+              ${nomesMeses[
+                item.mes - 1
+              ]}
 
-                            ${item.ano}
+              ${item.ano}
 
-                            •
-                            ${item.colaboradores.length}
-                            atendentes
+              •
 
-                        </span>
+              ${item.colaboradores.length}
+              atendentes
 
-                    `;
+            </span>
+
+          `;
 
 
           previewList.appendChild(
@@ -3943,7 +3960,10 @@
 
         } catch (erro) {
 
-          console.error("ERRO COMPLETO AO IMPORTAR ESCALA:", erro);
+          console.error(
+            "ERRO COMPLETO AO IMPORTAR ESCALA:",
+            erro
+          );
 
           const mensagem =
             erro?.message ||
