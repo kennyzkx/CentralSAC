@@ -2,17 +2,29 @@
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Alcans | Portal do Atendente</title>
+    <title>Alcans | Análise de Consumo</title>
 
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
 
     <style>
+        :root {
+            --laranja: #FF5A00;
+            --laranja-hover: #FF6A1A;
+            --fundo: #111419;
+            --fundo-menu: #15181E;
+            --card: #191D24;
+            --card-hover: #20252D;
+            --borda: #303640;
+            --texto: #F5F6F8;
+            --texto-secundario: #9BA3AE;
+            --verde: #31C48D;
+            --vermelho: #EF4444;
+        }
 
         * {
             margin: 0;
@@ -20,1609 +32,2853 @@
             box-sizing: border-box;
         }
 
-        :root {
-
-            --laranja: #FF5A00;
-            --laranja-hover: #FF6A1A;
-
-            --fundo: #111419;
-            --fundo-menu: #15181E;
-
-            --card: #191D24;
-            --card-hover: #20252D;
-
-            --borda: #303640;
-
-            --texto: #F5F6F8;
-            --texto-secundario: #9BA3AE;
-
-        }
-
-
         body {
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
+            font-family: Arial, Helvetica, sans-serif;
             background: var(--fundo);
-
             color: var(--texto);
-
             min-height: 100vh;
-
         }
 
-
-        /* =====================================================
-           TOPBAR
-        ===================================================== */
-
-        .topbar {
-
+        .header {
             height: 66px;
-
             background: var(--laranja);
-
             display: flex;
-
             align-items: center;
-
-            padding: 0 24px;
-
             gap: 16px;
-
+            padding: 0 24px;
+            color: white;
             position: sticky;
-
             top: 0;
-
             z-index: 1000;
-
         }
 
-
-        .menu-button {
-
+        .header-menu {
             width: 42px;
-
             height: 42px;
-
             border: none;
-
             background: transparent;
-
             color: white;
-
-            font-size: 27px;
-
-            line-height: 1;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            cursor: pointer;
-
-            padding: 0;
-
             border-radius: 8px;
-
-            transition: 0.2s;
-
-        }
-
-
-        .menu-button:hover {
-
-            background:
-                rgba(255, 255, 255, 0.10);
-
-        }
-
-
-        .logo {
-
-            width: 185px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            justify-content: center;
-
-        }
-
-
-        .logo img {
-
-            width: 112px;
-
-            height: auto;
-
-            display: block;
-
-        }
-
-
-        .logo small {
-
-            display: block;
-
-            font-size: 8px;
-
-            letter-spacing: 0.7px;
-
-            color:
-                rgba(255, 255, 255, 0.82);
-
-            margin-top: 2px;
-
-        }
-
-
-        .search {
-
-            height: 42px;
-
-            flex: 1;
-
-            max-width: 620px;
-
-            display: flex;
-
-            align-items: center;
-
-            padding: 0 13px;
-
-            background:
-                rgba(255, 255, 255, 0.10);
-
-            border:
-                1px solid rgba(255, 255, 255, 0.28);
-
-            border-radius: 11px;
-
-            color: white;
-
-        }
-
-
-        .search input {
-
-            width: 100%;
-
-            border: none;
-
-            outline: none;
-
-            background: transparent;
-
-            color: white;
-
-            padding-left: 8px;
-
-            font-size: 14px;
-
-        }
-
-
-        .search input::placeholder {
-
-            color:
-                rgba(255, 255, 255, 0.78);
-
-        }
-
-
-        .ask-button {
-
-            padding: 10px 15px;
-
-            border-radius: 10px;
-
-            border:
-                1px solid rgba(255, 255, 255, 0.38);
-
-            background: transparent;
-
-            color: white;
-
+            font-size: 25px;
             cursor: pointer;
-
-            font-size: 13px;
-
-            transition: 0.2s;
-
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-
-        .ask-button:hover {
-
-            background:
-                rgba(255, 255, 255, 0.10);
-
+        .header-menu:hover {
+            background: rgba(255, 255, 255, .12);
         }
 
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+        }
 
-        /* =====================================================
-           SIDEBAR
-        ===================================================== */
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo img {
+            width: 112px;
+            height: auto;
+            display: block;
+        }
+
+        .logo-sub {
+            font-size: 8px;
+            letter-spacing: .8px;
+            margin-top: 2px;
+            opacity: .9;
+        }
+
+        .header-label {
+            margin-left: auto;
+            font-size: 11px;
+            color: rgba(255, 255, 255, .88);
+        }
 
         .sidebar {
-
             position: fixed;
-
             top: 66px;
-
             left: 0;
-
             bottom: 0;
-
             width: 280px;
-
             background: var(--fundo-menu);
-
-            border-right:
-                1px solid var(--borda);
-
+            border-right: 1px solid var(--borda);
             padding: 22px 14px;
-
-            transform:
-                translateX(-100%);
-
-            transition:
-                0.25s ease;
-
+            transform: translateX(-100%);
+            transition: .25s ease;
             z-index: 900;
-
             overflow-y: auto;
-
         }
-
 
         .sidebar.open {
-
-            transform:
-                translateX(0);
-
-            box-shadow:
-                20px 0 50px rgba(0, 0, 0, 0.40);
-
+            transform: translateX(0);
+            box-shadow: 20px 0 50px rgba(0, 0, 0, .4);
         }
-
 
         .menu-title {
-
             font-size: 11px;
-
             color: #737B87;
-
             text-transform: uppercase;
-
-            margin:
-                5px 12px 12px;
-
+            margin: 5px 12px 12px;
             font-weight: bold;
-
         }
-
 
         .menu-item {
-
             width: 100%;
-
             border: none;
-
             background: transparent;
-
             color: #CBD0D8;
-
             text-align: left;
-
             padding: 13px 12px;
-
             border-radius: 9px;
-
             margin: 3px 0;
-
             display: flex;
-
             align-items: center;
-
             gap: 12px;
-
             cursor: pointer;
-
             font-size: 14px;
-
-            transition: 0.2s;
-
+            transition: .2s;
         }
-
 
         .menu-item:hover {
-
-            background:
-                var(--card-hover);
-
+            background: var(--card-hover);
             color: white;
-
         }
-
 
         .menu-item.active {
-
-            background:
-                var(--card-hover);
-
+            background: var(--card-hover);
             color: white;
-
-            box-shadow:
-                inset 3px 0 0 var(--laranja);
-
+            box-shadow: inset 3px 0 0 var(--laranja);
         }
-
 
         .menu-icon {
-
             width: 22px;
-
             text-align: center;
-
             color: var(--laranja);
-
             font-size: 17px;
-
         }
-
 
         .overlay {
-
             position: fixed;
-
             inset: 66px 0 0;
-
-            background:
-                rgba(0, 0, 0, 0.55);
-
+            background: rgba(0, 0, 0, .55);
             display: none;
-
             z-index: 800;
-
         }
-
 
         .overlay.active {
-
             display: block;
-
         }
 
-
-        /* =====================================================
-           MAIN
-        ===================================================== */
-
-        main {
-
-            max-width: 1080px;
-
+        .container {
+            max-width: 1250px;
             margin: auto;
-
-            padding:
-                40px 28px 80px;
-
+            padding: 40px 28px 70px;
         }
-
 
         .hero {
-
-            max-width: 800px;
-
+            background: var(--card);
+            border: 1px solid var(--borda);
+            padding: 30px 32px;
+            border-radius: 16px;
+            position: relative;
+            overflow: visible;
+            margin-bottom: 22px;
         }
 
-
-        .kicker {
-
-            color:
-                var(--laranja);
-
-            font-size: 12px;
-
-            font-weight: bold;
-
-            letter-spacing: 0.8px;
-
-            margin-bottom: 9px;
-
+        .hero::after {
+            content: "";
+            position: absolute;
+            right: -80px;
+            top: -100px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 90, 0, .09);
+            pointer-events: none;
         }
 
-
-        h1 {
-
-            font-size: 39px;
-
-            letter-spacing: -1.4px;
-
+        .hero-tag {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            font-weight: 700;
             margin-bottom: 12px;
-
+            color: var(--laranja);
         }
 
-
-        .description {
-
-            color:
-                var(--texto-secundario);
-
-            font-size: 16px;
-
-            line-height: 1.65;
-
+        .hero h1 {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
         }
 
-
-        .divider {
-
-            height: 1px;
-
-            background:
-                var(--borda);
-
-            margin:
-                34px 0 27px;
-
-        }
-
-
-        .section-title {
-
-            font-size: 18px;
-
-            font-weight: bold;
-
-            margin-bottom: 18px;
-
-        }
-
-
-        .pilares-container {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 7px;
-
-        }
-
-
-        .pilar {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 9px;
-
-            background:
-                var(--laranja);
-
-            color: white;
-
-            border: none;
-
-            padding:
-                9px 16px;
-
-            border-radius: 9px;
-
+        .hero p {
             font-size: 13px;
-
-            font-weight: 600;
-
-            cursor: pointer;
-
-            transition: 0.2s;
-
+            line-height: 1.7;
+            color: var(--texto-secundario);
+            max-width: 760px;
         }
-
-
-        .pilar span {
-
-            font-size: 15px;
-
-            font-weight: 400;
-
-        }
-
-
-        .pilar:hover {
-
-            background:
-                var(--laranja-hover);
-
-            transform:
-                translateY(-1px);
-
-        }
-
-
-        .informacoes {
-
-            margin-top: 34px;
-
-        }
-
-
-        .cards {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 14px;
-
-        }
-
 
         .card {
-
-            background:
-                var(--card);
-
-            border:
-                1px solid var(--borda);
-
-            border-radius: 13px;
-
-            padding: 20px;
-
-            min-height: 155px;
-
-            transition: 0.2s;
-
-            cursor: pointer;
-
+            background: var(--card);
+            border: 1px solid var(--borda);
+            border-radius: 15px;
+            padding: 28px;
+            margin-bottom: 20px;
         }
 
-
-        .card:hover {
-
-            background:
-                var(--card-hover);
-
-            transform:
-                translateY(-2px);
-
-        }
-
-
-        .card-icon {
-
-            width: 39px;
-
-            height: 39px;
-
-            border-radius: 10px;
-
-            background:
-                rgba(255, 90, 0, 0.13);
-
-            display: grid;
-
-            place-items: center;
-
-            color:
-                var(--laranja);
-
-            margin-bottom: 14px;
-
-        }
-
-
-        .card h3 {
-
+        .section-title {
+            font-size: 18px;
+            font-weight: 750;
             margin-bottom: 7px;
-
-            font-size: 15px;
-
         }
 
-
-        .card p {
-
-            color:
-                var(--texto-secundario);
-
-            font-size: 13px;
-
-            line-height: 1.5;
-
-        }
-
-
-        /* =====================================================
-           SOBRE A ALCANS
-        ===================================================== */
-
-        .sobre-alcans {
-
-            margin-top: 50px;
-
-        }
-
-
-        .sobre-bloco {
-
-            background:
-                var(--card);
-
-            border:
-                1px solid var(--borda);
-
-            border-radius: 16px;
-
-            padding: 30px;
-
-            margin-bottom: 18px;
-
-        }
-
-
-        .sobre-kicker {
-
-            color:
-                var(--laranja);
-
-            font-size: 11px;
-
-            font-weight: bold;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-
-            margin-bottom: 10px;
-
-        }
-
-
-        .sobre-bloco h2 {
-
-            font-size: 25px;
-
-            letter-spacing: -0.5px;
-
-            margin-bottom: 14px;
-
-        }
-
-
-        .sobre-bloco p {
-
-            color:
-                var(--texto-secundario);
-
-            font-size: 14px;
-
-            line-height: 1.75;
-
-            margin-bottom: 12px;
-
-        }
-
-
-        .sobre-bloco p:last-child {
-
-            margin-bottom: 0;
-
-        }
-
-
-        .sobre-destaque {
-
-            color:
-                var(--texto) !important;
-
-            font-weight: 600;
-
-        }
-
-
-        .historia-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            gap: 18px;
-
-            margin-bottom: 18px;
-
-        }
-
-
-        .historia-card {
-
-            background:
-                var(--card);
-
-            border:
-                1px solid var(--borda);
-
-            border-radius: 14px;
-
-            padding: 24px;
-
-            transition: 0.2s;
-
-        }
-
-
-        .historia-card:hover {
-
-            background:
-                var(--card-hover);
-
-            transform:
-                translateY(-2px);
-
-        }
-
-
-        .historia-card h3 {
-
-            font-size: 17px;
-
-            margin-bottom: 10px;
-
-        }
-
-
-        .historia-card p {
-
-            color:
-                var(--texto-secundario);
-
-            font-size: 13px;
-
-            line-height: 1.7;
-
-        }
-
-
-        .alcans-final {
-
-            margin-top: 18px;
-
-            padding:
-                28px;
-
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255, 90, 0, 0.13),
-                    rgba(255, 90, 0, 0.03)
-                );
-
-            border:
-                1px solid rgba(255, 90, 0, 0.28);
-
-        }
-
-
-        .alcans-final p {
-
-            color:
-                var(--texto);
-
-            font-size: 15px;
-
-            line-height: 1.7;
-
-            margin-bottom: 12px;
-
-        }
-
-
-        .alcans-valores {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 8px;
-
-            margin-top: 18px;
-
-        }
-
-
-        .valor {
-
-            padding:
-                8px 14px;
-
-            border-radius: 8px;
-
-            background:
-                var(--laranja);
-
-            color: white;
-
+        .section-description {
+            color: var(--texto-secundario);
             font-size: 12px;
-
-            font-weight: bold;
-
+            line-height: 1.6;
+            margin-bottom: 24px;
         }
 
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            position: relative;
+        }
+
+        .field label {
+            font-size: 11px;
+            font-weight: 650;
+        }
+
+        .date-wrapper {
+            position: relative;
+        }
+
+        .date-display {
+            height: 46px;
+            width: 100%;
+            padding: 0 45px 0 13px;
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            outline: none;
+            font-family: inherit;
+            font-size: 13px;
+            background: var(--fundo);
+            color: var(--texto);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .date-display::placeholder {
+            color: #737B87;
+        }
+
+        .date-display:focus {
+            border-color: var(--laranja);
+            box-shadow: 0 0 0 3px rgba(255, 90, 0, .12);
+        }
+
+        .calendar-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 17px;
+        }
+
+        .calendar-popup {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 310px;
+            background: var(--card);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .4);
+            padding: 15px;
+            z-index: 100;
+        }
+
+        .calendar-popup.open {
+            display: block;
+            animation: calendarAppear .15s ease;
+        }
+
+        @keyframes calendarAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .calendar-title {
+            font-size: 13px;
+            font-weight: 750;
+            text-transform: capitalize;
+        }
+
+        .calendar-nav {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--borda);
+            background: var(--fundo-menu);
+            color: var(--texto);
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: .2s;
+        }
+
+        .calendar-nav:hover {
+            border-color: var(--laranja);
+            color: var(--laranja);
+        }
+
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 5px;
+        }
+
+        .calendar-weekdays div {
+            text-align: center;
+            font-size: 10px;
+            color: var(--texto-secundario);
+            font-weight: 700;
+            padding: 5px 0;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-day {
+            height: 32px;
+            border: none;
+            background: transparent;
+            color: var(--texto);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: .15s;
+        }
+
+        .calendar-day:hover {
+            background: var(--card-hover);
+        }
+
+        .calendar-day.other-month {
+            color: #555C67;
+        }
+
+        .calendar-day.today {
+            border: 1px solid var(--laranja);
+        }
+
+        .calendar-day.selected {
+            background: var(--laranja);
+            color: white;
+            font-weight: bold;
+        }
+
+        .calendar-day.disabled {
+            color: #454A53;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.disabled:hover {
+            background: transparent;
+        }
+
+        .manual-date {
+            width: 100%;
+            height: 46px;
+            padding: 0 13px;
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            outline: none;
+            font-family: inherit;
+            font-size: 13px;
+            background: var(--fundo);
+            color: var(--texto);
+        }
+
+        .manual-date:focus {
+            border-color: var(--laranja);
+            box-shadow: 0 0 0 3px rgba(255, 90, 0, .12);
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .primary-button,
+        .secondary-button,
+        .danger-button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 17px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .primary-button {
+            background: var(--laranja);
+            color: white;
+        }
+
+        .primary-button:hover {
+            background: var(--laranja-hover);
+        }
+
+        .secondary-button {
+            background: var(--fundo-menu);
+            border: 1px solid var(--borda);
+            color: var(--texto);
+        }
+
+        .secondary-button:hover {
+            border-color: var(--laranja);
+            color: var(--laranja);
+        }
+
+        .danger-button {
+            background: rgba(239, 68, 68, .12);
+            border: 1px solid rgba(239, 68, 68, .3);
+            color: #F87171;
+        }
+
+        .danger-button:hover {
+            background: rgba(239, 68, 68, .2);
+        }
+
+        .status {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.success {
+            background: rgba(49, 196, 141, .1);
+            border: 1px solid rgba(49, 196, 141, .25);
+            color: #6EE7B7;
+        }
+
+        .status.error {
+            background: rgba(239, 68, 68, .1);
+            border: 1px solid rgba(239, 68, 68, .25);
+            color: #FCA5A5;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .result-box {
+            background: var(--fundo);
+            border: 1px solid var(--borda);
+            border-radius: 11px;
+            padding: 20px;
+        }
+
+        .result-label {
+            font-size: 10px;
+            color: var(--texto-secundario);
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--laranja);
+        }
+
+        .result-help {
+            margin-top: 6px;
+            color: var(--texto-secundario);
+            font-size: 10px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 720px;
+        }
+
+        th {
+            background: var(--fundo-menu);
+            color: #AEB5BF;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: 13px 12px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-top: 1px solid var(--borda);
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .session-input {
+            width: 100%;
+            min-width: 185px;
+            background: var(--fundo);
+            color: var(--texto);
+            border: 1px solid var(--borda);
+            border-radius: 7px;
+            padding: 9px 10px;
+            outline: none;
+            font-family: inherit;
+            font-size: 11px;
+        }
+
+        .session-input:focus {
+            border-color: var(--laranja);
+            box-shadow: 0 0 0 2px rgba(255, 90, 0, .1);
+        }
+
+        .duration {
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .duration.positive {
+            color: #F59E0B;
+        }
+
+        .duration.zero {
+            color: #7B8490;
+        }
+
+        .action-cell {
+            white-space: nowrap;
+        }
+
+        .small-button {
+            border: 1px solid var(--borda);
+            background: var(--fundo-menu);
+            color: #D6DAE0;
+            border-radius: 7px;
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .small-button:hover {
+            border-color: var(--vermelho);
+            color: #F87171;
+        }
+
+        .empty-state {
+            padding: 45px 20px;
+            text-align: center;
+            color: var(--texto-secundario);
+            font-size: 12px;
+        }
+
+        .info-box {
+            background: rgba(255, 90, 0, .06);
+            border: 1px solid rgba(255, 90, 0, .18);
+            border-radius: 10px;
+            padding: 14px;
+            color: #C9CED5;
+            font-size: 11px;
+            line-height: 1.7;
+            margin-top: 18px;
+        }
+
+        .info-box strong {
+            color: white;
+        }
+
+        .file-input {
+            display: none;
+        }
 
         .footer {
-
-            margin-top: 45px;
-
-            color: #66707C;
-
-            font-size: 12px;
-
             text-align: center;
-
+            color: #626A75;
+            font-size: 10px;
+            padding: 0 20px 30px;
         }
 
-
-        @media (max-width: 800px) {
-
-            .topbar {
-
-                padding:
-                    0 12px;
-
+        @media (max-width: 760px) {
+            .header {
+                padding: 0 14px;
             }
 
-
-            .logo {
-
-                width: auto;
-
-            }
-
-
-            .logo small {
-
+            .header-label {
                 display: none;
-
             }
 
-
-            .ask-button {
-
-                display: none;
-
+            .container {
+                padding: 25px 14px 50px;
             }
 
-
-            .search {
-
-                max-width: none;
-
+            .hero {
+                padding: 24px 20px;
             }
 
-
-            main {
-
-                padding:
-                    30px 18px;
-
+            .hero h1 {
+                font-size: 24px;
             }
 
-
-            h1 {
-
-                font-size: 31px;
-
+            .card {
+                padding: 20px 16px;
             }
 
-
-            .cards {
-
+            .form-grid,
+            .result-grid {
                 grid-template-columns: 1fr;
-
             }
 
-        }
-
-
-        @media (min-width: 801px) and (max-width: 1050px) {
-
-            .cards {
-
-                grid-template-columns: repeat(2, 1fr);
-
+            .calendar-popup {
+                width: min(310px, calc(100vw - 50px));
             }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
-    <!-- =====================================================
-         TOPBAR
-    ===================================================== -->
-
-    <header class="topbar">
+    <header class="header">
 
         <button
-            class="menu-button"
+            class="header-menu"
             id="menuButton"
+            type="button"
             aria-label="Abrir menu"
         >
             ☰
         </button>
 
+        <div class="logo-area">
 
-        <div class="logo">
+            <div class="header-logo">
+                <img src="logo-alcans.png" alt="Alcans">
+            </div>
 
-            <img
-                src="logo-alcans.png"
-                alt="Alcans"
-            >
-
-            <small>
-                PORTAL DO ATENDENTE
-            </small>
+            <div class="logo-sub">
+                CENTRALSAC
+            </div>
 
         </div>
 
-
-        <div class="search">
-
-            🔎
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Buscar no portal..."
-            >
-
+        <div class="header-label">
+            PORTAL DO ATENDENTE
         </div>
-
-
-        <button
-            class="ask-button"
-            onclick="focarBusca()"
-        >
-            ✦ Perguntar
-        </button>
 
     </header>
 
-
-    <!-- =====================================================
-         SIDEBAR
-    ===================================================== -->
-
-    <aside
-        class="sidebar"
-        id="sidebar"
-    >
+    <aside class="sidebar" id="sidebar">
 
         <div class="menu-title">
-            Portal do Atendente
+            Navegação
         </div>
 
-
         <button
-            class="menu-item active"
+            class="menu-item"
             onclick="window.location.href='index.html'"
+            type="button"
         >
-
-            <span class="menu-icon">
-                🏠
-            </span>
-
+            <span class="menu-icon" aria-hidden="true">🏠</span>
             Início
-
         </button>
-
 
         <button
             class="menu-item"
             onclick="window.location.href='calculadora.html'"
+            type="button"
         >
-
-            <span
-                class="menu-icon"
-                aria-hidden="true"
-            >
-                🧮
-            </span>
-
+            <span class="menu-icon" aria-hidden="true">🧮</span>
             Calcular multas
-
         </button>
-
 
         <button
             class="menu-item"
             onclick="window.location.href='procedimentos.html'"
+            type="button"
         >
-
-            <span
-                class="menu-icon"
-                aria-hidden="true"
-            >
-                📋
-            </span>
-
+            <span class="menu-icon" aria-hidden="true">📋</span>
             Procedimentos
-
         </button>
-
 
         <button
             class="menu-item"
             onclick="window.location.href='sistemas.html'"
+            type="button"
         >
-
-            <span
-                class="menu-icon"
-                aria-hidden="true"
-            >
-                🖥️
-            </span>
-
+            <span class="menu-icon" aria-hidden="true">🖥️</span>
             Sistemas
-
         </button>
-
-
-        <!-- NOVA PÁGINA -->
 
         <button
-            class="menu-item"
+            class="menu-item active"
             onclick="window.location.href='indisponibilidade.html'"
+            type="button"
         >
-
-            <span
-                class="menu-icon"
-                aria-hidden="true"
-            >
-                📊
-            </span>
-
+            <span class="menu-icon" aria-hidden="true">📊</span>
             Análise de Consumo
-
         </button>
-
 
         <button
             class="menu-item"
             onclick="window.location.href='escala.html'"
+            type="button"
         >
-
-            <span
-                class="menu-icon"
-                aria-hidden="true"
-            >
-                📅
-            </span>
-
+            <span class="menu-icon" aria-hidden="true">📅</span>
             Escala
-
         </button>
 
-
     </aside>
-
 
     <div
         class="overlay"
         id="overlay"
     ></div>
 
-
-    <!-- =====================================================
-         CONTEÚDO
-    ===================================================== -->
-
-    <main id="conteudo">
-
+    <main class="container">
 
         <section class="hero">
 
-            <div class="kicker">
-                CENTRAL DE APOIO À OPERAÇÃO
+            <div class="hero-tag">
+                CENTRALSAC • FERRAMENTA INTERNA
             </div>
 
-
             <h1>
-                Alcans | Portal do Atendente
+                Análise de Consumo
             </h1>
 
-
-            <p class="description">
-
-                Sua central de apoio durante a operação.
-                Encontre rapidamente informações,
-                procedimentos, orientações e ferramentas
-                para conduzir seus atendimentos com mais
-                segurança e eficiência.
-
+            <p>
+                Importe o relatório de sessões do cliente, selecione o período
+                que deseja analisar e acompanhe automaticamente o tempo total
+                em que o cliente ficou offline e a quantidade de quedas
+                registradas dentro do período.
             </p>
 
         </section>
 
-
-        <section class="sobre-alcans">
-
-
-            <div class="sobre-bloco">
-
-                <div class="sobre-kicker">
-                    SOBRE A EMPRESA
-                </div>
-
-
-                <h2>
-                    O que é a Alcans?
-                </h2>
-
-
-                <p class="sobre-destaque">
-
-                    A Alcans é uma empresa de telecomunicações
-                    que nasceu com o propósito de conectar
-                    pessoas, empresas e comunidades, levando
-                    tecnologia, qualidade e proximidade para
-                    cada lugar onde está presente.
-
-                </p>
-
-
-                <p>
-
-                    Hoje, a Alcans oferece soluções de internet,
-                    telefonia, conectividade e entretenimento,
-                    contando com infraestrutura própria e uma
-                    operação construída para entregar uma
-                    experiência cada vez melhor aos seus clientes.
-
-                </p>
-
-            </div>
-
-
-            <div class="sobre-bloco">
-
-                <div class="sobre-kicker">
-                    NOSSA HISTÓRIA
-                </div>
-
-
-                <h2>
-                    Uma história construída por pessoas
-                </h2>
-
-
-                <p>
-
-                    Tudo começou a partir de uma necessidade
-                    simples: levar uma conexão de internet de
-                    qualidade até a empresa de sementes da
-                    família do fundador,
-                    <strong>Fernando Noronha</strong>.
-
-                    Na época, a solução encontrada foi a
-                    utilização de uma conexão via rádio.
-
-                </p>
-
-
-                <p>
-
-                    O que começou como uma solução para uma
-                    necessidade da família rapidamente despertou
-                    o interesse de outras pessoas da região.
-
-                    Moradores de cidades próximas passaram a
-                    procurar pelo serviço, e aquela pequena
-                    operação começou a crescer.
-
-                </p>
-
-
-                <p>
-
-                    A partir daí, nasceu uma visão que acompanha
-                    a Alcans até hoje:
-
-                    <strong>
-                        levar conexão de qualidade para cada
-                        vez mais pessoas, com proximidade,
-                        tecnologia e excelência.
-                    </strong>
-
-                </p>
-
-            </div>
-
-
-            <div class="historia-grid">
-
-
-                <div class="historia-card">
-
-                    <h3>
-                        2014 · Fibra óptica
-                    </h3>
-
-                    <p>
-
-                        Em <strong>2014</strong>, a empresa deu
-                        um dos grandes passos de sua trajetória
-                        e passou a operar com uma rede
-                        <strong>100% em fibra óptica</strong>,
-                        permitindo oferecer conexões de alta
-                        velocidade com maior qualidade e
-                        estabilidade.
-
-                    </p>
-
-                </div>
-
-
-                <div class="historia-card">
-
-                    <h3>
-                        Expansão
-                    </h3>
-
-                    <p>
-
-                        Com o passar dos anos, a Alcans deixou
-                        de ser uma pequena operação regional e
-                        se transformou em uma empresa de
-                        telecomunicações com presença em
-                        <strong>mais de 110 cidades</strong> do
-                        interior de São Paulo e do Sul de Minas
-                        Gerais.
-
-                    </p>
-
-                </div>
-
-
-                <div class="historia-card">
-
-                    <h3>
-                        Mais de 550 colaboradores
-                    </h3>
-
-                    <p>
-
-                        Hoje, a empresa conta com
-                        <strong>mais de 550 colaboradores</strong>,
-                        centenas de veículos, centenas de pontos
-                        de presença e uma extensa infraestrutura
-                        própria de fibra óptica.
-
-                    </p>
-
-                </div>
-
-
-                <div class="historia-card">
-
-                    <h3>
-                        Estrutura própria
-                    </h3>
-
-                    <p>
-
-                        A Alcans mantém equipes e estruturas
-                        próprias de engenharia, tecnologia,
-                        construção, atendimento e suporte,
-                        permitindo acompanhar internamente
-                        grande parte da jornada de conexão
-                        do cliente.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="alcans-final">
-
-                <p>
-
-                    Mas a história da Alcans não é feita apenas
-                    de números.
-
-                    É uma história construída por pessoas.
-                    Pessoas que começaram com uma necessidade,
-                    enxergaram uma oportunidade e transformaram
-                    uma pequena conexão via rádio em uma empresa
-                    que hoje conecta famílias, empresas e
-                    comunidades.
-
-                </p>
-
-
-                <p>
-
-                    <strong>
-                        Porque conectar vai muito além de oferecer
-                        internet.
-                    </strong>
-
-                    É aproximar pessoas, abrir possibilidades
-                    e contribuir para o desenvolvimento de onde
-                    estamos presentes.
-
-                </p>
-
-
-                <div class="section-title">
-                    Nossos Pilares
-                </div>
-
-
-                <div class="alcans-valores">
-
-                    <div class="valor">
-                        Tecnologia
-                    </div>
-
-                    <div class="valor">
-                        Excelência
-                    </div>
-
-                    <div class="valor">
-                        Simplicidade
-                    </div>
-
-                    <div class="valor">
-                        Performance
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <div class="divider"></div>
-
-
-        <section class="informacoes">
+        <section class="card">
 
             <div class="section-title">
-                Informações principais
+                1. Selecionar período
             </div>
 
+            <div class="section-description">
+                Informe a data e horário inicial e final da análise.
+                O cálculo considera somente as sessões que estiverem dentro
+                do intervalo selecionado.
+            </div>
 
-            <div class="cards">
+            <div class="form-grid">
 
+                <div class="field">
 
-                <article
-                    class="card clickable"
-                    onclick="window.location.href='procedimentos.html'"
-                >
+                    <label for="startDisplay">
+                        Início da análise
+                    </label>
 
-                    <div
-                        class="card-icon"
-                        aria-hidden="true"
-                    >
-                        📋
+                    <div class="date-wrapper">
+
+                        <input
+                            type="text"
+                            id="startDisplay"
+                            class="date-display"
+                            placeholder="Selecione a data"
+                            readonly
+                        >
+
+                        <span class="calendar-icon">
+                            📅
+                        </span>
+
+                        <div
+                            class="calendar-popup"
+                            id="startCalendar"
+                        ></div>
+
                     </div>
 
-
-                    <h3>
-                        Procedimentos
-                    </h3>
-
-
-                    <p>
-
-                        Consulte os procedimentos
-                        documentados da operação e
-                        encontre rapidamente o passo
-                        a passo necessário para cada
-                        atendimento.
-
-                    </p>
-
-                </article>
-
-
-                <article
-                    class="card clickable"
-                    onclick="window.location.href='calculadora.html'"
-                >
-
-                    <div
-                        class="card-icon"
-                        aria-hidden="true"
+                    <input
+                        type="text"
+                        id="startTime"
+                        class="manual-date"
+                        placeholder="DD/MM/AAAA HH:MM:SS"
+                        value=""
                     >
-                        🧮
+
+                </div>
+
+                <div class="field">
+
+                    <label for="endDisplay">
+                        Fim da análise
+                    </label>
+
+                    <div class="date-wrapper">
+
+                        <input
+                            type="text"
+                            id="endDisplay"
+                            class="date-display"
+                            placeholder="Selecione a data"
+                            readonly
+                        >
+
+                        <span class="calendar-icon">
+                            📅
+                        </span>
+
+                        <div
+                            class="calendar-popup"
+                            id="endCalendar"
+                        ></div>
+
                     </div>
 
-
-                    <h3>
-                        Calcular multas
-                    </h3>
-
-
-                    <p>
-
-                        Acesse a calculadora de multas
-                        já existente e utilize as
-                        ferramentas disponíveis para
-                        realizar os cálculos.
-
-                    </p>
-
-                </article>
-
-
-                <article
-                    class="card clickable"
-                    onclick="window.location.href='sistemas.html'"
-                >
-
-                    <div
-                        class="card-icon"
-                        aria-hidden="true"
+                    <input
+                        type="text"
+                        id="endTime"
+                        class="manual-date"
+                        placeholder="DD/MM/AAAA HH:MM:SS"
+                        value=""
                     >
-                        🖥️
-                    </div>
 
+                </div>
 
-                    <h3>
-                        Sistemas
-                    </h3>
+            </div>
 
+            <div class="info-box">
 
-                    <p>
-
-                        Encontre em um só lugar todos
-                        os sistemas utilizados pela
-                        equipe.
-
-                    </p>
-
-                </article>
-
-
-                <article
-                    class="card clickable"
-                    onclick="window.location.href='escala.html'"
-                >
-
-                    <div
-                        class="card-icon"
-                        aria-hidden="true"
-                    >
-                        📅
-                    </div>
-
-
-                    <h3>
-                        Escala
-                    </h3>
-
-
-                    <p>
-
-                        Consulte a escala de atendimento
-                        atualizada e acompanhe os horários
-                        e a organização da equipe.
-
-                    </p>
-
-                </article>
-
+                <strong>Como preencher:</strong>
+                selecione a data no calendário e informe abaixo o horário
+                completo no formato
+                <strong>DD/MM/AAAA HH:MM:SS</strong>.
+                Exemplo:
+                <strong>01/10/2026 00:00:00</strong>.
 
             </div>
 
         </section>
 
+        <section class="card">
 
-        <div class="footer">
+            <div class="section-title">
+                2. Importar sessões do MK
+            </div>
 
-            Alcans · Portal interno do Atendente
+            <div class="section-description">
+                Selecione o arquivo Excel exportado do MK Solutions contendo
+                as colunas de início e término das sessões.
+                Após a importação, o cálculo será realizado automaticamente.
+            </div>
 
-        </div>
+            <input
+                type="file"
+                id="fileInput"
+                class="file-input"
+                accept=".xlsx,.xls,.csv"
+            >
 
+            <div class="button-row">
+
+                <button
+                    class="primary-button"
+                    id="importButton"
+                    type="button"
+                >
+                    📁 Importar arquivo
+                </button>
+
+                <button
+                    class="secondary-button"
+                    id="clearButton"
+                    type="button"
+                >
+                    Limpar dados
+                </button>
+
+            </div>
+
+            <div
+                class="status"
+                id="status"
+            ></div>
+
+        </section>
+
+        <section class="card">
+
+            <div class="section-title">
+                Resultado da análise
+            </div>
+
+            <div class="section-description">
+                Os valores abaixo são atualizados automaticamente conforme
+                o período e as sessões.
+            </div>
+
+            <div class="result-grid">
+
+                <div class="result-box">
+
+                    <div class="result-label">
+                        Total do período offline
+                    </div>
+
+                    <div
+                        class="result-value"
+                        id="totalOffline"
+                    >
+                        0:00:00
+                    </div>
+
+                    <div class="result-help">
+                        Tempo total de indisponibilidade dentro do período.
+                    </div>
+
+                </div>
+
+                <div class="result-box">
+
+                    <div class="result-label">
+                        Quantidade de quedas
+                    </div>
+
+                    <div
+                        class="result-value"
+                        id="totalDrops"
+                    >
+                        0
+                    </div>
+
+                    <div class="result-help">
+                        Quedas registradas dentro do período selecionado.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="card">
+
+            <div class="section-title">
+                Sessões importadas
+            </div>
+
+            <div class="section-description">
+                Você pode editar manualmente os horários das sessões.
+                Ao alterar um horário, o cálculo será atualizado
+                automaticamente.
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Início
+                            </th>
+
+                            <th>
+                                Término
+                            </th>
+
+                            <th>
+                                Tempo offline
+                            </th>
+
+                            <th>
+                                Ação
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="sessionsBody">
+
+                        <tr>
+
+                            <td colspan="4">
+
+                                <div class="empty-state">
+                                    Nenhuma sessão importada.
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
 
     </main>
 
+    <footer class="footer">
+        CentralSAC • Alcans Telecom
+    </footer>
 
     <script>
+
+        /* =====================================================
+           MENU
+        ===================================================== */
 
         const menuButton =
             document.getElementById("menuButton");
 
-
         const sidebar =
             document.getElementById("sidebar");
-
 
         const overlay =
             document.getElementById("overlay");
 
+        function toggleMenu() {
+
+            sidebar.classList.toggle("open");
+
+            overlay.classList.toggle("active");
+        }
+
+        function closeMenu() {
+
+            sidebar.classList.remove("open");
+
+            overlay.classList.remove("active");
+        }
 
         menuButton.addEventListener(
             "click",
-            function () {
-
-                sidebar.classList.toggle("open");
-
-                overlay.classList.toggle("active");
-
-            }
+            toggleMenu
         );
-
 
         overlay.addEventListener(
             "click",
-            function () {
-
-                sidebar.classList.remove("open");
-
-                overlay.classList.remove("active");
-
-            }
+            closeMenu
         );
 
+        /* =====================================================
+           VARIÁVEIS
+        ===================================================== */
 
-        function focarBusca() {
+        let sessions = [];
 
-            document
-                .getElementById("searchInput")
-                .focus();
+        let analysisStart = null;
+        let analysisEnd = null;
 
+        const calendarState = {
+
+            start: {
+                date: null,
+                month: new Date()
+            },
+
+            end: {
+                date: null,
+                month: new Date()
+            }
+
+        };
+
+        /* =====================================================
+           UTILITÁRIOS DE DATA
+        ===================================================== */
+
+        const monthNames = [
+            "janeiro",
+            "fevereiro",
+            "março",
+            "abril",
+            "maio",
+            "junho",
+            "julho",
+            "agosto",
+            "setembro",
+            "outubro",
+            "novembro",
+            "dezembro"
+        ];
+
+        function pad(value) {
+
+            return String(value).padStart(
+                2,
+                "0"
+            );
         }
 
+        function formatDate(date) {
+
+            if (!date) {
+                return "";
+            }
+
+            return (
+                pad(date.getDate()) +
+                "/" +
+                pad(date.getMonth() + 1) +
+                "/" +
+                date.getFullYear()
+            );
+        }
+
+        function formatManualDate(date) {
+
+            if (!date) {
+                return "";
+            }
+
+            return (
+                pad(date.getDate()) +
+                "/" +
+                pad(date.getMonth() + 1) +
+                "/" +
+                date.getFullYear() +
+                " " +
+                pad(date.getHours()) +
+                ":" +
+                pad(date.getMinutes()) +
+                ":" +
+                pad(date.getSeconds())
+            );
+        }
+
+        function parseManualDate(value) {
+
+            if (!value) {
+                return null;
+            }
+
+            const match =
+                value.trim().match(
+                    /^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/
+                );
+
+            if (!match) {
+                return null;
+            }
+
+            const day =
+                Number(match[1]);
+
+            const month =
+                Number(match[2]) - 1;
+
+            const year =
+                Number(match[3]);
+
+            const hour =
+                Number(match[4]);
+
+            const minute =
+                Number(match[5]);
+
+            const second =
+                Number(match[6]);
+
+            const date =
+                new Date(
+                    year,
+                    month,
+                    day,
+                    hour,
+                    minute,
+                    second
+                );
+
+            if (
+                date.getFullYear() !== year ||
+                date.getMonth() !== month ||
+                date.getDate() !== day ||
+                date.getHours() !== hour ||
+                date.getMinutes() !== minute ||
+                date.getSeconds() !== second
+            ) {
+                return null;
+            }
+
+            return date;
+        }
+
+        function formatSeconds(totalSeconds) {
+
+            totalSeconds =
+                Math.max(
+                    0,
+                    Math.floor(totalSeconds || 0)
+                );
+
+            const hours =
+                Math.floor(
+                    totalSeconds / 3600
+                );
+
+            const minutes =
+                Math.floor(
+                    (totalSeconds % 3600) / 60
+                );
+
+            const seconds =
+                totalSeconds % 60;
+
+            return (
+                hours +
+                ":" +
+                pad(minutes) +
+                ":" +
+                pad(seconds)
+            );
+        }
+
+        function escapeHtml(value) {
+
+            return String(value ?? "")
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+        }
+
+        /* =====================================================
+           CALENDÁRIO
+        ===================================================== */
+
+        function renderCalendar(type) {
+
+            const state =
+                calendarState[type];
+
+            const popup =
+                document.getElementById(
+                    type === "start"
+                        ? "startCalendar"
+                        : "endCalendar"
+                );
+
+            const year =
+                state.month.getFullYear();
+
+            const month =
+                state.month.getMonth();
+
+            const firstDay =
+                new Date(
+                    year,
+                    month,
+                    1
+                ).getDay();
+
+            const daysInMonth =
+                new Date(
+                    year,
+                    month + 1,
+                    0
+                ).getDate();
+
+            const previousDays =
+                new Date(
+                    year,
+                    month,
+                    0
+                ).getDate();
+
+            let html = "";
+
+            html +=
+                `
+                <div class="calendar-header">
+
+                    <button
+                        type="button"
+                        class="calendar-nav"
+                        data-calendar="${type}"
+                        data-direction="-1"
+                    >
+                        ‹
+                    </button>
+
+                    <div class="calendar-title">
+                        ${monthNames[month]} ${year}
+                    </div>
+
+                    <button
+                        type="button"
+                        class="calendar-nav"
+                        data-calendar="${type}"
+                        data-direction="1"
+                    >
+                        ›
+                    </button>
+
+                </div>
+                `;
+
+            html +=
+                `
+                <div class="calendar-weekdays">
+                    <div>Dom</div>
+                    <div>Seg</div>
+                    <div>Ter</div>
+                    <div>Qua</div>
+                    <div>Qui</div>
+                    <div>Sex</div>
+                    <div>Sáb</div>
+                </div>
+                `;
+
+            html +=
+                `<div class="calendar-days">`;
+
+            for (
+                let i = firstDay - 1;
+                i >= 0;
+                i--
+            ) {
+
+                const day =
+                    previousDays - i;
+
+                html +=
+                    `
+                    <button
+                        type="button"
+                        class="calendar-day other-month disabled"
+                        disabled
+                    >
+                        ${day}
+                    </button>
+                    `;
+            }
+
+            const today =
+                new Date();
+
+            for (
+                let day = 1;
+                day <= daysInMonth;
+                day++
+            ) {
+
+                const current =
+                    new Date(
+                        year,
+                        month,
+                        day
+                    );
+
+                const isToday =
+                    current.toDateString() ===
+                    today.toDateString();
+
+                const isSelected =
+                    state.date &&
+                    current.toDateString() ===
+                    state.date.toDateString();
+
+                html +=
+                    `
+                    <button
+                        type="button"
+                        class="calendar-day ${
+                            isToday ? "today" : ""
+                        } ${
+                            isSelected ? "selected" : ""
+                        }"
+                        data-calendar="${type}"
+                        data-day="${day}"
+                    >
+                        ${day}
+                    </button>
+                    `;
+            }
+
+            const totalCells =
+                firstDay +
+                daysInMonth;
+
+            const remaining =
+                (7 - (totalCells % 7)) % 7;
+
+            for (
+                let day = 1;
+                day <= remaining;
+                day++
+            ) {
+
+                html +=
+                    `
+                    <button
+                        type="button"
+                        class="calendar-day other-month disabled"
+                        disabled
+                    >
+                        ${day}
+                    </button>
+                    `;
+            }
+
+            html +=
+                `</div>`;
+
+            popup.innerHTML =
+                html;
+
+            popup
+                .querySelectorAll(
+                    ".calendar-nav"
+                )
+                .forEach(
+                    function(button) {
+
+                        button.addEventListener(
+                            "click",
+                            function(event) {
+
+                                event.stopPropagation();
+
+                                const direction =
+                                    Number(
+                                        button.dataset.direction
+                                    );
+
+                                state.month =
+                                    new Date(
+                                        state.month.getFullYear(),
+                                        state.month.getMonth() +
+                                            direction,
+                                        1
+                                    );
+
+                                renderCalendar(
+                                    type
+                                );
+                            }
+                        );
+                    }
+                );
+
+            popup
+                .querySelectorAll(
+                    ".calendar-day:not(.disabled)"
+                )
+                .forEach(
+                    function(button) {
+
+                        button.addEventListener(
+                            "click",
+                            function(event) {
+
+                                event.stopPropagation();
+
+                                const selected =
+                                    new Date(
+                                        year,
+                                        month,
+                                        Number(
+                                            button.dataset.day
+                                        )
+                                    );
+
+                                state.date =
+                                    selected;
+
+                                const display =
+                                    document.getElementById(
+                                        type === "start"
+                                            ? "startDisplay"
+                                            : "endDisplay"
+                                    );
+
+                                display.value =
+                                    formatDate(
+                                        selected
+                                    );
+
+                                state.month =
+                                    new Date(
+                                        year,
+                                        month,
+                                        1
+                                    );
+
+                                if (
+                                    type === "start"
+                                ) {
+
+                                    updateAnalysisDates();
+
+                                } else {
+
+                                    updateAnalysisDates();
+
+                                }
+
+                                popup.classList.remove(
+                                    "open"
+                                );
+
+                                renderCalendar(
+                                    type
+                                );
+                            }
+                        );
+                    }
+                );
+        }
+
+        function openCalendar(type) {
+
+            const popup =
+                document.getElementById(
+                    type === "start"
+                        ? "startCalendar"
+                        : "endCalendar"
+                );
+
+            document
+                .querySelectorAll(
+                    ".calendar-popup"
+                )
+                .forEach(
+                    function(item) {
+
+                        if (
+                            item !== popup
+                        ) {
+
+                            item.classList.remove(
+                                "open"
+                            );
+                        }
+                    }
+                );
+
+            popup.classList.toggle(
+                "open"
+            );
+
+            if (
+                popup.classList.contains(
+                    "open"
+                )
+            ) {
+
+                renderCalendar(
+                    type
+                );
+            }
+        }
+
+        document
+            .getElementById("startDisplay")
+            .addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                    openCalendar(
+                        "start"
+                    );
+                }
+            );
+
+        document
+            .getElementById("endDisplay")
+            .addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                    openCalendar(
+                        "end"
+                    );
+                }
+            );
 
         document.addEventListener(
-            "keydown",
-            function (event) {
+            "click",
+            function() {
 
-                if (
-                    (event.ctrlKey || event.metaKey) &&
-                    event.key.toLowerCase() === "k"
-                ) {
+                document
+                    .querySelectorAll(
+                        ".calendar-popup"
+                    )
+                    .forEach(
+                        function(popup) {
 
-                    event.preventDefault();
-
-                    focarBusca();
-
-                }
-
+                            popup.classList.remove(
+                                "open"
+                            );
+                        }
+                    );
             }
         );
 
+        document
+            .querySelectorAll(
+                ".calendar-popup"
+            )
+            .forEach(
+                function(popup) {
+
+                    popup.addEventListener(
+                        "click",
+                        function(event) {
+
+                            event.stopPropagation();
+
+                        }
+                    );
+                }
+            );
+
+        /* =====================================================
+           DATAS DA ANÁLISE
+        ===================================================== */
+
+        function updateAnalysisDates() {
+
+            const startDate =
+                calendarState.start.date;
+
+            const endDate =
+                calendarState.end.date;
+
+            const startTimeValue =
+                document.getElementById(
+                    "startTime"
+                ).value.trim();
+
+            const endTimeValue =
+                document.getElementById(
+                    "endTime"
+                ).value.trim();
+
+            if (
+                startDate &&
+                startTimeValue
+            ) {
+
+                const parsedStart =
+                    parseManualDate(
+                        startTimeValue
+                    );
+
+                if (parsedStart) {
+
+                    analysisStart =
+                        parsedStart;
+
+                } else {
+
+                    const time =
+                        startTimeValue.match(
+                            /^(\d{2}):(\d{2}):(\d{2})$/
+                        );
+
+                    if (time) {
+
+                        analysisStart =
+                            new Date(
+                                startDate.getFullYear(),
+                                startDate.getMonth(),
+                                startDate.getDate(),
+                                Number(time[1]),
+                                Number(time[2]),
+                                Number(time[3])
+                            );
+                    }
+                }
+
+            } else {
+
+                analysisStart =
+                    null;
+            }
+
+            if (
+                endDate &&
+                endTimeValue
+            ) {
+
+                const parsedEnd =
+                    parseManualDate(
+                        endTimeValue
+                    );
+
+                if (parsedEnd) {
+
+                    analysisEnd =
+                        parsedEnd;
+
+                } else {
+
+                    const time =
+                        endTimeValue.match(
+                            /^(\d{2}):(\d{2}):(\d{2})$/
+                        );
+
+                    if (time) {
+
+                        analysisEnd =
+                            new Date(
+                                endDate.getFullYear(),
+                                endDate.getMonth(),
+                                endDate.getDate(),
+                                Number(time[1]),
+                                Number(time[2]),
+                                Number(time[3])
+                            );
+                    }
+                }
+
+            } else {
+
+                analysisEnd =
+                    null;
+            }
+
+            renderTable();
+        }
+
+        document
+            .getElementById("startTime")
+            .addEventListener(
+                "change",
+                updateAnalysisDates
+            );
+
+        document
+            .getElementById("endTime")
+            .addEventListener(
+                "change",
+                updateAnalysisDates
+            );
+
+        /* =====================================================
+           PARSER DO MK
+        ===================================================== */
+
+        function parseMKDate(value) {
+
+            if (
+                value === null ||
+                value === undefined ||
+                value === ""
+            ) {
+
+                return null;
+            }
+
+            if (
+                value instanceof Date
+            ) {
+
+                return isNaN(
+                    value.getTime()
+                )
+                    ? null
+                    : value;
+            }
+
+            if (
+                typeof value === "number"
+            ) {
+
+                const excelEpoch =
+                    new Date(
+                        Date.UTC(
+                            1899,
+                            11,
+                            30
+                        )
+                    );
+
+                const result =
+                    new Date(
+                        excelEpoch.getTime() +
+                        value *
+                            86400000
+                    );
+
+                return isNaN(
+                    result.getTime()
+                )
+                    ? null
+                    : result;
+            }
+
+            const text =
+                String(value).trim();
+
+            let match =
+                text.match(
+                    /^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?$/
+                );
+
+            if (match) {
+
+                const date =
+                    new Date(
+                        Number(match[3]),
+                        Number(match[2]) - 1,
+                        Number(match[1]),
+                        Number(match[4]),
+                        Number(match[5]),
+                        Number(match[6] || 0)
+                    );
+
+                return isNaN(
+                    date.getTime()
+                )
+                    ? null
+                    : date;
+            }
+
+            match =
+                text.match(
+                    /^(\d{4})-(\d{1,2})-(\d{1,2})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?$/
+                );
+
+            if (match) {
+
+                const date =
+                    new Date(
+                        Number(match[1]),
+                        Number(match[2]) - 1,
+                        Number(match[3]),
+                        Number(match[4]),
+                        Number(match[5]),
+                        Number(match[6] || 0)
+                    );
+
+                return isNaN(
+                    date.getTime()
+                )
+                    ? null
+                    : date;
+            }
+
+            const parsed =
+                new Date(text);
+
+            return isNaN(
+                parsed.getTime()
+            )
+                ? null
+                : parsed;
+        }
+
+        /* =====================================================
+           PERÍODO
+        ===================================================== */
+
+        function sessionIsInPeriod(
+            session
+        ) {
+
+            if (
+                !analysisStart ||
+                !analysisEnd
+            ) {
+
+                return true;
+            }
+
+            if (
+                analysisStart >
+                analysisEnd
+            ) {
+
+                return false;
+            }
+
+            const start =
+                session.start;
+
+            const stop =
+                session.stop ||
+                session.start;
+
+            if (!start) {
+
+                return false;
+            }
+
+            return (
+                start <= analysisEnd &&
+                stop >= analysisStart
+            );
+        }
+
+        function sessionIsInPeriodWithDeleted(
+            session
+        ) {
+
+            if (
+                session.deleted
+            ) {
+
+                return false;
+            }
+
+            return sessionIsInPeriod(
+                session
+            );
+        }
+
+        /* =====================================================
+           CÁLCULO
+        ===================================================== */
+
+        function calculateRowOffline(
+            index,
+            activeSessions
+        ) {
+
+            if (
+                !analysisStart ||
+                !analysisEnd
+            ) {
+
+                return 0;
+            }
+
+            const current =
+                activeSessions[index];
+
+            if (
+                !current ||
+                !current.start
+            ) {
+
+                return 0;
+            }
+
+            const next =
+                activeSessions[index + 1];
+
+            if (
+                !next ||
+                !next.stop
+            ) {
+
+                return 0;
+            }
+
+            let offlineStart =
+                next.stop;
+
+            let offlineEnd =
+                current.start;
+
+            if (
+                offlineEnd <=
+                offlineStart
+            ) {
+
+                return 0;
+            }
+
+            const periodStart =
+                analysisStart;
+
+            const periodEnd =
+                analysisEnd;
+
+            if (
+                offlineEnd <=
+                periodStart
+            ) {
+
+                return 0;
+            }
+
+            if (
+                offlineStart >=
+                periodEnd
+            ) {
+
+                return 0;
+            }
+
+            offlineStart =
+                new Date(
+                    Math.max(
+                        offlineStart.getTime(),
+                        periodStart.getTime()
+                    )
+                );
+
+            offlineEnd =
+                new Date(
+                    Math.min(
+                        offlineEnd.getTime(),
+                        periodEnd.getTime()
+                    )
+                );
+
+            if (
+                offlineEnd <=
+                offlineStart
+            ) {
+
+                return 0;
+            }
+
+            return (
+                offlineEnd.getTime() -
+                offlineStart.getTime()
+            ) / 1000;
+        }
+
+        /* =====================================================
+           ATUALIZA RESULTADO
+        ===================================================== */
+
+        function updateResult(
+            activeSessions = [],
+            calculatedTotal = null,
+            calculatedDrops = null
+        ) {
+
+            let total =
+                calculatedTotal;
+
+            let drops =
+                calculatedDrops;
+
+            if (
+                total === null ||
+                drops === null
+            ) {
+
+                total = 0;
+                drops = 0;
+
+                activeSessions =
+                    activeSessions.length
+                        ? activeSessions
+                        : getVisibleSessions();
+
+                activeSessions.forEach(
+                    function(session, index) {
+
+                        const seconds =
+                            calculateRowOffline(
+                                index,
+                                activeSessions
+                            );
+
+                        total +=
+                            seconds;
+
+                        if (
+                            seconds > 0
+                        ) {
+
+                            drops++;
+                        }
+                    }
+                );
+            }
+
+            document
+                .getElementById(
+                    "totalOffline"
+                )
+                .textContent =
+                formatSeconds(
+                    total
+                );
+
+            document
+                .getElementById(
+                    "totalDrops"
+                )
+                .textContent =
+                String(
+                    drops
+                );
+        }
+
+        /* =====================================================
+           SESSÕES
+        ===================================================== */
+
+        function bindSessionInputs() {
+
+            document
+                .querySelectorAll(
+                    ".session-input"
+                )
+                .forEach(
+                    function(input) {
+
+                        input.addEventListener(
+                            "change",
+                            function() {
+
+                                const index =
+                                    Number(
+                                        input.dataset.index
+                                    );
+
+                                const field =
+                                    input.dataset.field;
+
+                                const parsed =
+                                    parseManualDate(
+                                        input.value
+                                    );
+
+                                if (
+                                    input.value.trim() &&
+                                    !parsed
+                                ) {
+
+                                    showStatus(
+                                        "Data inválida. Use o formato DD/MM/AAAA HH:MM:SS.",
+                                        "error"
+                                    );
+
+                                    input.value =
+                                        formatManualDate(
+                                            sessions[index][field]
+                                        );
+
+                                    return;
+                                }
+
+                                sessions[index][field] =
+                                    parsed;
+
+                                sessions.sort(
+                                    function(a, b) {
+
+                                        const aTime =
+                                            a.start
+                                                ? a.start.getTime()
+                                                : 0;
+
+                                        const bTime =
+                                            b.start
+                                                ? b.start.getTime()
+                                                : 0;
+
+                                        return bTime - aTime;
+                                    }
+                                );
+
+                                renderTable();
+                            }
+                        );
+                    }
+                );
+        }
+
+        function deleteSession(
+            index
+        ) {
+
+            if (
+                !sessions[index]
+            ) {
+
+                return;
+            }
+
+            sessions[index].deleted =
+                true;
+
+            renderTable();
+
+            showStatus(
+                "Sessão excluída do cálculo.",
+                "success"
+            );
+        }
+
+        function restoreSession(
+            index
+        ) {
+
+            if (
+                !sessions[index]
+            ) {
+
+                return;
+            }
+
+            sessions[index].deleted =
+                false;
+
+            renderTable();
+        }
+
+        window.deleteSession =
+            deleteSession;
+
+        window.restoreSession =
+            restoreSession;
+
+        /* =====================================================
+           RENDERIZAÇÃO
+        ===================================================== */
+
+        function renderTable() {
+
+            const body =
+                document.getElementById(
+                    "sessionsBody"
+                );
+
+            const activeSessions =
+                getVisibleSessions();
+
+            if (
+                !activeSessions.length
+            ) {
+
+                body.innerHTML =
+                    `
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                ${
+                                    sessions.length
+                                        ? "Nenhuma sessão encontrada no período selecionado."
+                                        : "Nenhuma sessão importada."
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+
+                updateResult(
+                    [],
+                    0,
+                    0
+                );
+
+                return;
+            }
+
+            let totalOffline =
+                0;
+
+            let drops =
+                0;
+
+            let html =
+                "";
+
+            activeSessions.forEach(
+                function(
+                    session,
+                    index
+                ) {
+
+                    const offlineSeconds =
+                        calculateRowOffline(
+                            index,
+                            activeSessions
+                        );
+
+                    totalOffline +=
+                        offlineSeconds;
+
+                    if (
+                        offlineSeconds > 0
+                    ) {
+
+                        drops++;
+                    }
+
+                    const originalIndex =
+                        sessions.indexOf(
+                            session
+                        );
+
+                    html +=
+                        `
+                        <tr>
+
+                            <td>
+                                <input
+                                    type="text"
+                                    class="session-input"
+                                    value="${escapeHtml(
+                                        formatManualDate(
+                                            session.start
+                                        )
+                                    )}"
+                                    data-index="${originalIndex}"
+                                    data-field="start"
+                                    placeholder="DD/MM/AAAA HH:MM:SS"
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="text"
+                                    class="session-input"
+                                    value="${escapeHtml(
+                                        formatManualDate(
+                                            session.stop
+                                        )
+                                    )}"
+                                    data-index="${originalIndex}"
+                                    data-field="stop"
+                                    placeholder="DD/MM/AAAA HH:MM:SS"
+                                >
+                            </td>
+
+                            <td>
+                                <span class="duration ${
+                                    offlineSeconds > 0
+                                        ? "positive"
+                                        : "zero"
+                                }">
+                                    ${formatSeconds(
+                                        offlineSeconds
+                                    )}
+                                </span>
+                            </td>
+
+                            <td class="action-cell">
+
+                                <button
+                                    type="button"
+                                    class="small-button"
+                                    onclick="deleteSession(${originalIndex})"
+                                >
+                                    Excluir
+                                </button>
+
+                            </td>
+
+                        </tr>
+                        `;
+                }
+            );
+
+            body.innerHTML =
+                html;
+
+            updateResult(
+                activeSessions,
+                totalOffline,
+                drops
+            );
+
+            bindSessionInputs();
+        }
+
+        /* =====================================================
+           IMPORTAÇÃO DO ARQUIVO
+        ===================================================== */
+
+        document
+            .getElementById("importButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    document
+                        .getElementById(
+                            "fileInput"
+                        )
+                        .click();
+                }
+            );
+
+        document
+            .getElementById("fileInput")
+            .addEventListener(
+                "change",
+                function(event) {
+
+                    const file =
+                        event.target.files[0];
+
+                    if (!file) {
+
+                        return;
+                    }
+
+                    try {
+
+                        const reader =
+                            new FileReader();
+
+                        reader.onload =
+                            function(e) {
+
+                                try {
+
+                                    const data =
+                                        new Uint8Array(
+                                            e.target.result
+                                        );
+
+                                    const workbook =
+                                        XLSX.read(
+                                            data,
+                                            {
+                                                type: "array",
+                                                cellDates: true
+                                            }
+                                        );
+
+                                    const firstSheet =
+                                        workbook.Sheets[
+                                            workbook.SheetNames[0]
+                                        ];
+
+                                    const rows =
+                                        XLSX.utils.sheet_to_json(
+                                            firstSheet,
+                                            {
+                                                header: 1,
+                                                defval: ""
+                                            }
+                                        );
+
+                                    if (
+                                        !rows.length
+                                    ) {
+
+                                        throw new Error(
+                                            "O arquivo está vazio."
+                                        );
+                                    }
+
+                                    const header =
+                                        rows[0].map(
+                                            function(value) {
+
+                                                return String(
+                                                    value
+                                                )
+                                                    .trim()
+                                                    .toLowerCase();
+                                            }
+                                        );
+
+                                    let startIndex =
+                                        header.findIndex(
+                                            function(value) {
+
+                                                return (
+                                                    value ===
+                                                        "hr. start" ||
+                                                    value ===
+                                                        "hr start" ||
+                                                    value ===
+                                                        "start" ||
+                                                    value.includes(
+                                                        "hr. start"
+                                                    ) ||
+                                                    value.includes(
+                                                        "hr start"
+                                                    )
+                                                );
+                                            }
+                                        );
+
+                                    let stopIndex =
+                                        header.findIndex(
+                                            function(value) {
+
+                                                return (
+                                                    value ===
+                                                        "hr. stop" ||
+                                                    value ===
+                                                        "hr stop" ||
+                                                    value ===
+                                                        "stop" ||
+                                                    value.includes(
+                                                        "hr. stop"
+                                                    ) ||
+                                                    value.includes(
+                                                        "hr stop"
+                                                    )
+                                                );
+                                            }
+                                        );
+
+                                    if (
+                                        startIndex === -1
+                                    ) {
+
+                                        startIndex =
+                                            0;
+                                    }
+
+                                    if (
+                                        stopIndex === -1
+                                    ) {
+
+                                        stopIndex =
+                                            1;
+                                    }
+
+                                    const imported =
+                                        [];
+
+                                    for (
+                                        let i = 1;
+                                        i < rows.length;
+                                        i++
+                                    ) {
+
+                                        const row =
+                                            rows[i];
+
+                                        const start =
+                                            parseMKDate(
+                                                row[startIndex]
+                                            );
+
+                                        const stop =
+                                            parseMKDate(
+                                                row[stopIndex]
+                                            );
+
+                                        if (
+                                            !start &&
+                                            !stop
+                                        ) {
+
+                                            continue;
+                                        }
+
+                                        imported.push(
+                                            {
+                                                start:
+                                                    start,
+                                                stop:
+                                                    stop,
+                                                deleted:
+                                                    false
+                                            }
+                                        );
+                                    }
+
+                                    if (
+                                        !imported.length
+                                    ) {
+
+                                        throw new Error(
+                                            "Nenhuma sessão válida foi encontrada no arquivo."
+                                        );
+                                    }
+
+                                    sessions =
+                                        imported.sort(
+                                            function(a, b) {
+
+                                                const aTime =
+                                                    a.start
+                                                        ? a.start.getTime()
+                                                        : 0;
+
+                                                const bTime =
+                                                    b.start
+                                                        ? b.start.getTime()
+                                                        : 0;
+
+                                                return (
+                                                    bTime -
+                                                    aTime
+                                                );
+                                            }
+                                        );
+
+                                    renderTable();
+
+                                    showStatus(
+                                        `${sessions.length} sessões importadas com sucesso. O cálculo foi realizado automaticamente.`,
+                                        "success"
+                                    );
+
+                                } catch (
+                                    error
+                                ) {
+
+                                    console.error(
+                                        "Erro ao importar arquivo:",
+                                        error
+                                    );
+
+                                    showStatus(
+                                        error.message ||
+                                            "Não foi possível importar o arquivo.",
+                                        "error"
+                                    );
+                                }
+                            };
+
+                        reader.readAsArrayBuffer(
+                            file
+                        );
+
+                    } catch (
+                        error
+                    ) {
+
+                        console.error(
+                            error
+                        );
+
+                        showStatus(
+                            "Não foi possível ler o arquivo.",
+                            "error"
+                        );
+                    }
+
+                    event.target.value =
+                        "";
+                }
+            );
+
+        /* =====================================================
+           LIMPAR
+        ===================================================== */
+
+        document
+            .getElementById("clearButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    sessions =
+                        [];
+
+                    analysisStart =
+                        null;
+
+                    analysisEnd =
+                        null;
+
+                    calendarState.start.date =
+                        null;
+
+                    calendarState.end.date =
+                        null;
+
+                    calendarState.start.month =
+                        new Date();
+
+                    calendarState.end.month =
+                        new Date();
+
+                    document
+                        .getElementById(
+                            "startDisplay"
+                        )
+                        .value =
+                        "";
+
+                    document
+                        .getElementById(
+                            "endDisplay"
+                        )
+                        .value =
+                        "";
+
+                    document
+                        .getElementById(
+                            "startTime"
+                        )
+                        .value =
+                        "";
+
+                    document
+                        .getElementById(
+                            "endTime"
+                        )
+                        .value =
+                        "";
+
+                    renderTable();
+
+                    showStatus(
+                        "Todos os dados foram limpos.",
+                        "success"
+                    );
+                }
+            );
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        function showStatus(
+            message,
+            type
+        ) {
+
+            const status =
+                document.getElementById(
+                    "status"
+                );
+
+            status.textContent =
+                message;
+
+            status.className =
+                "status show " +
+                type;
+
+            clearTimeout(
+                window.centralSACStatusTimer
+            );
+
+            window.centralSACStatusTimer =
+                setTimeout(
+                    function() {
+
+                        status.classList.remove(
+                            "show"
+                        );
+
+                    },
+                    5000
+                );
+        }
+
+        /* =====================================================
+           FILTRO DE SESSÕES
+        ===================================================== */
+
+        function getVisibleSessions() {
+
+            return sessions
+                .filter(
+                    sessionIsInPeriodWithDeleted
+                )
+                .sort(
+                    function(a, b) {
+
+                        const aTime =
+                            a.start
+                                ? a.start.getTime()
+                                : 0;
+
+                        const bTime =
+                            b.start
+                                ? b.start.getTime()
+                                : 0;
+
+                        return (
+                            bTime -
+                            aTime
+                        );
+                    }
+                );
+        }
+
+        /* =====================================================
+           INICIALIZAÇÃO
+        ===================================================== */
+
+        renderTable();
+
     </script>
-
-
-    <!-- AUTENTICAÇÃO -->
-    <script src="auth.js?v=2"></script>
 
 </body>
 
