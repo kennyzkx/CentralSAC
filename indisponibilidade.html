@@ -1,0 +1,2580 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Alcans | Análise de Consumo</title>
+
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+
+    <style>
+        :root {
+            --laranja: #FF5A00;
+            --laranja-hover: #FF6A1A;
+            --fundo: #111419;
+            --fundo-menu: #15181E;
+            --card: #191D24;
+            --card-hover: #20252D;
+            --borda: #303640;
+            --texto: #F5F6F8;
+            --texto-secundario: #9BA3AE;
+            --verde: #31C48D;
+            --vermelho: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fundo);
+            color: var(--texto);
+            min-height: 100vh;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            height: 66px;
+            background: var(--laranja);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 24px;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-menu {
+            width: 42px;
+            height: 42px;
+            border: none;
+            background: transparent;
+            color: white;
+            border-radius: 8px;
+            font-size: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-menu:hover {
+            background: rgba(255, 255, 255, .12);
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-logo {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: .3px;
+        }
+
+        .logo-sub {
+            font-size: 8px;
+            letter-spacing: .8px;
+            margin-top: 2px;
+            opacity: .9;
+        }
+
+        .header-label {
+            margin-left: auto;
+            font-size: 11px;
+            color: rgba(255, 255, 255, .88);
+        }
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            position: fixed;
+            top: 66px;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            background: var(--fundo-menu);
+            border-right: 1px solid var(--borda);
+            padding: 22px 14px;
+            transform: translateX(-100%);
+            transition: .25s ease;
+            z-index: 900;
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+            box-shadow: 20px 0 50px rgba(0, 0, 0, .4);
+        }
+
+        .menu-title {
+            font-size: 11px;
+            color: #737B87;
+            text-transform: uppercase;
+            margin: 5px 12px 12px;
+            font-weight: bold;
+        }
+
+        .menu-item {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #CBD0D8;
+            text-align: left;
+            padding: 13px 12px;
+            border-radius: 9px;
+            margin: 3px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .menu-item:hover {
+            background: var(--card-hover);
+            color: white;
+        }
+
+        .menu-item.active {
+            background: var(--card-hover);
+            color: white;
+            box-shadow: inset 3px 0 0 var(--laranja);
+        }
+
+        .menu-icon {
+            width: 22px;
+            text-align: center;
+            color: var(--laranja);
+            font-size: 17px;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 66px 0 0;
+            background: rgba(0, 0, 0, .55);
+            display: none;
+            z-index: 800;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 40px 28px 70px;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            background: var(--card);
+            border: 1px solid var(--borda);
+            padding: 30px 32px;
+            border-radius: 16px;
+            position: relative;
+            overflow: visible;
+            margin-bottom: 22px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            right: -80px;
+            top: -100px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 90, 0, .09);
+            pointer-events: none;
+        }
+
+        .hero-tag {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--laranja);
+        }
+
+        .hero h1 {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--texto-secundario);
+            max-width: 760px;
+        }
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--borda);
+            border-radius: 15px;
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 750;
+            margin-bottom: 7px;
+        }
+
+        .section-description {
+            color: var(--texto-secundario);
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* =====================================================
+           FORMULÁRIO
+        ===================================================== */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            position: relative;
+        }
+
+        .field label {
+            font-size: 11px;
+            font-weight: 650;
+        }
+
+        /* =====================================================
+           CALENDÁRIO
+        ===================================================== */
+
+        .date-wrapper {
+            position: relative;
+        }
+
+        .date-display {
+            height: 46px;
+            width: 100%;
+            padding: 0 45px 0 13px;
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            outline: none;
+            font-family: inherit;
+            font-size: 13px;
+            background: var(--fundo);
+            color: var(--texto);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .date-display::placeholder {
+            color: #737B87;
+        }
+
+        .date-display:focus {
+            border-color: var(--laranja);
+            box-shadow: 0 0 0 3px rgba(255, 90, 0, .12);
+        }
+
+        .calendar-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 17px;
+        }
+
+        .calendar-popup {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 310px;
+            background: var(--card);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .4);
+            padding: 15px;
+            z-index: 100;
+        }
+
+        .calendar-popup.open {
+            display: block;
+            animation: calendarAppear .15s ease;
+        }
+
+        @keyframes calendarAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .calendar-title {
+            font-size: 13px;
+            font-weight: 750;
+            text-transform: capitalize;
+        }
+
+        .calendar-nav {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--borda);
+            background: var(--fundo-menu);
+            color: var(--texto);
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: .2s;
+        }
+
+        .calendar-nav:hover {
+            border-color: var(--laranja);
+            color: var(--laranja);
+        }
+
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            margin-bottom: 7px;
+        }
+
+        .calendar-weekdays span {
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: #737B87;
+            padding: 5px 0;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+        }
+
+        .calendar-day {
+            height: 34px;
+            border: none;
+            background: transparent;
+            border-radius: 7px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            color: var(--texto);
+            transition: .15s;
+        }
+
+        .calendar-day:hover {
+            background: rgba(255, 90, 0, .12);
+            color: var(--laranja);
+        }
+
+        .calendar-day.other-month {
+            color: #4e5661;
+        }
+
+        .calendar-day.today {
+            border: 1px solid var(--laranja);
+            color: var(--laranja);
+            font-weight: 700;
+        }
+
+        .calendar-day.selected {
+            background: var(--laranja);
+            color: white;
+            font-weight: 700;
+        }
+
+        .calendar-day.selected:hover {
+            background: var(--laranja-hover);
+            color: white;
+        }
+
+        /* =====================================================
+           INPUTS
+        ===================================================== */
+
+        .text-input {
+            height: 44px;
+            width: 100%;
+            padding: 0 13px;
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            outline: none;
+            background: var(--fundo);
+            color: var(--texto);
+            font-family: inherit;
+            font-size: 12px;
+            transition: .2s;
+        }
+
+        .text-input:focus {
+            border-color: var(--laranja);
+            box-shadow: 0 0 0 3px rgba(255, 90, 0, .12);
+        }
+
+        /* =====================================================
+           BOTÕES
+        ===================================================== */
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        .button {
+            height: 42px;
+            padding: 0 18px;
+            border-radius: 8px;
+            border: 1px solid var(--borda);
+            background: var(--fundo-menu);
+            color: var(--texto);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .button:hover {
+            border-color: var(--laranja);
+        }
+
+        .button-primary {
+            background: var(--laranja);
+            border-color: var(--laranja);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background: var(--laranja-hover);
+            border-color: var(--laranja-hover);
+        }
+
+        .button-danger {
+            color: #ff7777;
+        }
+
+        .button-danger:hover {
+            border-color: var(--vermelho);
+            color: white;
+            background: rgba(239, 68, 68, .1);
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.success {
+            background: rgba(49, 196, 141, .08);
+            border: 1px solid rgba(49, 196, 141, .3);
+            color: #63e0ae;
+        }
+
+        .status.error {
+            background: rgba(239, 68, 68, .08);
+            border: 1px solid rgba(239, 68, 68, .3);
+            color: #ff8585;
+        }
+
+        /* =====================================================
+           TABELA
+        ===================================================== */
+
+        .table-card {
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .table-info {
+            color: var(--texto-secundario);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            background: var(--fundo-menu);
+            color: #9BA3AE;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            text-align: left;
+            padding: 13px 14px;
+            border-bottom: 1px solid var(--borda);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 9px 14px;
+            border-bottom: 1px solid rgba(48, 54, 64, .65);
+            font-size: 11px;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255,255,255,.015);
+        }
+
+        .session-input {
+            width: 100%;
+            min-width: 170px;
+            height: 34px;
+            padding: 0 9px;
+            border-radius: 6px;
+            border: 1px solid var(--borda);
+            background: var(--fundo);
+            color: var(--texto);
+            font-family: monospace;
+            font-size: 10px;
+            outline: none;
+        }
+
+        .session-input:focus {
+            border-color: var(--laranja);
+            box-shadow: 0 0 0 2px rgba(255,90,0,.10);
+        }
+
+        .duration {
+            font-family: monospace;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .duration.positive {
+            color: #ff9c72;
+        }
+
+        .duration.zero {
+            color: var(--texto-secundario);
+        }
+
+        .action-cell {
+            white-space: nowrap;
+        }
+
+        .small-button {
+            height: 32px;
+            padding: 0 10px;
+            border-radius: 6px;
+            border: 1px solid var(--borda);
+            background: var(--fundo-menu);
+            color: var(--texto-secundario);
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .small-button:hover {
+            border-color: var(--laranja);
+            color: var(--laranja);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--texto-secundario);
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           RESULTADOS
+        ===================================================== */
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .result-card {
+            background: var(--fundo-menu);
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .result-label {
+            font-size: 10px;
+            color: var(--texto-secundario);
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+
+        .result-value.orange {
+            color: var(--laranja);
+        }
+
+        .result-value.green {
+            color: var(--verde);
+        }
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (max-width: 850px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 25px 16px 50px;
+            }
+
+            .hero {
+                padding: 24px;
+            }
+
+            .hero h1 {
+                font-size: 25px;
+            }
+
+            .header-label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <header class="header">
+
+        <button
+            type="button"
+            class="header-menu"
+            id="menuButton"
+            aria-label="Abrir menu"
+        >
+            ☰
+        </button>
+
+        <div class="logo-area">
+            <div class="header-logo">ALCANS</div>
+            <div class="logo-sub">CENTRALSAC</div>
+        </div>
+
+        <div class="header-label">
+            Portal do Atendente
+        </div>
+
+    </header>
+
+    <!-- =====================================================
+         SIDEBAR
+    ===================================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="menu-title">
+            Menu
+        </div>
+
+        <button
+            type="button"
+            class="menu-item"
+            onclick="window.location.href='index.html'"
+        >
+            <span class="menu-icon">🏠</span>
+            <span>Início</span>
+        </button>
+
+        <button
+            type="button"
+            class="menu-item"
+            onclick="window.location.href='calculadora.html'"
+        >
+            <span class="menu-icon">🧮</span>
+            <span>Calcular multas</span>
+        </button>
+
+        <button
+            type="button"
+            class="menu-item"
+            onclick="window.location.href='procedimentos.html'"
+        >
+            <span class="menu-icon">📋</span>
+            <span>Procedimentos</span>
+        </button>
+
+        <button
+            type="button"
+            class="menu-item"
+            onclick="window.location.href='sistemas.html'"
+        >
+            <span class="menu-icon">🖥️</span>
+            <span>Sistemas</span>
+        </button>
+
+        <button
+            type="button"
+            class="menu-item active"
+            onclick="window.location.href='indisponibilidade.html'"
+        >
+            <span class="menu-icon">📊</span>
+            <span>Análise de Consumo</span>
+        </button>
+
+        <button
+            type="button"
+            class="menu-item"
+            onclick="window.location.href='escala.html'"
+        >
+            <span class="menu-icon">📅</span>
+            <span>Escala</span>
+        </button>
+
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- =====================================================
+         CONTEÚDO
+    ===================================================== -->
+
+    <main class="container">
+
+        <section class="hero">
+
+            <div class="hero-tag">
+                CENTRALSAC • FERRAMENTA DE ANÁLISE
+            </div>
+
+            <h1>
+                Análise de Consumo
+            </h1>
+
+            <p>
+                Importe o relatório de sessões do MK Solutions para analisar
+                o período de conexão do cliente, identificar quedas e calcular
+                automaticamente o tempo em que a conexão permaneceu offline.
+            </p>
+
+        </section>
+
+        <!-- =================================================
+             PERÍODO
+        ================================================= -->
+
+        <section class="card">
+
+            <div class="section-title">
+                Período da análise
+            </div>
+
+            <div class="section-description">
+                Informe o período que deseja analisar. As datas são utilizadas
+                para limitar os cálculos realizados sobre as sessões importadas.
+            </div>
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label for="startDisplay">
+                        Data inicial
+                    </label>
+
+                    <div class="date-wrapper">
+
+                        <input
+                            type="text"
+                            id="startDisplay"
+                            class="date-display"
+                            placeholder="Selecione a data inicial"
+                            readonly
+                        >
+
+                        <span class="calendar-icon">
+                            📅
+                        </span>
+
+                        <div
+                            class="calendar-popup"
+                            id="startCalendar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                <div class="field">
+
+                    <label for="endDisplay">
+                        Data final
+                    </label>
+
+                    <div class="date-wrapper">
+
+                        <input
+                            type="text"
+                            id="endDisplay"
+                            class="date-display"
+                            placeholder="Selecione a data final"
+                            readonly
+                        >
+
+                        <span class="calendar-icon">
+                            📅
+                        </span>
+
+                        <div
+                            class="calendar-popup"
+                            id="endCalendar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+             IMPORTAÇÃO
+        ================================================= -->
+
+        <section class="card">
+
+            <div class="section-title">
+                Importar sessões
+            </div>
+
+            <div class="section-description">
+                Selecione o arquivo Excel exportado do MK Solutions contendo
+                as colunas de início e término das sessões.
+            </div>
+
+            <input
+                type="file"
+                id="fileInput"
+                accept=".xlsx,.xls,.csv"
+                style="display:none;"
+            >
+
+            <div class="actions">
+
+                <button
+                    type="button"
+                    class="button button-primary"
+                    id="importButton"
+                >
+                    📁 Importar arquivo
+                </button>
+
+                <button
+                    type="button"
+                    class="button"
+                    id="clearButton"
+                >
+                    Limpar dados
+                </button>
+
+            </div>
+
+            <div
+                class="status"
+                id="status"
+            ></div>
+
+        </section>
+
+        <!-- =================================================
+             RESULTADOS
+        ================================================= -->
+
+        <section class="card">
+
+            <div class="section-title">
+                Resultado da análise
+            </div>
+
+            <div class="section-description">
+                Os resultados são atualizados automaticamente sempre que uma
+                sessão for alterada, excluída ou restaurada.
+            </div>
+
+            <div class="result-grid">
+
+                <div class="result-card">
+
+                    <div class="result-label">
+                        Tempo total offline
+                    </div>
+
+                    <div
+                        class="result-value orange"
+                        id="totalOffline"
+                    >
+                        0:00:00
+                    </div>
+
+                </div>
+
+                <div class="result-card">
+
+                    <div class="result-label">
+                        Quantidade de quedas
+                    </div>
+
+                    <div
+                        class="result-value"
+                        id="totalDrops"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+                <div class="result-card">
+
+                    <div class="result-label">
+                        Sessões analisadas
+                    </div>
+
+                    <div
+                        class="result-value green"
+                        id="totalSessions"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+             TABELA
+        ================================================= -->
+
+        <section class="card table-card">
+
+            <div class="table-header">
+
+                <div>
+                    <div class="section-title">
+                        Sessões importadas
+                    </div>
+
+                    <div class="table-info">
+                        Os horários de início e término podem ser editados
+                        manualmente. O cálculo é atualizado automaticamente
+                        após cada alteração.
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Início</th>
+                            <th>Término</th>
+                            <th>Tempo offline</th>
+                            <th>Ação</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="sessionsBody">
+
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    Nenhuma sessão importada.
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        /* =====================================================
+           MENU
+        ===================================================== */
+
+        const menuButton = document.getElementById("menuButton");
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("overlay");
+
+        function toggleMenu() {
+            sidebar.classList.toggle("open");
+            overlay.classList.toggle("active");
+        }
+
+        function closeMenu() {
+            sidebar.classList.remove("open");
+            overlay.classList.remove("active");
+        }
+
+        menuButton.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", closeMenu);
+
+        /* =====================================================
+           CALENDÁRIO
+        ===================================================== */
+
+        const monthNames = [
+            "janeiro",
+            "fevereiro",
+            "março",
+            "abril",
+            "maio",
+            "junho",
+            "julho",
+            "agosto",
+            "setembro",
+            "outubro",
+            "novembro",
+            "dezembro"
+        ];
+
+        const weekNames = [
+            "D",
+            "S",
+            "T",
+            "Q",
+            "Q",
+            "S",
+            "S"
+        ];
+
+        const calendarState = {
+            start: {
+                date: null,
+                month: new Date()
+            },
+
+            end: {
+                date: null,
+                month: new Date()
+            }
+        };
+
+        let analysisStart = null;
+        let analysisEnd = null;
+
+        function dateOnly(date) {
+            return new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate()
+            );
+        }
+
+        function formatDate(date) {
+
+            if (!date) {
+                return "";
+            }
+
+            const day = String(date.getDate()).padStart(2, "0");
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const year = date.getFullYear();
+
+            return `${day}/${month}/${year}`;
+        }
+
+        function closeCalendars() {
+
+            document
+                .getElementById("startCalendar")
+                .classList.remove("open");
+
+            document
+                .getElementById("endCalendar")
+                .classList.remove("open");
+        }
+
+        function openCalendar(type) {
+
+            const id =
+                type === "start"
+                    ? "startCalendar"
+                    : "endCalendar";
+
+            closeCalendars();
+
+            renderCalendar(type);
+
+            document
+                .getElementById(id)
+                .classList.add("open");
+        }
+
+        function renderCalendar(type) {
+
+            const popup = document.getElementById(
+                type === "start"
+                    ? "startCalendar"
+                    : "endCalendar"
+            );
+
+            const state = calendarState[type];
+
+            const year = state.month.getFullYear();
+            const month = state.month.getMonth();
+
+            const firstDay =
+                new Date(year, month, 1).getDay();
+
+            const daysInMonth =
+                new Date(year, month + 1, 0).getDate();
+
+            const today =
+                dateOnly(new Date());
+
+            let html =
+                '<div class="calendar-header">' +
+
+                '<button type="button" class="calendar-nav" ' +
+                'onclick="event.stopPropagation(); changeMonth(\'' +
+                type +
+                '\', -1)">‹</button>' +
+
+                '<span class="calendar-title">' +
+                monthNames[month] +
+                " " +
+                year +
+                "</span>" +
+
+                '<button type="button" class="calendar-nav" ' +
+                'onclick="event.stopPropagation(); changeMonth(\'' +
+                type +
+                '\', 1)">›</button>' +
+
+                "</div>";
+
+            html +=
+                '<div class="calendar-weekdays">' +
+                weekNames
+                    .map(function(day) {
+                        return "<span>" + day + "</span>";
+                    })
+                    .join("") +
+                "</div>";
+
+            html +=
+                '<div class="calendar-days">';
+
+            for (let i = 0; i < firstDay; i++) {
+                html += "<span></span>";
+            }
+
+            for (
+                let day = 1;
+                day <= daysInMonth;
+                day++
+            ) {
+
+                const current =
+                    dateOnly(
+                        new Date(year, month, day)
+                    );
+
+                const classes = [
+                    "calendar-day"
+                ];
+
+                if (
+                    current.getTime() ===
+                    today.getTime()
+                ) {
+                    classes.push("today");
+                }
+
+                if (
+                    state.date &&
+                    current.getTime() ===
+                    state.date.getTime()
+                ) {
+                    classes.push("selected");
+                }
+
+                html +=
+                    '<button type="button" class="' +
+                    classes.join(" ") +
+                    '" onclick="selectCalendarDate(\'' +
+                    type +
+                    "'," +
+                    year +
+                    "," +
+                    month +
+                    "," +
+                    day +
+                    ')">' +
+                    day +
+                    "</button>";
+            }
+
+            html += "</div>";
+
+            popup.innerHTML = html;
+        }
+
+        function changeMonth(type, amount) {
+
+            calendarState[type].month =
+                new Date(
+                    calendarState[type].month.getFullYear(),
+                    calendarState[type].month.getMonth() + amount,
+                    1
+                );
+
+            renderCalendar(type);
+
+            document
+                .getElementById(
+                    type === "start"
+                        ? "startCalendar"
+                        : "endCalendar"
+                )
+                .classList.add("open");
+        }
+
+        function selectCalendarDate(
+            type,
+            year,
+            month,
+            day
+        ) {
+
+            const date =
+                dateOnly(
+                    new Date(year, month, day)
+                );
+
+            calendarState[type].date = date;
+
+            calendarState[type].month =
+                new Date(
+                    date.getFullYear(),
+                    date.getMonth(),
+                    1
+                );
+
+            if (type === "start") {
+
+                analysisStart = date;
+
+                document
+                    .getElementById("startDisplay")
+                    .value = formatDate(date);
+
+            } else {
+
+                analysisEnd =
+                    new Date(
+                        date.getFullYear(),
+                        date.getMonth(),
+                        date.getDate(),
+                        23,
+                        59,
+                        59,
+                        999
+                    );
+
+                document
+                    .getElementById("endDisplay")
+                    .value = formatDate(date);
+            }
+
+            closeCalendars();
+
+            renderTable();
+        }
+
+        document
+            .getElementById("startDisplay")
+            .addEventListener(
+                "click",
+                function(event) {
+                    event.stopPropagation();
+                    openCalendar("start");
+                }
+            );
+
+        document
+            .getElementById("endDisplay")
+            .addEventListener(
+                "click",
+                function(event) {
+                    event.stopPropagation();
+                    openCalendar("end");
+                }
+            );
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    !event.target.closest(".date-wrapper")
+                ) {
+                    closeCalendars();
+                }
+            }
+        );
+
+        /* =====================================================
+           SESSÕES
+        ===================================================== */
+
+        let sessions = [];
+
+        function parseMKDate(value) {
+
+            if (
+                value === null ||
+                value === undefined ||
+                value === ""
+            ) {
+                return null;
+            }
+
+            if (value instanceof Date) {
+                return isNaN(value.getTime())
+                    ? null
+                    : new Date(value.getTime());
+            }
+
+            if (
+                typeof value === "number" &&
+                typeof XLSX !== "undefined" &&
+                XLSX.SSF
+            ) {
+
+                const parsed =
+                    XLSX.SSF.parse_date_code(value);
+
+                if (!parsed) {
+                    return null;
+                }
+
+                return new Date(
+                    parsed.y,
+                    parsed.m - 1,
+                    parsed.d,
+                    parsed.H || 0,
+                    parsed.M || 0,
+                    parsed.S || 0
+                );
+            }
+
+            const text =
+                String(value).trim();
+
+            let match =
+                text.match(
+                    /^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?$/
+                );
+
+            if (match) {
+
+                return new Date(
+                    Number(match[3]),
+                    Number(match[2]) - 1,
+                    Number(match[1]),
+                    Number(match[4]),
+                    Number(match[5]),
+                    Number(match[6] || 0)
+                );
+            }
+
+            match =
+                text.match(
+                    /^(\d{4})-(\d{1,2})-(\d{1,2})[T\s](\d{1,2}):(\d{2})(?::(\d{2}))?/
+                );
+
+            if (match) {
+
+                return new Date(
+                    Number(match[1]),
+                    Number(match[2]) - 1,
+                    Number(match[3]),
+                    Number(match[4]),
+                    Number(match[5]),
+                    Number(match[6] || 0)
+                );
+            }
+
+            const parsed =
+                new Date(text);
+
+            return isNaN(parsed.getTime())
+                ? null
+                : parsed;
+        }
+
+        function parseManualDate(value) {
+
+            if (!value) {
+                return null;
+            }
+
+            const match =
+                String(value)
+                    .trim()
+                    .match(
+                        /^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/
+                    );
+
+            if (!match) {
+                return null;
+            }
+
+            const date =
+                new Date(
+                    Number(match[3]),
+                    Number(match[2]) - 1,
+                    Number(match[1]),
+                    Number(match[4]),
+                    Number(match[5]),
+                    Number(match[6])
+                );
+
+            if (
+                isNaN(date.getTime()) ||
+                date.getFullYear() !== Number(match[3]) ||
+                date.getMonth() !== Number(match[2]) - 1 ||
+                date.getDate() !== Number(match[1]) ||
+                date.getHours() !== Number(match[4]) ||
+                date.getMinutes() !== Number(match[5]) ||
+                date.getSeconds() !== Number(match[6])
+            ) {
+                return null;
+            }
+
+            return date;
+        }
+
+        function formatManualDate(date) {
+
+            if (!date) {
+                return "";
+            }
+
+            const day =
+                String(date.getDate())
+                    .padStart(2, "0");
+
+            const month =
+                String(date.getMonth() + 1)
+                    .padStart(2, "0");
+
+            const year =
+                date.getFullYear();
+
+            const hours =
+                String(date.getHours())
+                    .padStart(2, "0");
+
+            const minutes =
+                String(date.getMinutes())
+                    .padStart(2, "0");
+
+            const seconds =
+                String(date.getSeconds())
+                    .padStart(2, "0");
+
+            return (
+                `${day}/${month}/${year} ` +
+                `${hours}:${minutes}:${seconds}`
+            );
+        }
+
+        function sessionIsInPeriod(session) {
+
+            if (!analysisStart || !analysisEnd) {
+                return true;
+            }
+
+            if (!session.start) {
+                return false;
+            }
+
+            return (
+                session.start >= analysisStart &&
+                session.start <= analysisEnd
+            );
+        }
+
+        function formatSeconds(totalSeconds) {
+
+            totalSeconds =
+                Math.max(
+                    0,
+                    Math.round(totalSeconds)
+                );
+
+            const hours =
+                Math.floor(
+                    totalSeconds / 3600
+                );
+
+            const minutes =
+                Math.floor(
+                    (totalSeconds % 3600) / 60
+                );
+
+            const seconds =
+                totalSeconds % 60;
+
+            return (
+                hours +
+                ":" +
+                String(minutes).padStart(2, "0") +
+                ":" +
+                String(seconds).padStart(2, "0")
+            );
+        }
+
+        /*
+         * Calcula o período offline referente à sessão.
+         *
+         * O relatório do MK é trabalhado em ordem decrescente:
+         *
+         * sessão atual:
+         *     Start = início da conexão
+         *
+         * próxima linha:
+         *     Stop = término da conexão anterior
+         *
+         * A diferença entre esses horários representa
+         * o intervalo em que o cliente permaneceu offline.
+         */
+
+        function calculateRowOffline(
+            index,
+            visibleSessions
+        ) {
+
+            const current =
+                visibleSessions[index];
+
+            const next =
+                visibleSessions[index + 1];
+
+            if (!current || !next) {
+                return 0;
+            }
+
+            if (
+                !current.start ||
+                !next.stop
+            ) {
+                return 0;
+            }
+
+            let startOffline =
+                new Date(
+                    next.stop.getTime()
+                );
+
+            let endOffline =
+                new Date(
+                    current.start.getTime()
+                );
+
+            if (
+                analysisStart &&
+                startOffline < analysisStart
+            ) {
+                startOffline =
+                    new Date(
+                        analysisStart.getTime()
+                    );
+            }
+
+            if (
+                analysisEnd &&
+                endOffline > analysisEnd
+            ) {
+                endOffline =
+                    new Date(
+                        analysisEnd.getTime()
+                    );
+            }
+
+            const seconds =
+                (
+                    endOffline.getTime() -
+                    startOffline.getTime()
+                ) / 1000;
+
+            return Math.max(
+                0,
+                seconds
+            );
+        }
+
+        /* =====================================================
+           RENDERIZAÇÃO
+        ===================================================== */
+
+        function renderTable() {
+
+            const body =
+                document.getElementById(
+                    "sessionsBody"
+                );
+
+            if (!sessions.length) {
+
+                body.innerHTML =
+                    `
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                Nenhuma sessão importada.
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+
+                updateResult([]);
+
+                return;
+            }
+
+            const visibleSessions =
+                sessions
+                    .filter(sessionIsInPeriod)
+                    .sort(function(a, b) {
+
+                        const aTime =
+                            a.start
+                                ? a.start.getTime()
+                                : 0;
+
+                        const bTime =
+                            b.start
+                                ? b.start.getTime()
+                                : 0;
+
+                        return bTime - aTime;
+                    });
+
+            if (!visibleSessions.length) {
+
+                body.innerHTML =
+                    `
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                Nenhuma sessão encontrada no período selecionado.
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+
+                updateResult([]);
+
+                return;
+            }
+
+            let totalOffline = 0;
+            let drops = 0;
+
+            let html = "";
+
+            visibleSessions.forEach(
+                function(session, index) {
+
+                    const offlineSeconds =
+                        calculateRowOffline(
+                            index,
+                            visibleSessions
+                        );
+
+                    totalOffline +=
+                        offlineSeconds;
+
+                    if (offlineSeconds > 0) {
+                        drops++;
+                    }
+
+                    const originalIndex =
+                        sessions.indexOf(session);
+
+                    html +=
+                        `
+                        <tr>
+
+                            <td>
+                                <input
+                                    type="text"
+                                    class="session-input"
+                                    value="${escapeHtml(
+                                        formatManualDate(session.start)
+                                    )}"
+                                    data-index="${originalIndex}"
+                                    data-field="start"
+                                    placeholder="DD/MM/AAAA HH:MM:SS"
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="text"
+                                    class="session-input"
+                                    value="${escapeHtml(
+                                        formatManualDate(session.stop)
+                                    )}"
+                                    data-index="${originalIndex}"
+                                    data-field="stop"
+                                    placeholder="DD/MM/AAAA HH:MM:SS"
+                                >
+                            </td>
+
+                            <td>
+                                <span class="duration ${
+                                    offlineSeconds > 0
+                                        ? "positive"
+                                        : "zero"
+                                }">
+                                    ${formatSeconds(
+                                        offlineSeconds
+                                    )}
+                                </span>
+                            </td>
+
+                            <td class="action-cell">
+
+                                ${
+                                    session.deleted
+                                        ? `
+                                            <button
+                                                type="button"
+                                                class="small-button"
+                                                onclick="restoreSession(${originalIndex})"
+                                            >
+                                                Restaurar
+                                            </button>
+                                          `
+                                        : `
+                                            <button
+                                                type="button"
+                                                class="small-button"
+                                                onclick="deleteSession(${originalIndex})"
+                                            >
+                                                Excluir
+                                            </button>
+                                          `
+                                }
+
+                            </td>
+
+                        </tr>
+                        `;
+                }
+            );
+
+            body.innerHTML = html;
+
+            updateResult(
+                visibleSessions,
+                totalOffline,
+                drops
+            );
+
+            bindSessionInputs();
+        }
+
+        function escapeHtml(value) {
+
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        /* =====================================================
+           RESULTADOS
+        ===================================================== */
+
+        function updateResult(
+            visibleSessions,
+            calculatedTotal,
+            calculatedDrops
+        ) {
+
+            if (
+                !Array.isArray(visibleSessions)
+            ) {
+                visibleSessions = [];
+            }
+
+            let totalOffline =
+                typeof calculatedTotal === "number"
+                    ? calculatedTotal
+                    : 0;
+
+            let drops =
+                typeof calculatedDrops === "number"
+                    ? calculatedDrops
+                    : 0;
+
+            document
+                .getElementById("totalOffline")
+                .textContent =
+                formatSeconds(totalOffline);
+
+            document
+                .getElementById("totalDrops")
+                .textContent =
+                drops;
+
+            document
+                .getElementById("totalSessions")
+                .textContent =
+                visibleSessions.length;
+        }
+
+        /* =====================================================
+           EDIÇÃO DAS SESSÕES
+        ===================================================== */
+
+        function bindSessionInputs() {
+
+            document
+                .querySelectorAll(".session-input")
+                .forEach(function(input) {
+
+                    input.addEventListener(
+                        "change",
+                        function() {
+
+                            const index =
+                                Number(
+                                    this.dataset.index
+                                );
+
+                            const field =
+                                this.dataset.field;
+
+                            const value =
+                                parseManualDate(
+                                    this.value
+                                );
+
+                            if (!value) {
+
+                                showStatus(
+                                    "Data inválida. Use o formato DD/MM/AAAA HH:MM:SS.",
+                                    "error"
+                                );
+
+                                this.value =
+                                    formatManualDate(
+                                        sessions[index][field]
+                                    );
+
+                                return;
+                            }
+
+                            sessions[index][field] =
+                                value;
+
+                            sessions.sort(
+                                function(a, b) {
+
+                                    const aTime =
+                                        a.start
+                                            ? a.start.getTime()
+                                            : 0;
+
+                                    const bTime =
+                                        b.start
+                                            ? b.start.getTime()
+                                            : 0;
+
+                                    return bTime - aTime;
+                                }
+                            );
+
+                            renderTable();
+
+                            showStatus(
+                                "Alteração aplicada e cálculo atualizado automaticamente.",
+                                "success"
+                            );
+                        }
+                    );
+
+                    input.addEventListener(
+                        "keydown",
+                        function(event) {
+
+                            if (
+                                event.key === "Enter"
+                            ) {
+                                event.preventDefault();
+                                this.blur();
+                            }
+                        }
+                    );
+                });
+        }
+
+        /* =====================================================
+           EXCLUIR / RESTAURAR
+        ===================================================== */
+
+        function deleteSession(index) {
+
+            if (
+                !sessions[index]
+            ) {
+                return;
+            }
+
+            sessions[index].deleted = true;
+
+            renderTable();
+
+            showStatus(
+                "Sessão excluída e cálculo atualizado automaticamente.",
+                "success"
+            );
+        }
+
+        function restoreSession(index) {
+
+            if (
+                !sessions[index]
+            ) {
+                return;
+            }
+
+            sessions[index].deleted = false;
+
+            renderTable();
+
+            showStatus(
+                "Sessão restaurada e cálculo atualizado automaticamente.",
+                "success"
+            );
+        }
+
+        /*
+         * Sessões excluídas não participam da análise.
+         * Mantemos os dados no array para permitir restauração.
+         */
+
+        const originalSessionIsInPeriod =
+            sessionIsInPeriod;
+
+        /*
+         * Substitui o filtro utilizado pela tabela para que
+         * sessões excluídas não participem do cálculo.
+         */
+
+        function sessionIsInPeriodWithDeleted(
+            session
+        ) {
+
+            if (session.deleted) {
+                return false;
+            }
+
+            return originalSessionIsInPeriod(
+                session
+            );
+        }
+
+        /* =====================================================
+           IMPORTAÇÃO DO EXCEL
+        ===================================================== */
+
+        document
+            .getElementById("importButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    document
+                        .getElementById("fileInput")
+                        .click();
+                }
+            );
+
+        document
+            .getElementById("fileInput")
+            .addEventListener(
+                "change",
+                async function(event) {
+
+                    const file =
+                        event.target.files[0];
+
+                    if (!file) {
+                        return;
+                    }
+
+                    try {
+
+                        if (
+                            typeof XLSX ===
+                            "undefined"
+                        ) {
+                            throw new Error(
+                                "Biblioteca de Excel não carregada."
+                            );
+                        }
+
+                        const arrayBuffer =
+                            await file.arrayBuffer();
+
+                        const workbook =
+                            XLSX.read(
+                                arrayBuffer,
+                                {
+                                    type: "array",
+                                    cellDates: true
+                                }
+                            );
+
+                        const firstSheet =
+                            workbook.Sheets[
+                                workbook.SheetNames[0]
+                            ];
+
+                        const rows =
+                            XLSX.utils.sheet_to_json(
+                                firstSheet,
+                                {
+                                    header: 1,
+                                    defval: ""
+                                }
+                            );
+
+                        if (
+                            !rows.length
+                        ) {
+                            throw new Error(
+                                "O arquivo está vazio."
+                            );
+                        }
+
+                        const headers =
+                            rows[0].map(
+                                function(header) {
+                                    return String(
+                                        header
+                                    )
+                                    .trim()
+                                    .toLowerCase();
+                                }
+                            );
+
+                        const startIndex =
+                            headers.findIndex(
+                                function(header) {
+                                    return (
+                                        header === "hr. start" ||
+                                        header === "hr start" ||
+                                        header === "start" ||
+                                        header.includes("hr. start") ||
+                                        header.includes("hr start")
+                                    );
+                                }
+                            );
+
+                        const stopIndex =
+                            headers.findIndex(
+                                function(header) {
+                                    return (
+                                        header === "hr. stop" ||
+                                        header === "hr stop" ||
+                                        header === "stop" ||
+                                        header.includes("hr. stop") ||
+                                        header.includes("hr stop")
+                                    );
+                                }
+                            );
+
+                        if (
+                            startIndex === -1 ||
+                            stopIndex === -1
+                        ) {
+
+                            throw new Error(
+                                "Não foram encontradas as colunas Hr. Start e Hr. Stop no arquivo."
+                            );
+                        }
+
+                        const imported =
+                            [];
+
+                        for (
+                            let i = 1;
+                            i < rows.length;
+                            i++
+                        ) {
+
+                            const row =
+                                rows[i];
+
+                            const start =
+                                parseMKDate(
+                                    row[startIndex]
+                                );
+
+                            const stop =
+                                parseMKDate(
+                                    row[stopIndex]
+                                );
+
+                            if (
+                                !start &&
+                                !stop
+                            ) {
+                                continue;
+                            }
+
+                            imported.push({
+                                start: start,
+                                stop: stop,
+                                deleted: false
+                            });
+                        }
+
+                        if (
+                            !imported.length
+                        ) {
+
+                            throw new Error(
+                                "Nenhuma sessão válida foi encontrada no arquivo."
+                            );
+                        }
+
+                        sessions =
+                            imported.sort(
+                                function(a, b) {
+
+                                    const aTime =
+                                        a.start
+                                            ? a.start.getTime()
+                                            : 0;
+
+                                    const bTime =
+                                        b.start
+                                            ? b.start.getTime()
+                                            : 0;
+
+                                    return bTime - aTime;
+                                }
+                            );
+
+                        renderTable();
+
+                        showStatus(
+                            `${sessions.length} sessões importadas com sucesso. O cálculo foi realizado automaticamente.`,
+                            "success"
+                        );
+
+                    } catch (error) {
+
+                        console.error(
+                            "Erro ao importar arquivo:",
+                            error
+                        );
+
+                        showStatus(
+                            error.message ||
+                            "Não foi possível importar o arquivo.",
+                            "error"
+                        );
+                    }
+
+                    event.target.value = "";
+                }
+            );
+
+        /* =====================================================
+           LIMPAR
+        ===================================================== */
+
+        document
+            .getElementById("clearButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    sessions = [];
+
+                    analysisStart = null;
+                    analysisEnd = null;
+
+                    calendarState.start.date =
+                        null;
+
+                    calendarState.end.date =
+                        null;
+
+                    calendarState.start.month =
+                        new Date();
+
+                    calendarState.end.month =
+                        new Date();
+
+                    document
+                        .getElementById("startDisplay")
+                        .value = "";
+
+                    document
+                        .getElementById("endDisplay")
+                        .value = "";
+
+                    renderTable();
+
+                    showStatus(
+                        "Todos os dados foram limpos.",
+                        "success"
+                    );
+                }
+            );
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        function showStatus(
+            message,
+            type
+        ) {
+
+            const status =
+                document.getElementById(
+                    "status"
+                );
+
+            status.textContent =
+                message;
+
+            status.className =
+                "status show " +
+                type;
+
+            clearTimeout(
+                window.centralSACStatusTimer
+            );
+
+            window.centralSACStatusTimer =
+                setTimeout(
+                    function() {
+
+                        status.classList.remove(
+                            "show"
+                        );
+
+                    },
+                    5000
+                );
+        }
+
+        /* =====================================================
+           CORREÇÃO DO FILTRO DE SESSÕES EXCLUÍDAS
+        ===================================================== */
+
+        function getVisibleSessions() {
+
+            return sessions
+                .filter(
+                    sessionIsInPeriodWithDeleted
+                )
+                .sort(
+                    function(a, b) {
+
+                        const aTime =
+                            a.start
+                                ? a.start.getTime()
+                                : 0;
+
+                        const bTime =
+                            b.start
+                                ? b.start.getTime()
+                                : 0;
+
+                        return bTime - aTime;
+                    }
+                );
+        }
+
+        /*
+         * Reescreve a renderização utilizando somente
+         * sessões ativas.
+         */
+
+        const originalRenderTable =
+            renderTable;
+
+        renderTable = function() {
+
+            const body =
+                document.getElementById(
+                    "sessionsBody"
+                );
+
+            const activeSessions =
+                getVisibleSessions();
+
+            if (!activeSessions.length) {
+
+                body.innerHTML =
+                    `
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                ${
+                                    sessions.length
+                                        ? "Nenhuma sessão encontrada no período selecionado."
+                                        : "Nenhuma sessão importada."
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+
+                updateResult([]);
+
+                return;
+            }
+
+            let totalOffline = 0;
+            let drops = 0;
+
+            let html = "";
+
+            activeSessions.forEach(
+                function(session, index) {
+
+                    const offlineSeconds =
+                        calculateRowOffline(
+                            index,
+                            activeSessions
+                        );
+
+                    totalOffline +=
+                        offlineSeconds;
+
+                    if (
+                        offlineSeconds > 0
+                    ) {
+                        drops++;
+                    }
+
+                    const originalIndex =
+                        sessions.indexOf(
+                            session
+                        );
+
+                    html +=
+                        `
+                        <tr>
+
+                            <td>
+                                <input
+                                    type="text"
+                                    class="session-input"
+                                    value="${escapeHtml(
+                                        formatManualDate(
+                                            session.start
+                                        )
+                                    )}"
+                                    data-index="${originalIndex}"
+                                    data-field="start"
+                                    placeholder="DD/MM/AAAA HH:MM:SS"
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="text"
+                                    class="session-input"
+                                    value="${escapeHtml(
+                                        formatManualDate(
+                                            session.stop
+                                        )
+                                    )}"
+                                    data-index="${originalIndex}"
+                                    data-field="stop"
+                                    placeholder="DD/MM/AAAA HH:MM:SS"
+                                >
+                            </td>
+
+                            <td>
+                                <span class="duration ${
+                                    offlineSeconds > 0
+                                        ? "positive"
+                                        : "zero"
+                                }">
+                                    ${formatSeconds(
+                                        offlineSeconds
+                                    )}
+                                </span>
+                            </td>
+
+                            <td class="action-cell">
+
+                                <button
+                                    type="button"
+                                    class="small-button"
+                                    onclick="deleteSession(${originalIndex})"
+                                >
+                                    Excluir
+                                </button>
+
+                            </td>
+
+                        </tr>
+                        `;
+                }
+            );
+
+            body.innerHTML =
+                html;
+
+            updateResult(
+                activeSessions,
+                totalOffline,
+                drops
+            );
+
+            bindSessionInputs();
+        };
+
+        /* =====================================================
+           INICIALIZAÇÃO
+        ===================================================== */
+
+        renderTable();
+
+    </script>
+
+</body>
+
+</html>
