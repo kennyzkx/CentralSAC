@@ -9,27 +9,20 @@
 
     <style>
         /* =====================================================
-   IDENTIDADE VISUAL ALCANS
-===================================================== */
+           IDENTIDADE VISUAL ALCANS
+        ===================================================== */
 
         :root {
-
             --laranja: #FF5A00;
             --laranja-hover: #FF6A1A;
-
             --fundo: #111419;
             --fundo-menu: #15181E;
-
             --card: #191D24;
             --card-hover: #20252D;
-
             --borda: #303640;
-
             --texto: #F5F6F8;
             --texto-secundario: #9BA3AE;
-
         }
-
 
         * {
             margin: 0;
@@ -37,94 +30,54 @@
             box-sizing: border-box;
         }
 
-
         body {
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            background:
-                var(--fundo);
-
-            color:
-                var(--texto);
-
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fundo);
+            color: var(--texto);
             min-height: 100vh;
-
         }
 
-
-
         /* =====================================================
-   HEADER
-===================================================== */
+           HEADER
+        ===================================================== */
 
         .header {
-
             height: 66px;
-
-            background:
-                var(--laranja);
-
+            background: var(--laranja);
             display: flex;
-
             align-items: center;
-
             gap: 16px;
-
-            padding:
-                0 24px;
-
+            padding: 0 24px;
             color: white;
-
             position: sticky;
-
             top: 0;
-
             z-index: 1000;
-
         }
-
 
         .header-back {
-
             width: 42px;
-
             height: 42px;
-
             border: none;
-
             background: transparent;
-
             color: white;
-
             border-radius: 8px;
-
-            font-size: 25px;
-
+            font-size: 27px;
+            line-height: 1;
             cursor: pointer;
-
-            display: grid;
-
-            place-items: center;
-
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: 0.2s;
         }
-
 
         .header-back:hover {
-
-            background:
-                rgba(255, 255, 255, .10);
-
+            background: rgba(255, 255, 255, .10);
         }
 
-
-
         /* =====================================================
-   MENU LATERAL — MESMO PADRÃO DO PORTAL
-===================================================== */
+           MENU LATERAL
+        ===================================================== */
 
         .sidebar {
             position: fixed;
@@ -201,27 +154,6 @@
             display: block;
         }
 
-        .header-back {
-            width: 42px;
-            height: 42px;
-            border: none;
-            background: transparent;
-            color: white;
-            border-radius: 8px;
-            font-size: 27px;
-            line-height: 1;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            transition: 0.2s;
-        }
-
-        .header-back:hover {
-            background: rgba(255, 255, 255, .10);
-        }
-
         .logo-area {
             width: 185px;
             display: flex;
@@ -242,1586 +174,805 @@
         }
 
         .logo {
-
             font-size: 24px;
-
             font-weight: 800;
-
             letter-spacing: -1px;
-
             color: white;
-
         }
-
 
         .logo-sub {
-
-            color:
-                rgba(255, 255, 255, .82);
-
+            color: rgba(255, 255, 255, .82);
             font-size: 8px;
-
             letter-spacing: 1.5px;
-
             margin-top: 2px;
-
         }
-
 
         .header-label {
-
             margin-left: auto;
-
             font-size: 11px;
-
-            color:
-                rgba(255, 255, 255, .86);
-
+            color: rgba(255, 255, 255, .86);
         }
 
-
-
         /* =====================================================
-   CONTAINER
-===================================================== */
+           CONTAINER
+        ===================================================== */
 
         .container {
-
             max-width: 1080px;
-
             margin: auto;
-
-            padding:
-                40px 28px 70px;
-
+            padding: 40px 28px 70px;
         }
 
-
-
         /* =====================================================
-   HERO
-===================================================== */
+           HERO
+        ===================================================== */
 
         .hero {
-
-            background:
-                var(--card);
-
-            border:
-                1px solid var(--borda);
-
-            padding:
-                30px 32px;
-
+            background: var(--card);
+            border: 1px solid var(--borda);
+            padding: 30px 32px;
             border-radius: 16px;
-
-            color:
-                var(--texto);
-
+            color: var(--texto);
             position: relative;
-
             overflow: hidden;
-
             margin-bottom: 22px;
-
         }
-
 
         .hero::after {
-
             content: "";
-
             position: absolute;
-
             right: -80px;
-
             top: -100px;
-
             width: 300px;
-
             height: 300px;
-
             border-radius: 50%;
-
-            background:
-                rgba(255, 90, 0, .09);
-
+            background: rgba(255, 90, 0, .09);
             pointer-events: none;
-
         }
-
 
         .hero h1 {
-
             font-size: 30px;
-
             font-weight: 800;
-
             letter-spacing: -1px;
-
             margin-bottom: 10px;
-
             position: relative;
-
             z-index: 2;
-
         }
-
 
         .hero p {
-
             font-size: 13px;
-
             line-height: 1.7;
-
-            color:
-                var(--texto-secundario);
-
+            color: var(--texto-secundario);
             max-width: 560px;
-
             position: relative;
-
             z-index: 2;
-
         }
-
 
         .hero-tag {
-
             font-size: 10px;
-
             letter-spacing: 1.5px;
-
             font-weight: 700;
-
             margin-bottom: 12px;
-
-            color:
-                var(--laranja);
-
+            color: var(--laranja);
             position: relative;
-
             z-index: 2;
-
         }
-
 
         .constellations {
-
             position: absolute;
-
             right: 0;
-
             top: 0;
-
             width: 55%;
-
             height: 100%;
-
             opacity: .12;
-
             pointer-events: none;
-
         }
 
-
-
         /* =====================================================
-   ABAS
-===================================================== */
+           ABAS
+        ===================================================== */
 
         .main-tabs {
-
             display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
-
             margin-bottom: 16px;
-
         }
-
 
         .main-tab {
-
             height: 48px;
-
-            border:
-                1px solid var(--borda);
-
-            background:
-                var(--card);
-
+            border: 1px solid var(--borda);
+            background: var(--card);
             border-radius: 10px;
-
             font-family: inherit;
-
             font-size: 13px;
-
             font-weight: 700;
-
-            color:
-                var(--texto-secundario);
-
+            color: var(--texto-secundario);
             cursor: pointer;
-
             transition: .2s;
-
         }
-
 
         .main-tab:hover {
-
-            border-color:
-                var(--laranja);
-
-            color:
-                var(--texto);
-
-            background:
-                var(--card-hover);
-
+            border-color: var(--laranja);
+            color: var(--texto);
+            background: var(--card-hover);
         }
-
 
         .main-tab.active {
-
-            background:
-                var(--laranja);
-
+            background: var(--laranja);
             color: white;
-
-            border-color:
-                var(--laranja);
-
-            box-shadow:
-                0 5px 18px rgba(255, 90, 0, .18);
-
+            border-color: var(--laranja);
+            box-shadow: 0 5px 18px rgba(255, 90, 0, .18);
         }
 
-
-
         /* =====================================================
-   CALCULADORA
-===================================================== */
+           CALCULADORA
+        ===================================================== */
 
         .calculator {
-
-            background:
-                var(--card);
-
-            border:
-                1px solid var(--borda);
-
+            background: var(--card);
+            border: 1px solid var(--borda);
             border-radius: 15px;
-
             padding: 30px;
-
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, .12);
-
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
         }
-
 
         .section-title {
-
             font-size: 18px;
-
             font-weight: 750;
-
             margin-bottom: 7px;
-
         }
-
 
         .section-description {
-
-            color:
-                var(--texto-secundario);
-
+            color: var(--texto-secundario);
             font-size: 12px;
-
             line-height: 1.6;
-
             margin-bottom: 24px;
-
         }
 
-
-
         /* =====================================================
-   TIPO DE SERVIÇO
-===================================================== */
+           TIPO DE SERVIÇO
+        ===================================================== */
 
         .type-selector {
-
             display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
-
             margin-bottom: 27px;
-
         }
-
 
         .type-option {
-
             padding: 17px;
-
-            border:
-                1px solid var(--borda);
-
-            background:
-                var(--fundo-menu);
-
-            color:
-                var(--texto);
-
+            border: 1px solid var(--borda);
+            background: var(--fundo-menu);
+            color: var(--texto);
             border-radius: 10px;
-
             text-align: left;
-
             cursor: pointer;
-
             font-family: inherit;
-
             transition: .2s;
-
         }
-
 
         .type-option:hover {
-
-            border-color:
-                var(--laranja);
-
-            background:
-                var(--card-hover);
-
+            border-color: var(--laranja);
+            background: var(--card-hover);
         }
-
 
         .type-option.active {
-
-            background:
-                rgba(255, 90, 0, .10);
-
-            border:
-                1.5px solid var(--laranja);
-
+            background: rgba(255, 90, 0, .10);
+            border: 1.5px solid var(--laranja);
         }
-
 
         .type-option strong {
-
             display: block;
-
             font-size: 12px;
-
             margin-bottom: 6px;
-
         }
-
 
         .type-option span {
-
             font-size: 10px;
-
-            color:
-                var(--texto-secundario);
-
+            color: var(--texto-secundario);
         }
 
-
-
         /* =====================================================
-   FORMULÁRIOS
-===================================================== */
+           FORMULÁRIOS
+        ===================================================== */
 
         .form-grid {
-
             display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
-
         }
-
 
         .field {
-
             display: flex;
-
             flex-direction: column;
-
             gap: 9px;
-
             position: relative;
-
         }
-
 
         .field.full {
-
-            grid-column:
-                1 / -1;
-
+            grid-column: 1 / -1;
         }
-
 
         .field label {
-
             font-size: 11px;
-
             font-weight: 650;
-
-            color:
-                var(--texto);
-
+            color: var(--texto);
         }
-
 
         .field input:not(.date-display) {
-
             height: 46px;
-
             width: 100%;
-
-            padding:
-                0 13px;
-
-            border:
-                1px solid var(--borda);
-
+            padding: 0 13px;
+            border: 1px solid var(--borda);
             border-radius: 8px;
-
             outline: none;
-
             font-family: inherit;
-
             font-size: 13px;
-
-            background:
-                var(--fundo);
-
-            color:
-                var(--texto);
-
+            background: var(--fundo);
+            color: var(--texto);
             transition: .2s;
-
         }
-
 
         .field input::placeholder {
-
-            color:
-                #6f7782;
-
+            color: #6f7782;
         }
-
 
         .field input:focus {
-
-            border-color:
-                var(--laranja);
-
-            box-shadow:
-                0 0 0 3px rgba(255, 90, 0, .12);
-
+            border-color: var(--laranja);
+            box-shadow: 0 0 0 3px rgba(255, 90, 0, .12);
         }
-
 
         .field small {
-
             font-size: 10px;
-
-            color:
-                #737B87;
-
+            color: #737B87;
         }
 
-
-
         /* =====================================================
-   CALENDÁRIO
-===================================================== */
+           CALENDÁRIO
+        ===================================================== */
 
         .date-wrapper {
-
             position: relative;
-
         }
-
 
         .date-display {
-
             height: 46px;
-
             width: 100%;
-
-            padding:
-                0 45px 0 13px;
-
-            border:
-                1px solid var(--borda);
-
+            padding: 0 45px 0 13px;
+            border: 1px solid var(--borda);
             border-radius: 8px;
-
             outline: none;
-
             font-family: inherit;
-
             font-size: 13px;
-
-            background:
-                var(--fundo);
-
-            color:
-                var(--texto);
-
+            background: var(--fundo);
+            color: var(--texto);
             cursor: pointer;
-
             user-select: none;
-
         }
-
 
         .date-display::placeholder {
-
-            color:
-                #737B87;
-
+            color: #737B87;
         }
-
 
         .date-display:focus {
-
-            border-color:
-                var(--laranja);
-
-            box-shadow:
-                0 0 0 3px rgba(255, 90, 0, .12);
-
+            border-color: var(--laranja);
+            box-shadow: 0 0 0 3px rgba(255, 90, 0, .12);
         }
-
 
         .calendar-icon {
-
             position: absolute;
-
             right: 14px;
-
             top: 50%;
-
-            transform:
-                translateY(-50%);
-
+            transform: translateY(-50%);
             pointer-events: none;
-
             font-size: 17px;
-
         }
-
 
         .calendar-popup {
-
             display: none;
-
             position: absolute;
-
-            top:
-                calc(100% + 8px);
-
+            top: calc(100% + 8px);
             left: 0;
-
             width: 310px;
-
-            background:
-                var(--card);
-
-            border:
-                1px solid var(--borda);
-
+            background: var(--card);
+            border: 1px solid var(--borda);
             border-radius: 12px;
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, .4);
-
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .4);
             padding: 15px;
-
             z-index: 100;
-
         }
-
 
         .calendar-popup.open {
-
             display: block;
-
-            animation:
-                calendarAppear .15s ease;
-
+            animation: calendarAppear .15s ease;
         }
-
 
         @keyframes calendarAppear {
-
             from {
-
                 opacity: 0;
-
-                transform:
-                    translateY(-5px);
-
+                transform: translateY(-5px);
             }
 
             to {
-
                 opacity: 1;
-
-                transform:
-                    translateY(0);
-
+                transform: translateY(0);
             }
-
         }
-
 
         .calendar-header {
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
-
             margin-bottom: 15px;
-
         }
-
 
         .calendar-title {
-
             font-size: 13px;
-
             font-weight: 750;
-
             text-transform: capitalize;
-
         }
-
 
         .calendar-nav {
-
             width: 32px;
-
             height: 32px;
-
-            border:
-                1px solid var(--borda);
-
-            background:
-                var(--fundo-menu);
-
-            color:
-                var(--texto);
-
+            border: 1px solid var(--borda);
+            background: var(--fundo-menu);
+            color: var(--texto);
             border-radius: 7px;
-
             cursor: pointer;
-
             font-size: 15px;
-
             transition: .2s;
-
         }
-
 
         .calendar-nav:hover {
-
-            border-color:
-                var(--laranja);
-
-            color:
-                var(--laranja);
-
+            border-color: var(--laranja);
+            color: var(--laranja);
         }
-
 
         .calendar-weekdays {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(7, 1fr);
-
+            grid-template-columns: repeat(7, 1fr);
             margin-bottom: 7px;
-
         }
-
 
         .calendar-weekdays span {
-
             text-align: center;
-
             font-size: 9px;
-
             font-weight: 700;
-
-            color:
-                #737B87;
-
+            color: #737B87;
             padding: 5px 0;
-
         }
-
 
         .calendar-days {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(7, 1fr);
-
+            grid-template-columns: repeat(7, 1fr);
             gap: 3px;
-
         }
-
 
         .calendar-day {
-
             height: 34px;
-
             border: none;
-
             background: transparent;
-
             border-radius: 7px;
-
             font-family: inherit;
-
             font-size: 11px;
-
             cursor: pointer;
-
-            color:
-                var(--texto);
-
+            color: var(--texto);
             transition: .15s;
-
         }
-
 
         .calendar-day:hover {
-
-            background:
-                rgba(255, 90, 0, .12);
-
-            color:
-                var(--laranja);
-
+            background: rgba(255, 90, 0, .12);
+            color: var(--laranja);
         }
-
 
         .calendar-day.other-month {
-
-            color:
-                #4e5661;
-
+            color: #4e5661;
         }
-
 
         .calendar-day.today {
-
-            border:
-                1px solid var(--laranja);
-
-            color:
-                var(--laranja);
-
+            border: 1px solid var(--laranja);
+            color: var(--laranja);
             font-weight: 700;
-
         }
-
 
         .calendar-day.selected {
-
-            background:
-                var(--laranja);
-
+            background: var(--laranja);
             color: white;
-
             font-weight: 700;
-
         }
-
 
         .calendar-day.selected:hover {
-
-            background:
-                var(--laranja-hover);
-
+            background: var(--laranja-hover);
             color: white;
-
         }
 
-
-
         /* =====================================================
-   BOTÃO CALCULAR
-===================================================== */
+           BOTÃO CALCULAR
+        ===================================================== */
 
         .calculate-button {
-
             height: 49px;
-
             width: 100%;
-
             border: none;
-
-            background:
-                var(--laranja);
-
+            background: var(--laranja);
             color: white;
-
             border-radius: 8px;
-
             font-family: inherit;
-
             font-size: 12px;
-
             font-weight: 750;
-
             cursor: pointer;
-
             margin-top: 25px;
-
             transition: .2s;
-
         }
-
 
         .calculate-button:hover {
-
-            background:
-                var(--laranja-hover);
-
+            background: var(--laranja-hover);
         }
-
-
 
         /* =====================================================
-   RESULTADO
-===================================================== */
+           RESULTADO
+        ===================================================== */
 
         .result {
-
             margin-top: 25px;
-
-            background:
-                #0D0F12;
-
-            border:
-                1px solid var(--borda);
-
+            background: #0D0F12;
+            border: 1px solid var(--borda);
             border-radius: 13px;
-
             padding: 28px;
-
             color: white;
-
             display: none;
-
-            animation:
-                appear .3s ease;
-
+            animation: appear .3s ease;
         }
-
 
         .result.visible {
-
             display: block;
-
         }
 
-
         @keyframes appear {
-
             from {
-
                 opacity: 0;
-
-                transform:
-                    translateY(8px);
-
+                transform: translateY(8px);
             }
 
             to {
-
                 opacity: 1;
-
-                transform:
-                    translateY(0);
-
+                transform: translateY(0);
             }
-
         }
-
 
         .result-header {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
             gap: 15px;
-
             margin-bottom: 22px;
-
         }
-
 
         .result-header h3 {
-
             font-size: 14px;
-
         }
-
 
         .result-badge {
-
             font-size: 9px;
-
-            background:
-                rgba(255, 255, 255, .06);
-
-            color:
-                #BBB;
-
-            padding:
-                7px 10px;
-
+            background: rgba(255, 255, 255, .06);
+            color: #BBB;
+            padding: 7px 10px;
             border-radius: 5px;
-
         }
-
 
         .result-main {
-
-            background:
-                rgba(255, 255, 255, .03);
-
-            border:
-                1px solid rgba(255, 255, 255, .08);
-
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(255, 255, 255, .08);
             padding: 22px;
-
             border-radius: 10px;
-
             margin-bottom: 18px;
-
         }
-
 
         .result-main span {
-
             font-size: 10px;
-
-            color:
-                #8C949F;
-
+            color: #8C949F;
             text-transform: uppercase;
-
             letter-spacing: 1px;
-
         }
-
 
         .result-main strong {
-
             display: block;
-
-            color:
-                var(--laranja);
-
-            font-size:
-                clamp(30px, 5vw, 42px);
-
+            color: var(--laranja);
+            font-size: clamp(30px, 5vw, 42px);
             font-weight: 800;
-
             margin-top: 9px;
-
             letter-spacing: -1.5px;
-
             overflow-wrap: anywhere;
-
         }
-
 
         .result-details {
-
             display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
-
         }
-
 
         .detail {
-
             padding: 15px;
-
-            background:
-                rgba(255, 255, 255, .035);
-
+            background: rgba(255, 255, 255, .035);
             border-radius: 8px;
-
         }
-
 
         .detail span {
-
-            color:
-                #8C949F;
-
+            color: #8C949F;
             font-size: 10px;
-
             display: block;
-
             margin-bottom: 7px;
-
         }
-
 
         .detail strong {
-
             font-size: 14px;
-
             overflow-wrap: anywhere;
-
         }
-
 
         .result-status {
-
             margin-top: 18px;
-
             padding: 13px;
-
             border-radius: 8px;
-
-            background:
-                rgba(255, 255, 255, .04);
-
-            color:
-                #CFD3D8;
-
+            background: rgba(255, 255, 255, .04);
+            color: #CFD3D8;
             font-size: 11px;
-
             line-height: 1.8;
-
         }
-
 
         .copy-button {
-
             width: 100%;
-
             height: 43px;
-
             background: transparent;
-
-            border:
-                1px solid #4A515B;
-
+            border: 1px solid #4A515B;
             border-radius: 8px;
-
             color: white;
-
             font-family: inherit;
-
             font-weight: 600;
-
             font-size: 11px;
-
             cursor: pointer;
-
             margin-top: 17px;
-
         }
-
 
         .copy-button:hover {
-
-            border-color:
-                var(--laranja);
-
-            color:
-                var(--laranja);
-
+            border-color: var(--laranja);
+            color: var(--laranja);
         }
 
-
-
         /* =====================================================
-   INFORMAÇÕES
-===================================================== */
+           INFORMAÇÕES
+        ===================================================== */
 
         .info,
         .fines-note {
-
             margin-top: 20px;
-
-            background:
-                rgba(255, 90, 0, .07);
-
-            border:
-                1px solid rgba(255, 90, 0, .22);
-
+            background: rgba(255, 90, 0, .07);
+            border: 1px solid rgba(255, 90, 0, .22);
             padding: 17px;
-
             border-radius: 9px;
-
             font-size: 10px;
-
-            color:
-                #D8A98C;
-
+            color: #D8A98C;
             line-height: 1.8;
-
         }
-
 
         .info strong,
         .fines-note strong {
-
             display: block;
-
             margin-bottom: 5px;
-
             color: white;
-
         }
 
-
-
         /* =====================================================
-   VALORES DAS MULTAS
-===================================================== */
+           VALORES DAS MULTAS
+        ===================================================== */
 
         .fines-page {
-
             display: none;
-
         }
-
 
         .fines-page.visible {
-
             display: block;
-
-            animation:
-                appear .25s ease;
-
+            animation: appear .25s ease;
         }
-
 
         .fines-header {
-
             margin-bottom: 25px;
-
         }
-
 
         .fines-header h2 {
-
             font-size: 20px;
-
             font-weight: 800;
-
             margin-bottom: 7px;
-
         }
-
 
         .fines-header p {
-
             font-size: 11px;
-
-            color:
-                var(--texto-secundario);
-
+            color: var(--texto-secundario);
             line-height: 1.6;
-
         }
-
 
         .search-box {
-
             margin-bottom: 20px;
-
         }
-
 
         .search-box input {
-
             width: 100%;
-
             height: 48px;
-
-            border:
-                1px solid var(--borda);
-
+            border: 1px solid var(--borda);
             border-radius: 9px;
-
-            padding:
-                0 15px;
-
+            padding: 0 15px;
             outline: none;
-
             font-family: inherit;
-
             font-size: 12px;
-
-            background:
-                var(--card);
-
-            color:
-                var(--texto);
-
+            background: var(--card);
+            color: var(--texto);
         }
-
 
         .search-box input::placeholder {
-
-            color:
-                #737B87;
-
+            color: #737B87;
         }
-
 
         .search-box input:focus {
-
-            border-color:
-                var(--laranja);
-
-            box-shadow:
-                0 0 0 3px rgba(255, 90, 0, .12);
-
+            border-color: var(--laranja);
+            box-shadow: 0 0 0 3px rgba(255, 90, 0, .12);
         }
-
 
         .fines-section {
-
-            background:
-                var(--card);
-
-            border:
-                1px solid var(--borda);
-
+            background: var(--card);
+            border: 1px solid var(--borda);
             border-radius: 15px;
-
             padding: 25px;
-
             margin-bottom: 20px;
-
-            box-shadow:
-                0 5px 25px rgba(0, 0, 0, .08);
-
+            box-shadow: 0 5px 25px rgba(0, 0, 0, .08);
         }
-
 
         .fines-section-title {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
             gap: 15px;
-
             margin-bottom: 18px;
-
         }
-
 
         .fines-section-title h3 {
-
             font-size: 15px;
-
             font-weight: 800;
-
         }
-
 
         .fines-section-title span {
-
             font-size: 9px;
-
-            background:
-                rgba(255, 90, 0, .12);
-
-            color:
-                var(--laranja);
-
-            padding:
-                6px 9px;
-
+            background: rgba(255, 90, 0, .12);
+            color: var(--laranja);
+            padding: 6px 9px;
             border-radius: 5px;
-
             font-weight: 700;
-
         }
-
 
         .fines-list {
-
             display: grid;
-
             gap: 8px;
-
         }
-
 
         .fine-item {
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
-
             gap: 20px;
-
-            padding:
-                14px 15px;
-
-            border:
-                1px solid var(--borda);
-
+            padding: 14px 15px;
+            border: 1px solid var(--borda);
             border-radius: 9px;
-
             transition: .15s;
-
-            background:
-                var(--fundo-menu);
-
+            background: var(--fundo-menu);
         }
-
 
         .fine-item:hover {
-
-            border-color:
-                rgba(255, 90, 0, .5);
-
-            background:
-                var(--card-hover);
-
+            border-color: rgba(255, 90, 0, .5);
+            background: var(--card-hover);
         }
-
 
         .fine-name {
-
             font-size: 11px;
-
             line-height: 1.5;
-
             font-weight: 600;
-
         }
-
 
         .fine-value {
-
             white-space: nowrap;
-
             font-size: 13px;
-
             font-weight: 800;
-
-            color:
-                var(--laranja);
-
+            color: var(--laranja);
         }
-
 
         .no-results {
-
             display: none;
-
             text-align: center;
-
-            padding:
-                30px 15px;
-
-            color:
-                #737B87;
-
+            padding: 30px 15px;
+            color: #737B87;
             font-size: 11px;
-
         }
 
-
-
         /* =====================================================
-   RODAPÉ
-===================================================== */
+           RODAPÉ
+        ===================================================== */
 
         .footer {
-
             text-align: center;
-
             margin-top: 30px;
-
             font-size: 10px;
-
-            color:
-                #737B87;
-
+            color: #737B87;
             line-height: 1.8;
-
         }
 
-
-
         /* =====================================================
-   RESPONSIVO
-===================================================== */
+           RESPONSIVO
+        ===================================================== */
 
         @media(max-width:650px) {
 
             .header {
-
-                padding:
-                    0 14px;
-
+                padding: 0 14px;
             }
-
 
             .header-label {
-
                 display: none;
-
             }
-
 
             .container {
-
-                padding:
-                    25px 15px 40px;
-
+                padding: 25px 15px 40px;
             }
-
 
             .hero {
-
-                padding:
-                    27px 23px;
-
+                padding: 27px 23px;
             }
-
 
             .hero h1 {
-
                 font-size: 24px;
-
             }
-
 
             .calculator {
-
                 padding: 21px;
-
             }
-
 
             .main-tabs {
-
-                grid-template-columns:
-                    1fr 1fr;
-
+                grid-template-columns: 1fr 1fr;
             }
-
 
             .type-selector {
-
-                grid-template-columns:
-                    1fr;
-
+                grid-template-columns: 1fr;
             }
-
 
             .form-grid {
-
-                grid-template-columns:
-                    1fr;
-
+                grid-template-columns: 1fr;
             }
-
 
             .field.full {
-
                 grid-column: auto;
-
             }
-
 
             .result-details {
-
-                grid-template-columns:
-                    1fr;
-
+                grid-template-columns: 1fr;
             }
-
 
             .calendar-popup {
-
                 width: 100%;
-
                 max-width: 310px;
-
             }
-
 
             .fines-section {
-
                 padding: 18px;
-
             }
-
 
             .fine-item {
-
-                align-items:
-                    flex-start;
-
-                flex-direction:
-                    column;
-
+                align-items: flex-start;
+                flex-direction: column;
                 gap: 7px;
-
             }
-
 
             .fine-value {
-
                 font-size: 14px;
-
             }
-
         }
     </style>
 
@@ -1834,15 +985,27 @@
 
     <header class="header">
 
-        <button class="header-back" id="menuButton" aria-label="Abrir menu" type="button">
+        <button
+            class="header-back"
+            id="menuButton"
+            aria-label="Abrir menu"
+            type="button"
+        >
             ☰
         </button>
 
         <div class="logo-area">
-            <img src="logo-alcans.png" alt="Alcans" class="header-logo">
+
+            <img
+                src="logo-alcans.png"
+                alt="Alcans"
+                class="header-logo"
+            >
+
             <div class="logo-sub">
                 PORTAL DO ATENDENTE
             </div>
+
         </div>
 
         <div class="header-label">
@@ -1851,46 +1014,82 @@
 
     </header>
 
+
     <aside class="sidebar" id="sidebar">
 
         <div class="menu-title">
             Portal do Atendente
         </div>
 
-        <button class="menu-item" onclick="window.location.href='index.html'" type="button">
+        <button
+            class="menu-item"
+            onclick="window.location.href='index.html'"
+            type="button"
+        >
             <span class="menu-icon">🏠</span>
             Início
         </button>
 
-        <button class="menu-item active" onclick="window.location.href='calculadora.html'" type="button">
+        <button
+            class="menu-item active"
+            onclick="window.location.href='calculadora.html'"
+            type="button"
+        >
             <span class="menu-icon" aria-hidden="true">🧮</span>
             Calcular multas
         </button>
 
-        <button class="menu-item" onclick="window.location.href='procedimentos.html'" type="button">
+        <button
+            class="menu-item"
+            onclick="window.location.href='procedimentos.html'"
+            type="button"
+        >
             <span class="menu-icon" aria-hidden="true">📋</span>
             Procedimentos
         </button>
 
-        <button class="menu-item" onclick="window.location.href='sistemas.html'" type="button">
+        <button
+            class="menu-item"
+            onclick="window.location.href='sistemas.html'"
+            type="button"
+        >
             <span class="menu-icon" aria-hidden="true">🖥️</span>
             Sistemas
         </button>
 
-        <button class="menu-item" onclick="window.location.href='escala.html'" type="button">
+        <button
+            class="menu-item"
+            onclick="window.location.href='indisponibilidade.html'"
+            type="button"
+        >
+            <span class="menu-icon" aria-hidden="true">📊</span>
+            Análise de Consumo
+        </button>
+
+        <button
+            class="menu-item"
+            onclick="window.location.href='escala.html'"
+            type="button"
+        >
             <span class="menu-icon" aria-hidden="true">📅</span>
             Escala
         </button>
 
     </aside>
 
+
     <div class="overlay" id="overlay"></div>
+
 
     <main class="container">
 
         <section class="hero">
 
-            <svg class="constellations" viewBox="0 0 500 220" fill="none">
+            <svg
+                class="constellations"
+                viewBox="0 0 500 220"
+                fill="none"
+            >
 
                 <g stroke="white" stroke-width="1" opacity=".5">
 
@@ -1937,11 +1136,19 @@
 
         <div class="main-tabs">
 
-            <button class="main-tab active" id="calculatorTab" onclick="showMainTab('calculator')">
+            <button
+                class="main-tab active"
+                id="calculatorTab"
+                onclick="showMainTab('calculator')"
+            >
                 🧮 Calculadora de multas
             </button>
 
-            <button class="main-tab" id="finesTab" onclick="showMainTab('fines')">
+            <button
+                class="main-tab"
+                id="finesTab"
+                onclick="showMainTab('fines')"
+            >
                 💰 Valor das multas
             </button>
 
@@ -1962,7 +1169,11 @@
 
                 <div class="type-selector">
 
-                    <button class="type-option active" id="internetOption" onclick="selectType('internet')">
+                    <button
+                        class="type-option active"
+                        id="internetOption"
+                        onclick="selectType('internet')"
+                    >
 
                         <strong>
                             ◉ Planos de internet
@@ -1974,7 +1185,11 @@
 
                     </button>
 
-                    <button class="type-option" id="cameraOption" onclick="selectType('camera')">
+                    <button
+                        class="type-option"
+                        id="cameraOption"
+                        onclick="selectType('camera')"
+                    >
 
                         <strong>
                             ▣ Câmeras
@@ -1999,7 +1214,13 @@
                                 Valor integral da multa do plano (R$)
                             </label>
 
-                            <input type="number" id="fineAmount" min="0.01" step="0.01" placeholder="Ex: 120,00">
+                            <input
+                                type="number"
+                                id="fineAmount"
+                                min="0.01"
+                                step="0.01"
+                                placeholder="Ex: 120,00"
+                            >
 
                             <small>
                                 Informe o valor integral correspondente aos 12 meses.
@@ -2016,13 +1237,23 @@
 
                             <div class="date-wrapper">
 
-                                <input type="text" class="date-display" id="renewalDisplay" placeholder="DD/MM/AAAA" readonly autocomplete="off">
+                                <input
+                                    type="text"
+                                    class="date-display"
+                                    id="renewalDisplay"
+                                    placeholder="DD/MM/AAAA"
+                                    readonly
+                                    autocomplete="off"
+                                >
 
                                 <span class="calendar-icon">
                                     📅
                                 </span>
 
-                                <div class="calendar-popup" id="renewalCalendar"></div>
+                                <div
+                                    class="calendar-popup"
+                                    id="renewalCalendar"
+                                ></div>
 
                             </div>
 
@@ -2037,13 +1268,23 @@
 
                             <div class="date-wrapper">
 
-                                <input type="text" class="date-display" id="cancelDisplay" placeholder="DD/MM/AAAA" readonly autocomplete="off">
+                                <input
+                                    type="text"
+                                    class="date-display"
+                                    id="cancelDisplay"
+                                    placeholder="DD/MM/AAAA"
+                                    readonly
+                                    autocomplete="off"
+                                >
 
                                 <span class="calendar-icon">
                                     📅
                                 </span>
 
-                                <div class="calendar-popup" id="cancelCalendar"></div>
+                                <div
+                                    class="calendar-popup"
+                                    id="cancelCalendar"
+                                ></div>
 
                             </div>
 
@@ -2054,7 +1295,10 @@
                 </div>
 
 
-                <div id="cameraForm" style="display:none">
+                <div
+                    id="cameraForm"
+                    style="display:none"
+                >
 
                     <div class="form-grid">
 
@@ -2064,7 +1308,13 @@
                                 Valor mensal da câmera (R$)
                             </label>
 
-                            <input type="number" id="cameraValue" min="0.01" step="0.01" placeholder="Ex: 30,00">
+                            <input
+                                type="number"
+                                id="cameraValue"
+                                min="0.01"
+                                step="0.01"
+                                placeholder="Ex: 30,00"
+                            >
 
                             <small>
                                 O sistema multiplicará o valor por 36 e aplicará 30%.
@@ -2077,12 +1327,18 @@
                 </div>
 
 
-                <button type="button" class="calculate-button">
+                <button
+                    type="button"
+                    class="calculate-button"
+                >
                     CALCULAR MULTA
                 </button>
 
 
-                <div class="result" id="result">
+                <div
+                    class="result"
+                    id="result"
+                >
 
                     <div class="result-header">
 
@@ -2090,7 +1346,10 @@
                             Resultado da simulação
                         </h3>
 
-                        <span class="result-badge" id="resultBadge">
+                        <span
+                            class="result-badge"
+                            id="resultBadge"
+                        >
                             CONCLUÍDO
                         </span>
 
@@ -2190,7 +1449,10 @@
                         </div>
 
 
-                        <div class="detail" id="resultEndDateContainer">
+                        <div
+                            class="detail"
+                            id="resultEndDateContainer"
+                        >
 
                             <span>
                                 Fim da fidelidade
@@ -2218,11 +1480,16 @@
                     </div>
 
 
-                    <div class="result-status" id="resultStatus">
-                    </div>
+                    <div
+                        class="result-status"
+                        id="resultStatus"
+                    ></div>
 
 
-                    <button class="copy-button" onclick="copyResult()">
+                    <button
+                        class="copy-button"
+                        onclick="copyResult()"
+                    >
                         COPIAR RESUMO
                     </button>
 
@@ -2246,7 +1513,10 @@
         </div>
 
 
-        <div class="fines-page" id="finesPage">
+        <div
+            class="fines-page"
+            id="finesPage"
+        >
 
             <div class="fines-header">
 
@@ -2263,7 +1533,12 @@
 
             <div class="search-box">
 
-                <input type="text" id="fineSearch" placeholder="Pesquisar multa..." oninput="searchFines()">
+                <input
+                    type="text"
+                    id="fineSearch"
+                    placeholder="Pesquisar multa..."
+                    oninput="searchFines()"
+                >
 
             </div>
 
@@ -2282,8 +1557,10 @@
 
                 </div>
 
-                <div class="fines-list" id="generalFines">
-                </div>
+                <div
+                    class="fines-list"
+                    id="generalFines"
+                ></div>
 
             </div>
 
@@ -2302,13 +1579,18 @@
 
                 </div>
 
-                <div class="fines-list" id="saoCarlosFines">
-                </div>
+                <div
+                    class="fines-list"
+                    id="saoCarlosFines"
+                ></div>
 
             </div>
 
 
-            <div class="no-results" id="noResults">
+            <div
+                class="no-results"
+                id="noResults"
+            >
                 Nenhuma multa encontrada.
             </div>
 
@@ -2327,30 +1609,41 @@
 
 
         <div class="footer">
-
             Alcans | Portal do Atendente
-
         </div>
 
     </main>
 
 
-
     <script>
-        const menuButton = document.getElementById("menuButton");
-        const sidebar = document.getElementById("sidebar");
-        const overlay = document.getElementById("overlay");
 
-        menuButton.addEventListener("click", function () {
-            sidebar.classList.toggle("open");
-            overlay.classList.toggle("active");
-        });
+        const menuButton =
+            document.getElementById("menuButton");
 
-        overlay.addEventListener("click", function () {
-            sidebar.classList.remove("open");
-            overlay.classList.remove("active");
-        });
+        const sidebar =
+            document.getElementById("sidebar");
+
+        const overlay =
+            document.getElementById("overlay");
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+                sidebar.classList.toggle("open");
+                overlay.classList.toggle("active");
+            }
+        );
+
+        overlay.addEventListener(
+            "click",
+            function () {
+                sidebar.classList.remove("open");
+                overlay.classList.remove("active");
+            }
+        );
+
     </script>
+
 
     <script>
         'use strict';
@@ -2368,134 +1661,408 @@
         }
 
         function parseMoney(value) {
-            let text = String(value ?? '').trim();
-            if (!text) return 0;
-            text = text.replace(/R\$\s?/gi, '').replace(/\s/g, '');
 
-            // Aceita: 120 | 120,50 | 120.50 | 1.218,50 | 1,218.50
+            let text = String(value ?? '').trim();
+
+            if (!text) return 0;
+
+            text = text
+                .replace(/R\$\s?/gi, '')
+                .replace(/\s/g, '');
+
             if (text.includes(',') && text.includes('.')) {
+
                 if (text.lastIndexOf(',') > text.lastIndexOf('.')) {
                     text = text.replace(/\./g, '').replace(',', '.');
                 } else {
                     text = text.replace(/,/g, '');
                 }
+
             } else if (text.includes(',')) {
+
                 text = text.replace(',', '.');
+
             }
 
             const number = Number(text);
-            return Number.isFinite(number) && number > 0 ? Math.round(number * 100) : 0;
+
+            return Number.isFinite(number) && number > 0
+                ? Math.round(number * 100)
+                : 0;
         }
 
         function dateOnly(date) {
-            return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            return new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate()
+            );
         }
 
         function utcDate(date) {
-            return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+            return Date.UTC(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate()
+            );
         }
 
         function daysBetween(a, b) {
-            return Math.round((utcDate(b) - utcDate(a)) / 86400000);
+            return Math.round(
+                (utcDate(b) - utcDate(a)) / 86400000
+            );
         }
 
         function addMonths(date, months) {
-            const result = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+            const result = new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate()
+            );
+
             const originalDay = result.getDate();
+
             result.setDate(1);
-            result.setMonth(result.getMonth() + months);
-            const lastDay = new Date(result.getFullYear(), result.getMonth() + 1, 0).getDate();
-            result.setDate(Math.min(originalDay, lastDay));
+
+            result.setMonth(
+                result.getMonth() + months
+            );
+
+            const lastDay = new Date(
+                result.getFullYear(),
+                result.getMonth() + 1,
+                0
+            ).getDate();
+
+            result.setDate(
+                Math.min(originalDay, lastDay)
+            );
+
             return result;
         }
 
         function formatDate(date) {
-            if (!(date instanceof Date) || Number.isNaN(date.getTime())) return '-';
-            return String(date.getDate()).padStart(2, '0') + '/' +
-                String(date.getMonth() + 1).padStart(2, '0') + '/' +
+
+            if (
+                !(date instanceof Date) ||
+                Number.isNaN(date.getTime())
+            ) {
+                return '-';
+            }
+
+            return String(
+                date.getDate()
+            ).padStart(2, '0') + '/' +
+                String(
+                    date.getMonth() + 1
+                ).padStart(2, '0') + '/' +
                 date.getFullYear();
         }
 
         function selectType(type) {
-            selectedType = type === 'camera' ? 'camera' : 'internet';
-            document.getElementById('internetOption').classList.toggle('active', selectedType === 'internet');
-            document.getElementById('cameraOption').classList.toggle('active', selectedType === 'camera');
-            document.getElementById('internetForm').style.display = selectedType === 'internet' ? 'block' : 'none';
-            document.getElementById('cameraForm').style.display = selectedType === 'camera' ? 'block' : 'none';
-            document.getElementById('result').classList.remove('visible');
+
+            selectedType =
+                type === 'camera'
+                    ? 'camera'
+                    : 'internet';
+
+            document
+                .getElementById('internetOption')
+                .classList
+                .toggle(
+                    'active',
+                    selectedType === 'internet'
+                );
+
+            document
+                .getElementById('cameraOption')
+                .classList
+                .toggle(
+                    'active',
+                    selectedType === 'camera'
+                );
+
+            document
+                .getElementById('internetForm')
+                .style.display =
+                selectedType === 'internet'
+                    ? 'block'
+                    : 'none';
+
+            document
+                .getElementById('cameraForm')
+                .style.display =
+                selectedType === 'camera'
+                    ? 'block'
+                    : 'none';
+
+            document
+                .getElementById('result')
+                .classList
+                .remove('visible');
         }
 
         function showMainTab(tab) {
-            const calculatorPage = document.getElementById('calculatorPage');
-            const finesPage = document.getElementById('finesPage');
-            const calculatorTab = document.getElementById('calculatorTab');
-            const finesTab = document.getElementById('finesTab');
 
-            const calculator = tab === 'calculator';
-            calculatorPage.style.display = calculator ? 'block' : 'none';
-            finesPage.classList.toggle('visible', !calculator);
-            calculatorTab.classList.toggle('active', calculator);
-            finesTab.classList.toggle('active', !calculator);
-            if (!calculator) renderFines();
+            const calculatorPage =
+                document.getElementById(
+                    'calculatorPage'
+                );
+
+            const finesPage =
+                document.getElementById(
+                    'finesPage'
+                );
+
+            const calculatorTab =
+                document.getElementById(
+                    'calculatorTab'
+                );
+
+            const finesTab =
+                document.getElementById(
+                    'finesTab'
+                );
+
+            const calculator =
+                tab === 'calculator';
+
+            calculatorPage.style.display =
+                calculator
+                    ? 'block'
+                    : 'none';
+
+            finesPage.classList.toggle(
+                'visible',
+                !calculator
+            );
+
+            calculatorTab.classList.toggle(
+                'active',
+                calculator
+            );
+
+            finesTab.classList.toggle(
+                'active',
+                !calculator
+            );
+
+            if (!calculator) {
+                renderFines();
+            }
         }
 
-        const monthNames = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-        const weekNames = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+        const monthNames = [
+            'janeiro',
+            'fevereiro',
+            'março',
+            'abril',
+            'maio',
+            'junho',
+            'julho',
+            'agosto',
+            'setembro',
+            'outubro',
+            'novembro',
+            'dezembro'
+        ];
+
+        const weekNames = [
+            'D',
+            'S',
+            'T',
+            'Q',
+            'Q',
+            'S',
+            'S'
+        ];
+
         const calendarState = {
-            renewal: { date: null, month: new Date() },
-            cancel: { date: null, month: new Date() }
+            renewal: {
+                date: null,
+                month: new Date()
+            },
+
+            cancel: {
+                date: null,
+                month: new Date()
+            }
         };
 
         function closeCalendars() {
-            document.getElementById('renewalCalendar').classList.remove('open');
-            document.getElementById('cancelCalendar').classList.remove('open');
+
+            document
+                .getElementById(
+                    'renewalCalendar'
+                )
+                .classList
+                .remove('open');
+
+            document
+                .getElementById(
+                    'cancelCalendar'
+                )
+                .classList
+                .remove('open');
         }
 
         function openCalendar(type) {
-            const id = type === 'renewal' ? 'renewalCalendar' : 'cancelCalendar';
+
+            const id =
+                type === 'renewal'
+                    ? 'renewalCalendar'
+                    : 'cancelCalendar';
+
             closeCalendars();
+
             renderCalendar(type);
-            document.getElementById(id).classList.add('open');
+
+            document
+                .getElementById(id)
+                .classList
+                .add('open');
         }
 
         function renderCalendar(type) {
-            const popup = document.getElementById(type === 'renewal' ? 'renewalCalendar' : 'cancelCalendar');
-            const state = calendarState[type];
-            const year = state.month.getFullYear();
-            const month = state.month.getMonth();
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const today = dateOnly(new Date());
 
-            let html = '<div class="calendar-header">' +
-                '<button type="button" class="calendar-nav" onclick="event.stopPropagation(); changeMonth(\'' + type + '\', -1)">‹</button>' +
-                '<span class="calendar-title">' + monthNames[month] + ' ' + year + '</span>' +
-                '<button type="button" class="calendar-nav" onclick="event.stopPropagation(); changeMonth(\'' + type + '\', 1)">›</button>' +
+            const popup =
+                document.getElementById(
+                    type === 'renewal'
+                        ? 'renewalCalendar'
+                        : 'cancelCalendar'
+                );
+
+            const state =
+                calendarState[type];
+
+            const year =
+                state.month.getFullYear();
+
+            const month =
+                state.month.getMonth();
+
+            const firstDay =
+                new Date(
+                    year,
+                    month,
+                    1
+                ).getDay();
+
+            const daysInMonth =
+                new Date(
+                    year,
+                    month + 1,
+                    0
+                ).getDate();
+
+            const today =
+                dateOnly(new Date());
+
+            let html =
+                '<div class="calendar-header">' +
+                '<button type="button" class="calendar-nav" onclick="event.stopPropagation(); changeMonth(\'' +
+                type +
+                '\', -1)">‹</button>' +
+                '<span class="calendar-title">' +
+                monthNames[month] +
+                ' ' +
+                year +
+                '</span>' +
+                '<button type="button" class="calendar-nav" onclick="event.stopPropagation(); changeMonth(\'' +
+                type +
+                '\', 1)">›</button>' +
                 '</div>';
 
-            html += '<div class="calendar-weekdays">' + weekNames.map(d => '<span>' + d + '</span>').join('') + '</div>';
-            html += '<div class="calendar-days">';
+            html +=
+                '<div class="calendar-weekdays">' +
+                weekNames
+                    .map(
+                        d =>
+                            '<span>' +
+                            d +
+                            '</span>'
+                    )
+                    .join('') +
+                '</div>';
 
-            for (let i = 0; i < firstDay; i++) html += '<span></span>';
+            html +=
+                '<div class="calendar-days">';
 
-            for (let day = 1; day <= daysInMonth; day++) {
-                const current = new Date(year, month, day);
-                const classes = ['calendar-day'];
-                if (current.getTime() === today.getTime()) classes.push('today');
-                if (state.date && current.getTime() === state.date.getTime()) classes.push('selected');
-                html += '<button type="button" class="' + classes.join(' ') + '" onclick="selectCalendarDate(\'' + type + '\',' + year + ',' + month + ',' + day + ')">' + day + '</button>';
+            for (
+                let i = 0;
+                i < firstDay;
+                i++
+            ) {
+                html += '<span></span>';
+            }
+
+            for (
+                let day = 1;
+                day <= daysInMonth;
+                day++
+            ) {
+
+                const current =
+                    new Date(
+                        year,
+                        month,
+                        day
+                    );
+
+                const classes =
+                    ['calendar-day'];
+
+                if (
+                    current.getTime() ===
+                    today.getTime()
+                ) {
+                    classes.push('today');
+                }
+
+                if (
+                    state.date &&
+                    current.getTime() ===
+                    state.date.getTime()
+                ) {
+                    classes.push('selected');
+                }
+
+                html +=
+                    '<button type="button" class="' +
+                    classes.join(' ') +
+                    '" onclick="selectCalendarDate(\'' +
+                    type +
+                    '\',' +
+                    year +
+                    ',' +
+                    month +
+                    ',' +
+                    day +
+                    ')">' +
+                    day +
+                    '</button>';
             }
 
             html += '</div>';
+
             popup.innerHTML = html;
         }
 
         function changeMonth(type, amount) {
-            calendarState[type].month = new Date(
-                calendarState[type].month.getFullYear(),
-                calendarState[type].month.getMonth() + amount,
-                1
-            );
+
+            calendarState[type].month =
+                new Date(
+                    calendarState[type]
+                        .month
+                        .getFullYear(),
+
+                    calendarState[type]
+                        .month
+                        .getMonth() + amount,
+
+                    1
+                );
 
             renderCalendar(type);
 
@@ -2505,146 +2072,454 @@
                         ? 'renewalCalendar'
                         : 'cancelCalendar'
                 )
-                .classList.add('open');
+                .classList
+                .add('open');
         }
 
-        function selectCalendarDate(type, year, month, day) {
-            const date = dateOnly(new Date(year, month, day));
-            calendarState[type].date = date;
-            calendarState[type].month = new Date(date.getFullYear(), date.getMonth(), 1);
+        function selectCalendarDate(
+            type,
+            year,
+            month,
+            day
+        ) {
+
+            const date =
+                dateOnly(
+                    new Date(
+                        year,
+                        month,
+                        day
+                    )
+                );
+
+            calendarState[type].date =
+                date;
+
+            calendarState[type].month =
+                new Date(
+                    date.getFullYear(),
+                    date.getMonth(),
+                    1
+                );
 
             if (type === 'renewal') {
+
                 renewalDate = date;
-                document.getElementById('renewalDisplay').value = formatDate(date);
+
+                document
+                    .getElementById(
+                        'renewalDisplay'
+                    )
+                    .value =
+                    formatDate(date);
+
             } else {
+
                 cancelDate = date;
-                document.getElementById('cancelDisplay').value = formatDate(date);
+
+                document
+                    .getElementById(
+                        'cancelDisplay'
+                    )
+                    .value =
+                    formatDate(date);
             }
+
             closeCalendars();
         }
 
         function showResult(data) {
-            const set = (id, value) => document.getElementById(id).textContent = value;
 
-            set('resultPenalty', money(data.penalty));
-            set('resultType', data.type);
-            set('resultReference', money(data.reference));
-            set('resultPeriod', data.period);
-            set('resultPercentage', data.percentage);
-            set('resultRemaining', data.remaining);
-            set('resultElapsed', data.elapsed || '-');
-            set('resultEndDate', data.endDate || '-');
-            set('resultStatusShort', data.statusShort || 'CONCLUÍDO');
-            set('resultStatus', data.status);
+            const set = (
+                id,
+                value
+            ) => {
+                document
+                    .getElementById(id)
+                    .textContent = value;
+            };
 
-            document.getElementById('resultEndDateContainer').style.display = data.showDates ? '' : 'none';
-            document.getElementById('result').classList.add('visible');
+            set(
+                'resultPenalty',
+                money(data.penalty)
+            );
+
+            set(
+                'resultType',
+                data.type
+            );
+
+            set(
+                'resultReference',
+                money(data.reference)
+            );
+
+            set(
+                'resultPeriod',
+                data.period
+            );
+
+            set(
+                'resultPercentage',
+                data.percentage
+            );
+
+            set(
+                'resultRemaining',
+                data.remaining
+            );
+
+            set(
+                'resultElapsed',
+                data.elapsed || '-'
+            );
+
+            set(
+                'resultEndDate',
+                data.endDate || '-'
+            );
+
+            set(
+                'resultStatusShort',
+                data.statusShort || 'CONCLUÍDO'
+            );
+
+            set(
+                'resultStatus',
+                data.status
+            );
+
+            document
+                .getElementById(
+                    'resultEndDateContainer'
+                )
+                .style.display =
+                data.showDates
+                    ? ''
+                    : 'none';
+
+            document
+                .getElementById('result')
+                .classList
+                .add('visible');
 
             lastCalculation = [
-                'ALCANS - CALCULADORA DE MULTAS', '',
+                'ALCANS - CALCULADORA DE MULTAS',
+                '',
                 'Tipo: ' + data.type,
-                'Valor de referência: ' + money(data.reference),
-                'Fidelidade: ' + data.period,
-                'Tempo cumprido: ' + (data.elapsed || 'Não aplicável'),
-                'Tempo restante: ' + data.remaining,
-                'Término da fidelidade: ' + (data.endDate || 'Não aplicável'),
-                'Percentual aplicado: ' + data.percentage, '',
-                'VALOR DA MULTA: ' + money(data.penalty), '',
+                'Valor de referência: ' +
+                    money(data.reference),
+                'Fidelidade: ' +
+                    data.period,
+                'Tempo cumprido: ' +
+                    (
+                        data.elapsed ||
+                        'Não aplicável'
+                    ),
+                'Tempo restante: ' +
+                    data.remaining,
+                'Término da fidelidade: ' +
+                    (
+                        data.endDate ||
+                        'Não aplicável'
+                    ),
+                'Percentual aplicado: ' +
+                    data.percentage,
+                '',
+                'VALOR DA MULTA: ' +
+                    money(data.penalty),
+                '',
                 data.status,
-                '', 'Simulação para conferência contratual.'
+                '',
+                'Simulação para conferência contratual.'
             ].join('\n');
 
-            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            document
+                .getElementById('result')
+                .scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
         }
 
         function calculateInternet() {
-            const amountCents = parseMoney(document.getElementById('fineAmount').value);
+
+            const amountCents =
+                parseMoney(
+                    document
+                        .getElementById(
+                            'fineAmount'
+                        )
+                        .value
+                );
+
             if (amountCents <= 0) {
-                alert('Informe o valor integral da multa.');
-                return;
-            }
-            if (!renewalDate) {
-                alert('Informe a data da última renovação.');
-                return;
-            }
-            if (!cancelDate) {
-                alert('Informe a data da solicitação de cancelamento.');
-                return;
-            }
-            if (cancelDate < renewalDate) {
-                alert('A data de cancelamento não pode ser anterior à data de renovação.');
+
+                alert(
+                    'Informe o valor integral da multa.'
+                );
+
                 return;
             }
 
-            const endDate = addMonths(renewalDate, 12);
-            const totalDays = daysBetween(renewalDate, endDate);
-            const elapsedDays = Math.min(totalDays, Math.max(0, daysBetween(renewalDate, cancelDate)));
-            const remainingDays = Math.max(0, totalDays - elapsedDays);
-            const penaltyCents = Math.round(amountCents * remainingDays / totalDays);
-            const percentage = (remainingDays / totalDays * 100);
+            if (!renewalDate) {
+
+                alert(
+                    'Informe a data da última renovação.'
+                );
+
+                return;
+            }
+
+            if (!cancelDate) {
+
+                alert(
+                    'Informe a data da solicitação de cancelamento.'
+                );
+
+                return;
+            }
+
+            if (cancelDate < renewalDate) {
+
+                alert(
+                    'A data de cancelamento não pode ser anterior à data de renovação.'
+                );
+
+                return;
+            }
+
+            const endDate =
+                addMonths(
+                    renewalDate,
+                    12
+                );
+
+            const totalDays =
+                daysBetween(
+                    renewalDate,
+                    endDate
+                );
+
+            const elapsedDays =
+                Math.min(
+                    totalDays,
+                    Math.max(
+                        0,
+                        daysBetween(
+                            renewalDate,
+                            cancelDate
+                        )
+                    )
+                );
+
+            const remainingDays =
+                Math.max(
+                    0,
+                    totalDays -
+                    elapsedDays
+                );
+
+            const penaltyCents =
+                Math.round(
+                    amountCents *
+                    remainingDays /
+                    totalDays
+                );
+
+            const percentage =
+                remainingDays /
+                totalDays *
+                100;
 
             showResult({
+
                 type: 'INTERNET',
-                penalty: penaltyCents,
-                reference: amountCents,
-                remaining: remainingDays + ' dias',
-                period: '12 meses',
-                percentage: percentage.toFixed(2).replace('.', ',') + '%',
-                elapsed: elapsedDays + ' dias',
-                endDate: formatDate(endDate),
-                showDates: true,
-                statusShort: remainingDays === 0 ? 'FIDELIDADE CUMPRIDA' : 'MULTA PROPORCIONAL',
-                status: remainingDays === 0
-                    ? 'A fidelidade já foi cumprida. Multa proporcional: R$ 0,00.'
-                    : 'Restam ' + remainingDays + ' dias de fidelidade. A multa proporcional corresponde a ' + percentage.toFixed(2).replace('.', ',') + '% do valor integral.'
+
+                penalty:
+                    penaltyCents,
+
+                reference:
+                    amountCents,
+
+                remaining:
+                    remainingDays +
+                    ' dias',
+
+                period:
+                    '12 meses',
+
+                percentage:
+                    percentage
+                        .toFixed(2)
+                        .replace('.', ',') +
+                    '%',
+
+                elapsed:
+                    elapsedDays +
+                    ' dias',
+
+                endDate:
+                    formatDate(endDate),
+
+                showDates:
+                    true,
+
+                statusShort:
+                    remainingDays === 0
+                        ? 'FIDELIDADE CUMPRIDA'
+                        : 'MULTA PROPORCIONAL',
+
+                status:
+                    remainingDays === 0
+                        ? 'A fidelidade já foi cumprida. Multa proporcional: R$ 0,00.'
+                        : 'Restam ' +
+                          remainingDays +
+                          ' dias de fidelidade. A multa proporcional corresponde a ' +
+                          percentage
+                              .toFixed(2)
+                              .replace('.', ',') +
+                          '% do valor integral.'
             });
         }
 
         function calculateCamera() {
-            const monthlyCents = parseMoney(document.getElementById('cameraValue').value);
+
+            const monthlyCents =
+                parseMoney(
+                    document
+                        .getElementById(
+                            'cameraValue'
+                        )
+                        .value
+                );
+
             if (monthlyCents <= 0) {
-                alert('Informe o valor mensal da câmera.');
+
+                alert(
+                    'Informe o valor mensal da câmera.'
+                );
+
                 return;
             }
 
-            const referenceCents = monthlyCents * 36;
-            const penaltyCents = Math.round(referenceCents * 30 / 100);
+            const referenceCents =
+                monthlyCents * 36;
+
+            const penaltyCents =
+                Math.round(
+                    referenceCents *
+                    30 /
+                    100
+                );
 
             showResult({
+
                 type: 'CÂMERAS',
-                penalty: penaltyCents,
-                reference: referenceCents,
-                remaining: 'Regra fixa',
-                period: '36 meses',
-                percentage: '30%',
-                elapsed: '',
-                endDate: '',
-                showDates: false,
-                statusShort: 'MULTA FIXA',
-                status: 'Valor mensal: ' + money(monthlyCents) + '. Valor de referência: ' + money(monthlyCents) + ' × 36 = ' + money(referenceCents) + '. Multa de 30%: ' + money(penaltyCents) + '.'
+
+                penalty:
+                    penaltyCents,
+
+                reference:
+                    referenceCents,
+
+                remaining:
+                    'Regra fixa',
+
+                period:
+                    '36 meses',
+
+                percentage:
+                    '30%',
+
+                elapsed:
+                    '',
+
+                endDate:
+                    '',
+
+                showDates:
+                    false,
+
+                statusShort:
+                    'MULTA FIXA',
+
+                status:
+                    'Valor mensal: ' +
+                    money(monthlyCents) +
+                    '. Valor de referência: ' +
+                    money(monthlyCents) +
+                    ' × 36 = ' +
+                    money(referenceCents) +
+                    '. Multa de 30%: ' +
+                    money(penaltyCents) +
+                    '.'
             });
         }
 
         function calculateFine(event) {
-            if (event) event.preventDefault();
-            document.getElementById('result').classList.remove('visible');
-            if (selectedType === 'internet') calculateInternet();
-            else calculateCamera();
+
+            if (event) {
+                event.preventDefault();
+            }
+
+            document
+                .getElementById('result')
+                .classList
+                .remove('visible');
+
+            if (
+                selectedType ===
+                'internet'
+            ) {
+                calculateInternet();
+            } else {
+                calculateCamera();
+            }
         }
 
         async function copyResult() {
-            if (!lastCalculation) return;
+
+            if (!lastCalculation) {
+                return;
+            }
+
             try {
-                await navigator.clipboard.writeText(lastCalculation);
-                alert('Resumo copiado com sucesso!');
+
+                await navigator.clipboard
+                    .writeText(
+                        lastCalculation
+                    );
+
+                alert(
+                    'Resumo copiado com sucesso!'
+                );
+
             } catch (e) {
-                const area = document.createElement('textarea');
-                area.value = lastCalculation;
-                document.body.appendChild(area);
+
+                const area =
+                    document.createElement(
+                        'textarea'
+                    );
+
+                area.value =
+                    lastCalculation;
+
+                document.body.appendChild(
+                    area
+                );
+
                 area.select();
-                document.execCommand('copy');
+
+                document.execCommand(
+                    'copy'
+                );
+
                 area.remove();
-                alert('Resumo copiado com sucesso!');
+
+                alert(
+                    'Resumo copiado com sucesso!'
+                );
             }
         }
 
@@ -2731,7 +2606,6 @@
             ]
 
         ];
-
 
         const saoCarlosFines = [
 
@@ -2877,52 +2751,171 @@
 
         ];
 
-
-
-
         function normalizeText(text) {
-            return String(text).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+            return String(text)
+                .normalize('NFD')
+                .replace(
+                    /[\u0300-\u036f]/g,
+                    ''
+                )
+                .toLowerCase();
         }
 
-        function renderFineList(id, list, search) {
-            const container = document.getElementById(id);
-            const filtered = list.filter(item => normalizeText(item[0]).includes(normalizeText(search)));
-            container.innerHTML = filtered.map(item =>
-                '<div class="fine-item"><span>' + item[0] + '</span><strong>' + money(item[1]) + '</strong></div>'
-            ).join('');
+        function renderFineList(
+            id,
+            list,
+            search
+        ) {
+
+            const container =
+                document.getElementById(id);
+
+            const filtered =
+                list.filter(
+                    item =>
+                        normalizeText(
+                            item[0]
+                        ).includes(
+                            normalizeText(
+                                search
+                            )
+                        )
+                );
+
+            container.innerHTML =
+                filtered
+                    .map(
+                        item =>
+                            '<div class="fine-item">' +
+                            '<span>' +
+                            item[0] +
+                            '</span>' +
+                            '<strong>' +
+                            money(item[1]) +
+                            '</strong>' +
+                            '</div>'
+                    )
+                    .join('');
+
             return filtered.length;
         }
 
         function renderFines() {
-            const search = document.getElementById('fineSearch').value || '';
-            const total = renderFineList('generalFines', generalFines, search) + renderFineList('saoCarlosFines', saoCarlosFines, search);
-            document.getElementById('noResults').style.display = total === 0 ? 'block' : 'none';
+
+            const search =
+                document
+                    .getElementById(
+                        'fineSearch'
+                    )
+                    .value || '';
+
+            const total =
+                renderFineList(
+                    'generalFines',
+                    generalFines,
+                    search
+                ) +
+                renderFineList(
+                    'saoCarlosFines',
+                    saoCarlosFines,
+                    search
+                );
+
+            document
+                .getElementById(
+                    'noResults'
+                )
+                .style.display =
+                total === 0
+                    ? 'block'
+                    : 'none';
         }
 
-        function searchFines() { renderFines(); }
-
-        // Inicialização: nenhum cálculo depende de outro script ou biblioteca externa.
-        document.addEventListener('DOMContentLoaded', function () {
-            const calculateButton = document.querySelector('.calculate-button');
-            if (calculateButton) {
-                calculateButton.type = 'button';
-                calculateButton.onclick = calculateFine;
-            }
-
-            const renewal = document.getElementById('renewalDisplay');
-            const cancel = document.getElementById('cancelDisplay');
-
-            if (renewal) renewal.addEventListener('click', function (e) { e.stopPropagation(); openCalendar('renewal'); });
-            if (cancel) cancel.addEventListener('click', function (e) { e.stopPropagation(); openCalendar('cancel'); });
-
-            document.addEventListener('click', function (e) {
-                if (!e.target.closest('.date-wrapper')) closeCalendars();
-            });
-
+        function searchFines() {
             renderFines();
-        });
+        }
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+
+                const calculateButton =
+                    document.querySelector(
+                        '.calculate-button'
+                    );
+
+                if (calculateButton) {
+
+                    calculateButton.type =
+                        'button';
+
+                    calculateButton.onclick =
+                        calculateFine;
+                }
+
+                const renewal =
+                    document.getElementById(
+                        'renewalDisplay'
+                    );
+
+                const cancel =
+                    document.getElementById(
+                        'cancelDisplay'
+                    );
+
+                if (renewal) {
+
+                    renewal.addEventListener(
+                        'click',
+                        function (e) {
+
+                            e.stopPropagation();
+
+                            openCalendar(
+                                'renewal'
+                            );
+                        }
+                    );
+                }
+
+                if (cancel) {
+
+                    cancel.addEventListener(
+                        'click',
+                        function (e) {
+
+                            e.stopPropagation();
+
+                            openCalendar(
+                                'cancel'
+                            );
+                        }
+                    );
+                }
+
+                document.addEventListener(
+                    'click',
+                    function (e) {
+
+                        if (
+                            !e.target.closest(
+                                '.date-wrapper'
+                            )
+                        ) {
+                            closeCalendars();
+                        }
+                    }
+                );
+
+                renderFines();
+            }
+        );
+
     </script>
+
     <script src="auth.js?v=2"></script>
+
 </body>
 
 </html>
