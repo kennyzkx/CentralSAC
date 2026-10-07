@@ -1552,7 +1552,6 @@
       }
 
     }
-
   </style>
 
 
@@ -1574,11 +1573,6 @@
     <button class="menu-button" id="menuButton" aria-label="Abrir menu">
       ☰
     </button>
-
-    <div class="logo">
-      <img src="logo-alcans.png" alt="Alcans">
-      <small>PORTAL DO ATENDENTE</small>
-    </div>
 
     <div class="header-title">
       PROCEDIMENTOS
@@ -1617,11 +1611,7 @@
       Sistemas
     </button>
 
-    <button
-      class="menu-item"
-      onclick="window.location.href='indisponibilidade.html'"
-      type="button"
-    >
+    <button class="menu-item" onclick="window.location.href='indisponibilidade.html'" type="button">
       <span class="menu-icon" aria-hidden="true">📊</span>
       Análise de Consumo
     </button>
@@ -1672,20 +1662,11 @@
           🔎
         </span>
 
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Pesquisar procedimento..."
-          autocomplete="off"
-        >
+        <input type="text" id="searchInput" placeholder="Pesquisar procedimento..." autocomplete="off">
 
       </div>
 
-      <button
-        class="btn btn-primary gestao-only"
-        id="btnNovoProcedimento"
-        onclick="abrirNovoProcedimento()"
-      >
+      <button class="btn btn-primary gestao-only" id="btnNovoProcedimento" onclick="abrirNovoProcedimento()">
         + Novo procedimento
       </button>
 
@@ -1698,11 +1679,7 @@
 
     <div class="filters" id="filters">
 
-      <button
-        class="filter active"
-        data-category="Todos"
-        onclick="selecionarCategoria('Todos', this)"
-      >
+      <button class="filter active" data-category="Todos" onclick="selecionarCategoria('Todos', this)">
         Todos
       </button>
 
@@ -1729,10 +1706,7 @@
     </div>
 
 
-    <div
-      class="procedimentos-grid"
-      id="procedimentosGrid"
-    >
+    <div class="procedimentos-grid" id="procedimentosGrid">
 
       <div class="loading">
         Carregando procedimentos...
@@ -1757,10 +1731,7 @@
           Novo procedimento
         </h2>
 
-        <button
-          class="close"
-          onclick="fecharModal('formModal')"
-        >
+        <button class="close" onclick="fecharModal('formModal')">
           ×
         </button>
 
@@ -1771,10 +1742,7 @@
 
         <div class="modal-body">
 
-          <input
-            type="hidden"
-            id="editId"
-          >
+          <input type="hidden" id="editId">
 
 
           <div class="form-group">
@@ -1783,13 +1751,7 @@
               Título
             </label>
 
-            <input
-              class="form-control"
-              id="titulo"
-              type="text"
-              placeholder="Ex.: Internet lenta"
-              required
-            >
+            <input class="form-control" id="titulo" type="text" placeholder="Ex.: Internet lenta" required>
 
           </div>
 
@@ -1800,13 +1762,7 @@
               Categoria
             </label>
 
-            <input
-              class="form-control"
-              id="categoria"
-              type="text"
-              placeholder="Ex.: Suporte técnico"
-              required
-            >
+            <input class="form-control" id="categoria" type="text" placeholder="Ex.: Suporte técnico" required>
 
           </div>
 
@@ -1817,12 +1773,7 @@
               Descrição
             </label>
 
-            <input
-              class="form-control"
-              id="descricao"
-              type="text"
-              placeholder="Breve descrição do procedimento"
-            >
+            <input class="form-control" id="descricao" type="text" placeholder="Breve descrição do procedimento">
 
           </div>
 
@@ -1833,172 +1784,72 @@
               Conteúdo do procedimento
             </label>
 
-            <div
-              class="editor-toolbar"
-              id="editorToolbar"
-            >
+            <div class="editor-toolbar" id="editorToolbar">
 
-              <button
-                type="button"
-                class="editor-tool"
-                data-command="bold"
-                title="Negrito"
-              >
+              <button type="button" class="editor-tool" data-command="bold" title="Negrito">
                 <strong>B</strong>
               </button>
 
-              <button
-                type="button"
-                class="editor-tool"
-                data-command="italic"
-                title="Itálico"
-              >
+              <button type="button" class="editor-tool" data-command="italic" title="Itálico">
                 <em>I</em>
               </button>
 
-              <button
-                type="button"
-                class="editor-tool"
-                data-command="underline"
-                title="Sublinhado"
-              >
+              <button type="button" class="editor-tool" data-command="underline" title="Sublinhado">
                 <u>U</u>
               </button>
 
               <div class="editor-divider"></div>
 
-              <button
-                type="button"
-                class="editor-tool"
-                data-command="insertUnorderedList"
-                title="Lista com marcadores"
-              >
+              <button type="button" class="editor-tool" data-command="insertUnorderedList" title="Lista com marcadores">
                 •
               </button>
 
-              <button
-                type="button"
-                class="editor-tool"
-                data-command="insertOrderedList"
-                title="Lista numerada"
-              >
+              <button type="button" class="editor-tool" data-command="insertOrderedList" title="Lista numerada">
                 1.
               </button>
 
               <div class="editor-divider"></div>
 
-              <div
-                class="editor-colors"
-                title="Cor do texto"
-              >
+              <div class="editor-colors" title="Cor do texto">
 
-                <button
-                  type="button"
-                  class="editor-color"
-                  data-color="#FF5A00"
-                  title="Laranja"
-                  style="background:#FF5A00"
-                ></button>
+                <button type="button" class="editor-color" data-color="#FF5A00" title="Laranja" style="background:#FF5A00"></button>
 
-                <button
-                  type="button"
-                  class="editor-color"
-                  data-color="#EF4444"
-                  title="Vermelho"
-                  style="background:#EF4444"
-                ></button>
+                <button type="button" class="editor-color" data-color="#EF4444" title="Vermelho" style="background:#EF4444"></button>
 
-                <button
-                  type="button"
-                  class="editor-color"
-                  data-color="#FACC15"
-                  title="Amarelo"
-                  style="background:#FACC15"
-                ></button>
+                <button type="button" class="editor-color" data-color="#FACC15" title="Amarelo" style="background:#FACC15"></button>
 
-                <button
-                  type="button"
-                  class="editor-color"
-                  data-color="#22C55E"
-                  title="Verde"
-                  style="background:#22C55E"
-                ></button>
+                <button type="button" class="editor-color" data-color="#22C55E" title="Verde" style="background:#22C55E"></button>
 
-                <button
-                  type="button"
-                  class="editor-color"
-                  data-color="#3B82F6"
-                  title="Azul"
-                  style="background:#3B82F6"
-                ></button>
+                <button type="button" class="editor-color" data-color="#3B82F6" title="Azul" style="background:#3B82F6"></button>
 
-                <button
-                  type="button"
-                  class="editor-color"
-                  data-color="#A855F7"
-                  title="Roxo"
-                  style="background:#A855F7"
-                ></button>
+                <button type="button" class="editor-color" data-color="#A855F7" title="Roxo" style="background:#A855F7"></button>
 
-                <button
-                  type="button"
-                  class="editor-color white"
-                  data-color="#FFFFFF"
-                  title="Branco"
-                  style="background:#FFFFFF"
-                ></button>
+                <button type="button" class="editor-color white" data-color="#FFFFFF" title="Branco" style="background:#FFFFFF"></button>
 
               </div>
 
               <div class="editor-divider"></div>
 
-              <button
-                type="button"
-                class="editor-tool"
-                id="btnHighlight"
-                title="Marca-texto amarelo"
-              >
+              <button type="button" class="editor-tool" id="btnHighlight" title="Marca-texto amarelo">
                 🖍️
               </button>
 
-              <button
-                type="button"
-                class="editor-tool"
-                id="btnClearFormat"
-                title="Limpar formatação"
-              >
+              <button type="button" class="editor-tool" id="btnClearFormat" title="Limpar formatação">
                 Tx
               </button>
 
-              <button
-                type="button"
-                class="editor-tool"
-                data-command="undo"
-                title="Desfazer"
-              >
+              <button type="button" class="editor-tool" data-command="undo" title="Desfazer">
                 ↶
               </button>
 
-              <button
-                type="button"
-                class="editor-tool"
-                data-command="redo"
-                title="Refazer"
-              >
+              <button type="button" class="editor-tool" data-command="redo" title="Refazer">
                 ↷
               </button>
 
             </div>
 
 
-            <div
-              class="rich-editor"
-              id="conteudo"
-              contenteditable="true"
-              role="textbox"
-              aria-multiline="true"
-              data-placeholder="Digite o passo a passo do procedimento..."
-            ></div>
+            <div class="rich-editor" id="conteudo" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Digite o passo a passo do procedimento..."></div>
 
           </div>
 
@@ -2007,19 +1858,11 @@
 
         <div class="modal-footer">
 
-          <button
-            type="button"
-            class="btn btn-secondary"
-            onclick="fecharModal('formModal')"
-          >
+          <button type="button" class="btn btn-secondary" onclick="fecharModal('formModal')">
             Cancelar
           </button>
 
-          <button
-            type="submit"
-            class="btn btn-primary"
-            id="saveButton"
-          >
+          <button type="submit" class="btn btn-primary" id="saveButton">
             Salvar
           </button>
 
@@ -2046,10 +1889,7 @@
           Procedimento
         </h2>
 
-        <button
-          class="close"
-          onclick="fecharModal('viewModal')"
-        >
+        <button class="close" onclick="fecharModal('viewModal')">
           ×
         </button>
 
@@ -2058,37 +1898,22 @@
 
       <div class="modal-body">
 
-        <div
-          class="view-category"
-          id="viewCategory"
-        ></div>
+        <div class="view-category" id="viewCategory"></div>
 
-        <div
-          class="view-description"
-          id="viewDescription"
-        ></div>
+        <div class="view-description" id="viewDescription"></div>
 
-        <div
-          class="view-content"
-          id="viewContent"
-        ></div>
+        <div class="view-content" id="viewContent"></div>
 
       </div>
 
 
       <div class="modal-footer">
 
-        <button
-          class="btn btn-copy"
-          onclick="copiarProcedimento()"
-        >
+        <button class="btn btn-copy" onclick="copiarProcedimento()">
           📋 Copiar procedimento
         </button>
 
-        <button
-          class="btn btn-secondary"
-          onclick="fecharModal('viewModal')"
-        >
+        <button class="btn btn-secondary" onclick="fecharModal('viewModal')">
           Fechar
         </button>
 
@@ -2654,9 +2479,9 @@
 
             <p class="procedimento-descricao">
               ${escaparHTML(
-                item.descricao ||
-                "Sem descrição cadastrada."
-              )}
+            item.descricao ||
+            "Sem descrição cadastrada."
+          )}
             </p>
 
 
@@ -2670,9 +2495,8 @@
               </button>
 
 
-              ${
-                isGestao
-                  ? `
+              ${isGestao
+              ? `
                     <div class="card-actions">
 
                       <button
@@ -2694,8 +2518,8 @@
 
                     </div>
                   `
-                  : ""
-              }
+              : ""
+            }
 
 
             </div>

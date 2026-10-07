@@ -985,26 +985,13 @@
 
     <header class="header">
 
-        <button
-            class="header-back"
-            id="menuButton"
-            aria-label="Abrir menu"
-            type="button"
-        >
+        <button class="header-back" id="menuButton" aria-label="Abrir menu" type="button">
             ☰
         </button>
 
         <div class="logo-area">
 
-            <img
-                src="logo-alcans.png"
-                alt="Alcans"
-                class="header-logo"
-            >
-
-            <div class="logo-sub">
-                PORTAL DO ATENDENTE
-            </div>
+            <img src="logo-alcans.png" alt="Alcans" class="header-logo">
 
         </div>
 
@@ -1021,56 +1008,32 @@
             Portal do Atendente
         </div>
 
-        <button
-            class="menu-item"
-            onclick="window.location.href='index.html'"
-            type="button"
-        >
+        <button class="menu-item" onclick="window.location.href='index.html'" type="button">
             <span class="menu-icon">🏠</span>
             Início
         </button>
 
-        <button
-            class="menu-item active"
-            onclick="window.location.href='calculadora.html'"
-            type="button"
-        >
+        <button class="menu-item active" onclick="window.location.href='calculadora.html'" type="button">
             <span class="menu-icon" aria-hidden="true">🧮</span>
             Calcular multas
         </button>
 
-        <button
-            class="menu-item"
-            onclick="window.location.href='procedimentos.html'"
-            type="button"
-        >
+        <button class="menu-item" onclick="window.location.href='procedimentos.html'" type="button">
             <span class="menu-icon" aria-hidden="true">📋</span>
             Procedimentos
         </button>
 
-        <button
-            class="menu-item"
-            onclick="window.location.href='sistemas.html'"
-            type="button"
-        >
+        <button class="menu-item" onclick="window.location.href='sistemas.html'" type="button">
             <span class="menu-icon" aria-hidden="true">🖥️</span>
             Sistemas
         </button>
 
-        <button
-            class="menu-item"
-            onclick="window.location.href='indisponibilidade.html'"
-            type="button"
-        >
+        <button class="menu-item" onclick="window.location.href='indisponibilidade.html'" type="button">
             <span class="menu-icon" aria-hidden="true">📊</span>
             Análise de Consumo
         </button>
 
-        <button
-            class="menu-item"
-            onclick="window.location.href='escala.html'"
-            type="button"
-        >
+        <button class="menu-item" onclick="window.location.href='escala.html'" type="button">
             <span class="menu-icon" aria-hidden="true">📅</span>
             Escala
         </button>
@@ -1085,11 +1048,7 @@
 
         <section class="hero">
 
-            <svg
-                class="constellations"
-                viewBox="0 0 500 220"
-                fill="none"
-            >
+            <svg class="constellations" viewBox="0 0 500 220" fill="none">
 
                 <g stroke="white" stroke-width="1" opacity=".5">
 
@@ -1136,19 +1095,11 @@
 
         <div class="main-tabs">
 
-            <button
-                class="main-tab active"
-                id="calculatorTab"
-                onclick="showMainTab('calculator')"
-            >
+            <button class="main-tab active" id="calculatorTab" onclick="showMainTab('calculator')">
                 🧮 Calculadora de multas
             </button>
 
-            <button
-                class="main-tab"
-                id="finesTab"
-                onclick="showMainTab('fines')"
-            >
+            <button class="main-tab" id="finesTab" onclick="showMainTab('fines')">
                 💰 Valor das multas
             </button>
 
@@ -1169,11 +1120,7 @@
 
                 <div class="type-selector">
 
-                    <button
-                        class="type-option active"
-                        id="internetOption"
-                        onclick="selectType('internet')"
-                    >
+                    <button class="type-option active" id="internetOption" onclick="selectType('internet')">
 
                         <strong>
                             ◉ Planos de internet
@@ -1185,11 +1132,7 @@
 
                     </button>
 
-                    <button
-                        class="type-option"
-                        id="cameraOption"
-                        onclick="selectType('camera')"
-                    >
+                    <button class="type-option" id="cameraOption" onclick="selectType('camera')">
 
                         <strong>
                             ▣ Câmeras
@@ -1214,13 +1157,7 @@
                                 Valor integral da multa do plano (R$)
                             </label>
 
-                            <input
-                                type="number"
-                                id="fineAmount"
-                                min="0.01"
-                                step="0.01"
-                                placeholder="Ex: 120,00"
-                            >
+                            <input type="number" id="fineAmount" min="0.01" step="0.01" placeholder="Ex: 120,00">
 
                             <small>
                                 Informe o valor integral correspondente aos 12 meses.
@@ -1237,23 +1174,13 @@
 
                             <div class="date-wrapper">
 
-                                <input
-                                    type="text"
-                                    class="date-display"
-                                    id="renewalDisplay"
-                                    placeholder="DD/MM/AAAA"
-                                    readonly
-                                    autocomplete="off"
-                                >
+                                <input type="text" class="date-display" id="renewalDisplay" placeholder="DD/MM/AAAA" readonly autocomplete="off">
 
                                 <span class="calendar-icon">
                                     📅
                                 </span>
 
-                                <div
-                                    class="calendar-popup"
-                                    id="renewalCalendar"
-                                ></div>
+                                <div class="calendar-popup" id="renewalCalendar"></div>
 
                             </div>
 
@@ -1268,23 +1195,13 @@
 
                             <div class="date-wrapper">
 
-                                <input
-                                    type="text"
-                                    class="date-display"
-                                    id="cancelDisplay"
-                                    placeholder="DD/MM/AAAA"
-                                    readonly
-                                    autocomplete="off"
-                                >
+                                <input type="text" class="date-display" id="cancelDisplay" placeholder="DD/MM/AAAA" readonly autocomplete="off">
 
                                 <span class="calendar-icon">
                                     📅
                                 </span>
 
-                                <div
-                                    class="calendar-popup"
-                                    id="cancelCalendar"
-                                ></div>
+                                <div class="calendar-popup" id="cancelCalendar"></div>
 
                             </div>
 
@@ -1295,10 +1212,7 @@
                 </div>
 
 
-                <div
-                    id="cameraForm"
-                    style="display:none"
-                >
+                <div id="cameraForm" style="display:none">
 
                     <div class="form-grid">
 
@@ -1308,13 +1222,7 @@
                                 Valor mensal da câmera (R$)
                             </label>
 
-                            <input
-                                type="number"
-                                id="cameraValue"
-                                min="0.01"
-                                step="0.01"
-                                placeholder="Ex: 30,00"
-                            >
+                            <input type="number" id="cameraValue" min="0.01" step="0.01" placeholder="Ex: 30,00">
 
                             <small>
                                 O sistema multiplicará o valor por 36 e aplicará 30%.
@@ -1327,18 +1235,12 @@
                 </div>
 
 
-                <button
-                    type="button"
-                    class="calculate-button"
-                >
+                <button type="button" class="calculate-button">
                     CALCULAR MULTA
                 </button>
 
 
-                <div
-                    class="result"
-                    id="result"
-                >
+                <div class="result" id="result">
 
                     <div class="result-header">
 
@@ -1346,10 +1248,7 @@
                             Resultado da simulação
                         </h3>
 
-                        <span
-                            class="result-badge"
-                            id="resultBadge"
-                        >
+                        <span class="result-badge" id="resultBadge">
                             CONCLUÍDO
                         </span>
 
@@ -1449,10 +1348,7 @@
                         </div>
 
 
-                        <div
-                            class="detail"
-                            id="resultEndDateContainer"
-                        >
+                        <div class="detail" id="resultEndDateContainer">
 
                             <span>
                                 Fim da fidelidade
@@ -1480,16 +1376,10 @@
                     </div>
 
 
-                    <div
-                        class="result-status"
-                        id="resultStatus"
-                    ></div>
+                    <div class="result-status" id="resultStatus"></div>
 
 
-                    <button
-                        class="copy-button"
-                        onclick="copyResult()"
-                    >
+                    <button class="copy-button" onclick="copyResult()">
                         COPIAR RESUMO
                     </button>
 
@@ -1513,10 +1403,7 @@
         </div>
 
 
-        <div
-            class="fines-page"
-            id="finesPage"
-        >
+        <div class="fines-page" id="finesPage">
 
             <div class="fines-header">
 
@@ -1533,12 +1420,7 @@
 
             <div class="search-box">
 
-                <input
-                    type="text"
-                    id="fineSearch"
-                    placeholder="Pesquisar multa..."
-                    oninput="searchFines()"
-                >
+                <input type="text" id="fineSearch" placeholder="Pesquisar multa..." oninput="searchFines()">
 
             </div>
 
@@ -1557,10 +1439,7 @@
 
                 </div>
 
-                <div
-                    class="fines-list"
-                    id="generalFines"
-                ></div>
+                <div class="fines-list" id="generalFines"></div>
 
             </div>
 
@@ -1579,18 +1458,12 @@
 
                 </div>
 
-                <div
-                    class="fines-list"
-                    id="saoCarlosFines"
-                ></div>
+                <div class="fines-list" id="saoCarlosFines"></div>
 
             </div>
 
 
-            <div
-                class="no-results"
-                id="noResults"
-            >
+            <div class="no-results" id="noResults">
                 Nenhuma multa encontrada.
             </div>
 
@@ -2208,26 +2081,26 @@
                 '',
                 'Tipo: ' + data.type,
                 'Valor de referência: ' +
-                    money(data.reference),
+                money(data.reference),
                 'Fidelidade: ' +
-                    data.period,
+                data.period,
                 'Tempo cumprido: ' +
-                    (
-                        data.elapsed ||
-                        'Não aplicável'
-                    ),
+                (
+                    data.elapsed ||
+                    'Não aplicável'
+                ),
                 'Tempo restante: ' +
-                    data.remaining,
+                data.remaining,
                 'Término da fidelidade: ' +
-                    (
-                        data.endDate ||
-                        'Não aplicável'
-                    ),
+                (
+                    data.endDate ||
+                    'Não aplicável'
+                ),
                 'Percentual aplicado: ' +
-                    data.percentage,
+                data.percentage,
                 '',
                 'VALOR DA MULTA: ' +
-                    money(data.penalty),
+                money(data.penalty),
                 '',
                 data.status,
                 '',
@@ -2374,12 +2247,12 @@
                     remainingDays === 0
                         ? 'A fidelidade já foi cumprida. Multa proporcional: R$ 0,00.'
                         : 'Restam ' +
-                          remainingDays +
-                          ' dias de fidelidade. A multa proporcional corresponde a ' +
-                          percentage
-                              .toFixed(2)
-                              .replace('.', ',') +
-                          '% do valor integral.'
+                        remainingDays +
+                        ' dias de fidelidade. A multa proporcional corresponde a ' +
+                        percentage
+                            .toFixed(2)
+                            .replace('.', ',') +
+                        '% do valor integral.'
             });
         }
 
