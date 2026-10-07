@@ -432,8 +432,7 @@
         }
 
         .primary-button,
-        .secondary-button,
-        .danger-button {
+        .secondary-button {
             border: none;
             border-radius: 8px;
             padding: 12px 17px;
@@ -461,16 +460,6 @@
         .secondary-button:hover {
             border-color: var(--laranja);
             color: var(--laranja);
-        }
-
-        .danger-button {
-            background: rgba(239, 68, 68, .12);
-            border: 1px solid rgba(239, 68, 68, .3);
-            color: #F87171;
-        }
-
-        .danger-button:hover {
-            background: rgba(239, 68, 68, .2);
         }
 
         .status {
@@ -685,1434 +674,1438 @@
 
 <body>
 
-    <header class="header">
+<header class="header">
 
-        <button
-            class="header-menu"
-            id="menuButton"
-            type="button"
-            aria-label="Abrir menu"
-        >
-            ☰
-        </button>
+    <button
+        class="header-menu"
+        id="menuButton"
+        type="button"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
 
-        <div class="logo-area">
+    <div class="logo-area">
 
-            <div class="header-logo">
-                <img src="logo-alcans.png" alt="Alcans">
-            </div>
-
-            <div class="logo-sub">
-                CENTRALSAC
-            </div>
-
+        <div class="header-logo">
+            <img src="logo-alcans.png" alt="Alcans">
         </div>
 
-        <div class="header-label">
-            PORTAL DO ATENDENTE
+        <div class="logo-sub">
+            CENTRALSAC
         </div>
 
-    </header>
+    </div>
 
-    <aside class="sidebar" id="sidebar">
+    <div class="header-label">
+        PORTAL DO ATENDENTE
+    </div>
 
-        <div class="menu-title">
-            Navegação
+</header>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="menu-title">
+        Navegação
+    </div>
+
+    <button class="menu-item"
+        onclick="window.location.href='index.html'"
+        type="button">
+        <span class="menu-icon">🏠</span>
+        Início
+    </button>
+
+    <button class="menu-item"
+        onclick="window.location.href='calculadora.html'"
+        type="button">
+        <span class="menu-icon">🧮</span>
+        Calcular multas
+    </button>
+
+    <button class="menu-item"
+        onclick="window.location.href='procedimentos.html'"
+        type="button">
+        <span class="menu-icon">📋</span>
+        Procedimentos
+    </button>
+
+    <button class="menu-item"
+        onclick="window.location.href='sistemas.html'"
+        type="button">
+        <span class="menu-icon">🖥️</span>
+        Sistemas
+    </button>
+
+    <button class="menu-item active"
+        onclick="window.location.href='indisponibilidade.html'"
+        type="button">
+        <span class="menu-icon">📊</span>
+        Análise de Consumo
+    </button>
+
+    <button class="menu-item"
+        onclick="window.location.href='escala.html'"
+        type="button">
+        <span class="menu-icon">📅</span>
+        Escala
+    </button>
+
+</aside>
+
+<div class="overlay" id="overlay"></div>
+
+<main class="container">
+
+    <section class="hero">
+
+        <div class="hero-tag">
+            CENTRALSAC • FERRAMENTA INTERNA
         </div>
 
-        <button
-            class="menu-item"
-            onclick="window.location.href='index.html'"
-            type="button"
-        >
-            <span class="menu-icon" aria-hidden="true">🏠</span>
-            Início
-        </button>
-
-        <button
-            class="menu-item"
-            onclick="window.location.href='calculadora.html'"
-            type="button"
-        >
-            <span class="menu-icon" aria-hidden="true">🧮</span>
-            Calcular multas
-        </button>
-
-        <button
-            class="menu-item"
-            onclick="window.location.href='procedimentos.html'"
-            type="button"
-        >
-            <span class="menu-icon" aria-hidden="true">📋</span>
-            Procedimentos
-        </button>
-
-        <button
-            class="menu-item"
-            onclick="window.location.href='sistemas.html'"
-            type="button"
-        >
-            <span class="menu-icon" aria-hidden="true">🖥️</span>
-            Sistemas
-        </button>
-
-        <button
-            class="menu-item active"
-            onclick="window.location.href='indisponibilidade.html'"
-            type="button"
-        >
-            <span class="menu-icon" aria-hidden="true">📊</span>
+        <h1>
             Análise de Consumo
-        </button>
+        </h1>
 
-        <button
-            class="menu-item"
-            onclick="window.location.href='escala.html'"
-            type="button"
+        <p>
+            Importe o relatório de sessões do cliente, selecione o período
+            que deseja analisar e acompanhe automaticamente o tempo total
+            em que o cliente ficou offline e a quantidade de quedas
+            registradas dentro do período.
+        </p>
+
+    </section>
+
+    <section class="card">
+
+        <div class="section-title">
+            1. Selecionar período
+        </div>
+
+        <div class="section-description">
+            Primeiro importe o arquivo para carregar todas as quedas.
+            Depois selecione a data inicial e final pelo calendário para
+            filtrar e calcular somente o período desejado.
+        </div>
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label for="startDisplay">
+                    Início da análise
+                </label>
+
+                <div class="date-wrapper">
+
+                    <input
+                        type="text"
+                        id="startDisplay"
+                        class="date-display"
+                        placeholder="Selecione a data"
+                        readonly
+                    >
+
+                    <span class="calendar-icon">
+                        📅
+                    </span>
+
+                    <div
+                        class="calendar-popup"
+                        id="startCalendar"
+                    ></div>
+
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <label for="endDisplay">
+                    Fim da análise
+                </label>
+
+                <div class="date-wrapper">
+
+                    <input
+                        type="text"
+                        id="endDisplay"
+                        class="date-display"
+                        placeholder="Selecione a data"
+                        readonly
+                    >
+
+                    <span class="calendar-icon">
+                        📅
+                    </span>
+
+                    <div
+                        class="calendar-popup"
+                        id="endCalendar"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="info-box">
+
+            <strong>Importante:</strong>
+            depois de importar o arquivo, todas as quedas serão exibidas
+            na tabela para conferência. A análise e os resultados só serão
+            filtrados/calculados depois que você definir a
+            <strong>data inicial</strong> e a
+            <strong>data final</strong>.
+
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <div class="section-title">
+            2. Importar sessões do MK
+        </div>
+
+        <div class="section-description">
+            Selecione o arquivo Excel exportado do MK Solutions contendo
+            as colunas de início e término das sessões.
+        </div>
+
+        <input
+            type="file"
+            id="fileInput"
+            class="file-input"
+            accept=".xlsx,.xls,.csv"
         >
-            <span class="menu-icon" aria-hidden="true">📅</span>
-            Escala
-        </button>
 
-    </aside>
+        <div class="button-row">
 
-    <div
-        class="overlay"
-        id="overlay"
-    ></div>
-
-    <main class="container">
-
-        <section class="hero">
-
-            <div class="hero-tag">
-                CENTRALSAC • FERRAMENTA INTERNA
-            </div>
-
-            <h1>
-                Análise de Consumo
-            </h1>
-
-            <p>
-                Importe o relatório de sessões do cliente, selecione o período
-                que deseja analisar e acompanhe automaticamente o tempo total
-                em que o cliente ficou offline e a quantidade de quedas
-                registradas dentro do período.
-            </p>
-
-        </section>
-
-        <section class="card">
-
-            <div class="section-title">
-                1. Selecionar período
-            </div>
-
-            <div class="section-description">
-                Selecione somente as datas inicial e final da análise através
-                do calendário. O início será considerado às 00:00:00 e o final
-                às 23:59:59 do dia escolhido.
-            </div>
-
-            <div class="form-grid">
-
-                <div class="field">
-
-                    <label for="startDisplay">
-                        Início da análise
-                    </label>
-
-                    <div class="date-wrapper">
-
-                        <input
-                            type="text"
-                            id="startDisplay"
-                            class="date-display"
-                            placeholder="Selecione a data"
-                            readonly
-                        >
-
-                        <span class="calendar-icon">
-                            📅
-                        </span>
-
-                        <div
-                            class="calendar-popup"
-                            id="startCalendar"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-                <div class="field">
-
-                    <label for="endDisplay">
-                        Fim da análise
-                    </label>
-
-                    <div class="date-wrapper">
-
-                        <input
-                            type="text"
-                            id="endDisplay"
-                            class="date-display"
-                            placeholder="Selecione a data"
-                            readonly
-                        >
-
-                        <span class="calendar-icon">
-                            📅
-                        </span>
-
-                        <div
-                            class="calendar-popup"
-                            id="endCalendar"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="info-box">
-
-                <strong>Como funciona:</strong>
-                escolha a data inicial e a data final diretamente no
-                calendário. Não é necessário informar horário.
-                A análise considera automaticamente todo o período,
-                desde
-                <strong>00:00:00</strong>
-                da data inicial até
-                <strong>23:59:59</strong>
-                da data final.
-
-            </div>
-
-        </section>
-
-        <section class="card">
-
-            <div class="section-title">
-                2. Importar sessões do MK
-            </div>
-
-            <div class="section-description">
-                Selecione o arquivo Excel exportado do MK Solutions contendo
-                as colunas de início e término das sessões.
-                Após a importação, o cálculo será realizado automaticamente.
-            </div>
-
-            <input
-                type="file"
-                id="fileInput"
-                class="file-input"
-                accept=".xlsx,.xls,.csv"
+            <button
+                class="primary-button"
+                id="importButton"
+                type="button"
             >
+                📁 Importar arquivo
+            </button>
 
-            <div class="button-row">
+            <button
+                class="secondary-button"
+                id="clearButton"
+                type="button"
+            >
+                Limpar dados
+            </button>
 
-                <button
-                    class="primary-button"
-                    id="importButton"
-                    type="button"
-                >
-                    📁 Importar arquivo
-                </button>
+        </div>
 
-                <button
-                    class="secondary-button"
-                    id="clearButton"
-                    type="button"
-                >
-                    Limpar dados
-                </button>
+        <div
+            class="status"
+            id="status"
+        ></div>
 
-            </div>
+    </section>
 
-            <div
-                class="status"
-                id="status"
-            ></div>
+    <section class="card">
 
-        </section>
+        <div class="section-title">
+            Resultado da análise
+        </div>
 
-        <section class="card">
+        <div class="section-description">
+            Os resultados serão calculados somente depois que o período
+            inicial e final forem definidos.
+        </div>
 
-            <div class="section-title">
-                Resultado da análise
-            </div>
+        <div class="result-grid">
 
-            <div class="section-description">
-                Os valores abaixo são atualizados automaticamente conforme
-                o período e as sessões.
-            </div>
+            <div class="result-box">
 
-            <div class="result-grid">
-
-                <div class="result-box">
-
-                    <div class="result-label">
-                        Total do período offline
-                    </div>
-
-                    <div
-                        class="result-value"
-                        id="totalOffline"
-                    >
-                        0:00:00
-                    </div>
-
-                    <div class="result-help">
-                        Tempo total de indisponibilidade dentro do período.
-                    </div>
-
+                <div class="result-label">
+                    Total do período offline
                 </div>
 
-                <div class="result-box">
+                <div
+                    class="result-value"
+                    id="totalOffline"
+                >
+                    0:00:00
+                </div>
 
-                    <div class="result-label">
-                        Quantidade de quedas
-                    </div>
-
-                    <div
-                        class="result-value"
-                        id="totalDrops"
-                    >
-                        0
-                    </div>
-
-                    <div class="result-help">
-                        Quedas registradas dentro do período selecionado.
-                    </div>
-
+                <div class="result-help">
+                    Tempo total de indisponibilidade dentro do período.
                 </div>
 
             </div>
 
-        </section>
+            <div class="result-box">
 
-        <section class="card">
+                <div class="result-label">
+                    Quantidade de quedas
+                </div>
 
-            <div class="section-title">
-                Sessões importadas
-            </div>
+                <div
+                    class="result-value"
+                    id="totalDrops"
+                >
+                    0
+                </div>
 
-            <div class="section-description">
-                Você pode editar manualmente os horários das sessões.
-                Ao alterar um horário, o cálculo será atualizado
-                automaticamente.
-            </div>
-
-            <div class="table-wrapper">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Início
-                            </th>
-
-                            <th>
-                                Término
-                            </th>
-
-                            <th>
-                                Tempo offline
-                            </th>
-
-                            <th>
-                                Ação
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="sessionsBody">
-
-                        <tr>
-
-                            <td colspan="4">
-
-                                <div class="empty-state">
-                                    Nenhuma sessão importada.
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
+                <div class="result-help">
+                    Quedas registradas dentro do período selecionado.
+                </div>
 
             </div>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
 
-    <footer class="footer">
-        CentralSAC • Alcans Telecom
-    </footer>
+    <section class="card">
 
-    <script>
+        <div class="section-title">
+            Sessões importadas
+        </div>
 
-        /* =====================================================
-           MENU
-        ===================================================== */
+        <div class="section-description">
+            Todas as quedas importadas serão exibidas aqui imediatamente,
+            mesmo antes de selecionar o período. Assim você pode conferir
+            e editar os dados antes de fazer a análise.
+        </div>
 
-        const menuButton =
-            document.getElementById("menuButton");
+        <div class="table-wrapper">
 
-        const sidebar =
-            document.getElementById("sidebar");
+            <table>
 
-        const overlay =
-            document.getElementById("overlay");
+                <thead>
 
-        function toggleMenu() {
+                    <tr>
 
-            sidebar.classList.toggle("open");
+                        <th>
+                            Início
+                        </th>
 
-            overlay.classList.toggle("active");
+                        <th>
+                            Término
+                        </th>
+
+                        <th>
+                            Tempo offline
+                        </th>
+
+                        <th>
+                            Ação
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="sessionsBody">
+
+                    <tr>
+
+                        <td colspan="4">
+
+                            <div class="empty-state">
+                                Nenhuma sessão importada.
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    CentralSAC • Alcans Telecom
+</footer>
+
+<script>
+
+    /* =====================================================
+       MENU
+    ===================================================== */
+
+    const menuButton =
+        document.getElementById("menuButton");
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    const overlay =
+        document.getElementById("overlay");
+
+    function toggleMenu() {
+
+        sidebar.classList.toggle("open");
+
+        overlay.classList.toggle("active");
+    }
+
+    function closeMenu() {
+
+        sidebar.classList.remove("open");
+
+        overlay.classList.remove("active");
+    }
+
+    menuButton.addEventListener(
+        "click",
+        toggleMenu
+    );
+
+    overlay.addEventListener(
+        "click",
+        closeMenu
+    );
+
+    /* =====================================================
+       VARIÁVEIS
+    ===================================================== */
+
+    let sessions = [];
+
+    let analysisStart = null;
+    let analysisEnd = null;
+
+    const calendarState = {
+
+        start: {
+            date: null,
+            month: new Date()
+        },
+
+        end: {
+            date: null,
+            month: new Date()
         }
 
-        function closeMenu() {
+    };
 
-            sidebar.classList.remove("open");
+    /* =====================================================
+       UTILITÁRIOS
+    ===================================================== */
 
-            overlay.classList.remove("active");
-        }
+    const monthNames = [
+        "janeiro",
+        "fevereiro",
+        "março",
+        "abril",
+        "maio",
+        "junho",
+        "julho",
+        "agosto",
+        "setembro",
+        "outubro",
+        "novembro",
+        "dezembro"
+    ];
 
-        menuButton.addEventListener(
-            "click",
-            toggleMenu
+    function pad(value) {
+
+        return String(value).padStart(
+            2,
+            "0"
         );
+    }
 
-        overlay.addEventListener(
-            "click",
-            closeMenu
+    function formatDate(date) {
+
+        if (!date) {
+            return "";
+        }
+
+        return (
+            pad(date.getDate()) +
+            "/" +
+            pad(date.getMonth() + 1) +
+            "/" +
+            date.getFullYear()
         );
+    }
 
-        /* =====================================================
-           VARIÁVEIS
-        ===================================================== */
+    function formatManualDate(date) {
 
-        let sessions = [];
-
-        let analysisStart = null;
-        let analysisEnd = null;
-
-        const calendarState = {
-
-            start: {
-                date: null,
-                month: new Date()
-            },
-
-            end: {
-                date: null,
-                month: new Date()
-            }
-
-        };
-
-        /* =====================================================
-           UTILITÁRIOS DE DATA
-        ===================================================== */
-
-        const monthNames = [
-            "janeiro",
-            "fevereiro",
-            "março",
-            "abril",
-            "maio",
-            "junho",
-            "julho",
-            "agosto",
-            "setembro",
-            "outubro",
-            "novembro",
-            "dezembro"
-        ];
-
-        function pad(value) {
-
-            return String(value).padStart(
-                2,
-                "0"
-            );
+        if (!date) {
+            return "";
         }
 
-        function formatDate(date) {
+        return (
+            pad(date.getDate()) +
+            "/" +
+            pad(date.getMonth() + 1) +
+            "/" +
+            date.getFullYear() +
+            " " +
+            pad(date.getHours()) +
+            ":" +
+            pad(date.getMinutes()) +
+            ":" +
+            pad(date.getSeconds())
+        );
+    }
 
-            if (!date) {
-                return "";
-            }
+    function parseManualDate(value) {
 
-            return (
-                pad(date.getDate()) +
-                "/" +
-                pad(date.getMonth() + 1) +
-                "/" +
-                date.getFullYear()
-            );
-        }
-
-        function formatManualDate(date) {
-
-            if (!date) {
-                return "";
-            }
-
-            return (
-                pad(date.getDate()) +
-                "/" +
-                pad(date.getMonth() + 1) +
-                "/" +
-                date.getFullYear() +
-                " " +
-                pad(date.getHours()) +
-                ":" +
-                pad(date.getMinutes()) +
-                ":" +
-                pad(date.getSeconds())
-            );
-        }
-
-        function parseManualDate(value) {
-
-            if (!value) {
-                return null;
-            }
-
-            const match =
-                value.trim().match(
-                    /^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/
-                );
-
-            if (!match) {
-                return null;
-            }
-
-            const day =
-                Number(match[1]);
-
-            const month =
-                Number(match[2]) - 1;
-
-            const year =
-                Number(match[3]);
-
-            const hour =
-                Number(match[4]);
-
-            const minute =
-                Number(match[5]);
-
-            const second =
-                Number(match[6]);
-
-            const date =
-                new Date(
-                    year,
-                    month,
-                    day,
-                    hour,
-                    minute,
-                    second
-                );
-
-            if (
-                date.getFullYear() !== year ||
-                date.getMonth() !== month ||
-                date.getDate() !== day ||
-                date.getHours() !== hour ||
-                date.getMinutes() !== minute ||
-                date.getSeconds() !== second
-            ) {
-                return null;
-            }
-
-            return date;
-        }
-
-        function parseMKDate(value) {
-
-            if (
-                value === null ||
-                value === undefined ||
-                value === ""
-            ) {
-                return null;
-            }
-
-            if (value instanceof Date) {
-
-                return isNaN(value.getTime())
-                    ? null
-                    : new Date(value.getTime());
-            }
-
-            if (typeof value === "number") {
-
-                const excelEpoch =
-                    new Date(
-                        Date.UTC(
-                            1899,
-                            11,
-                            30
-                        )
-                    );
-
-                const date =
-                    new Date(
-                        excelEpoch.getTime() +
-                        value * 86400000
-                    );
-
-                return isNaN(date.getTime())
-                    ? null
-                    : date;
-            }
-
-            const text =
-                String(value).trim();
-
-            if (!text) {
-                return null;
-            }
-
-            const manual =
-                parseManualDate(text);
-
-            if (manual) {
-                return manual;
-            }
-
-            const iso =
-                new Date(text);
-
-            if (!isNaN(iso.getTime())) {
-                return iso;
-            }
-
+        if (!value) {
             return null;
         }
 
-        function formatSeconds(totalSeconds) {
-
-            totalSeconds =
-                Math.max(
-                    0,
-                    Math.floor(totalSeconds || 0)
-                );
-
-            const hours =
-                Math.floor(
-                    totalSeconds / 3600
-                );
-
-            const minutes =
-                Math.floor(
-                    (totalSeconds % 3600) / 60
-                );
-
-            const seconds =
-                totalSeconds % 60;
-
-            return (
-                hours +
-                ":" +
-                pad(minutes) +
-                ":" +
-                pad(seconds)
+        const match =
+            value.trim().match(
+                /^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/
             );
+
+        if (!match) {
+            return null;
         }
 
-        function escapeHtml(value) {
+        const day =
+            Number(match[1]);
 
-            return String(value ?? "")
-                .replace(
-                    /&/g,
-                    "&amp;"
-                )
-                .replace(
-                    /</g,
-                    "&lt;"
-                )
-                .replace(
-                    />/g,
-                    "&gt;"
-                )
-                .replace(
-                    /"/g,
-                    "&quot;"
-                )
-                .replace(
-                    /'/g,
-                    "&#039;"
-                );
+        const month =
+            Number(match[2]) - 1;
+
+        const year =
+            Number(match[3]);
+
+        const hour =
+            Number(match[4]);
+
+        const minute =
+            Number(match[5]);
+
+        const second =
+            Number(match[6]);
+
+        const date =
+            new Date(
+                year,
+                month,
+                day,
+                hour,
+                minute,
+                second
+            );
+
+        if (
+            date.getFullYear() !== year ||
+            date.getMonth() !== month ||
+            date.getDate() !== day ||
+            date.getHours() !== hour ||
+            date.getMinutes() !== minute ||
+            date.getSeconds() !== second
+        ) {
+            return null;
         }
 
-        /* =====================================================
-           CALENDÁRIO
-        ===================================================== */
+        return date;
+    }
 
-        function renderCalendar(type) {
+    function parseMKDate(value) {
 
-            const state =
-                calendarState[type];
+        if (
+            value === null ||
+            value === undefined ||
+            value === ""
+        ) {
+            return null;
+        }
 
-            const popup =
-                document.getElementById(
-                    type === "start"
-                        ? "startCalendar"
-                        : "endCalendar"
+        if (value instanceof Date) {
+
+            return isNaN(value.getTime())
+                ? null
+                : new Date(value.getTime());
+        }
+
+        if (typeof value === "number") {
+
+            const excelEpoch =
+                new Date(
+                    Date.UTC(
+                        1899,
+                        11,
+                        30
+                    )
                 );
 
-            const year =
-                state.month.getFullYear();
+            const date =
+                new Date(
+                    excelEpoch.getTime() +
+                    value * 86400000
+                );
 
-            const month =
-                state.month.getMonth();
+            return isNaN(date.getTime())
+                ? null
+                : date;
+        }
 
-            const firstDay =
+        const text =
+            String(value).trim();
+
+        if (!text) {
+            return null;
+        }
+
+        const manual =
+            parseManualDate(text);
+
+        if (manual) {
+            return manual;
+        }
+
+        const iso =
+            new Date(text);
+
+        if (!isNaN(iso.getTime())) {
+            return iso;
+        }
+
+        return null;
+    }
+
+    function formatSeconds(totalSeconds) {
+
+        totalSeconds =
+            Math.max(
+                0,
+                Math.floor(totalSeconds || 0)
+            );
+
+        const hours =
+            Math.floor(
+                totalSeconds / 3600
+            );
+
+        const minutes =
+            Math.floor(
+                (totalSeconds % 3600) / 60
+            );
+
+        const seconds =
+            totalSeconds % 60;
+
+        return (
+            hours +
+            ":" +
+            pad(minutes) +
+            ":" +
+            pad(seconds)
+        );
+    }
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    /* =====================================================
+       CALENDÁRIO
+    ===================================================== */
+
+    function renderCalendar(type) {
+
+        const state =
+            calendarState[type];
+
+        const popup =
+            document.getElementById(
+                type === "start"
+                    ? "startCalendar"
+                    : "endCalendar"
+            );
+
+        const year =
+            state.month.getFullYear();
+
+        const month =
+            state.month.getMonth();
+
+        const firstDay =
+            new Date(
+                year,
+                month,
+                1
+            ).getDay();
+
+        const daysInMonth =
+            new Date(
+                year,
+                month + 1,
+                0
+            ).getDate();
+
+        const previousDays =
+            new Date(
+                year,
+                month,
+                0
+            ).getDate();
+
+        let html = "";
+
+        html += `
+            <div class="calendar-header">
+
+                <button
+                    type="button"
+                    class="calendar-nav"
+                    data-direction="-1"
+                >
+                    ‹
+                </button>
+
+                <div class="calendar-title">
+                    ${monthNames[month]} ${year}
+                </div>
+
+                <button
+                    type="button"
+                    class="calendar-nav"
+                    data-direction="1"
+                >
+                    ›
+                </button>
+
+            </div>
+        `;
+
+        html += `
+            <div class="calendar-weekdays">
+                <div>Dom</div>
+                <div>Seg</div>
+                <div>Ter</div>
+                <div>Qua</div>
+                <div>Qui</div>
+                <div>Sex</div>
+                <div>Sáb</div>
+            </div>
+        `;
+
+        html += `<div class="calendar-days">`;
+
+        for (
+            let i = firstDay - 1;
+            i >= 0;
+            i--
+        ) {
+
+            const day =
+                previousDays - i;
+
+            html += `
+                <button
+                    type="button"
+                    class="calendar-day other-month disabled"
+                    disabled
+                >
+                    ${day}
+                </button>
+            `;
+        }
+
+        const today =
+            new Date();
+
+        for (
+            let day = 1;
+            day <= daysInMonth;
+            day++
+        ) {
+
+            const current =
                 new Date(
                     year,
                     month,
-                    1
-                ).getDay();
-
-            const daysInMonth =
-                new Date(
-                    year,
-                    month + 1,
-                    0
-                ).getDate();
-
-            const previousDays =
-                new Date(
-                    year,
-                    month,
-                    0
-                ).getDate();
-
-            let html = "";
-
-            html += `
-                <div class="calendar-header">
-
-                    <button
-                        type="button"
-                        class="calendar-nav"
-                        data-calendar="${type}"
-                        data-direction="-1"
-                    >
-                        ‹
-                    </button>
-
-                    <div class="calendar-title">
-                        ${monthNames[month]} ${year}
-                    </div>
-
-                    <button
-                        type="button"
-                        class="calendar-nav"
-                        data-calendar="${type}"
-                        data-direction="1"
-                    >
-                        ›
-                    </button>
-
-                </div>
-            `;
-
-            html += `
-                <div class="calendar-weekdays">
-                    <div>Dom</div>
-                    <div>Seg</div>
-                    <div>Ter</div>
-                    <div>Qua</div>
-                    <div>Qui</div>
-                    <div>Sex</div>
-                    <div>Sáb</div>
-                </div>
-            `;
-
-            html += `<div class="calendar-days">`;
-
-            for (
-                let i = firstDay - 1;
-                i >= 0;
-                i--
-            ) {
-
-                const day =
-                    previousDays - i;
-
-                html += `
-                    <button
-                        type="button"
-                        class="calendar-day other-month disabled"
-                        disabled
-                    >
-                        ${day}
-                    </button>
-                `;
-            }
-
-            const today =
-                new Date();
-
-            for (
-                let day = 1;
-                day <= daysInMonth;
-                day++
-            ) {
-
-                const current =
-                    new Date(
-                        year,
-                        month,
-                        day
-                    );
-
-                const isToday =
-                    current.toDateString() ===
-                    today.toDateString();
-
-                const isSelected =
-                    state.date &&
-                    current.toDateString() ===
-                    state.date.toDateString();
-
-                html += `
-                    <button
-                        type="button"
-                        class="calendar-day ${
-                            isToday ? "today" : ""
-                        } ${
-                            isSelected ? "selected" : ""
-                        }"
-                        data-calendar="${type}"
-                        data-day="${day}"
-                    >
-                        ${day}
-                    </button>
-                `;
-            }
-
-            const totalCells =
-                firstDay +
-                daysInMonth;
-
-            const remaining =
-                (7 - (totalCells % 7)) % 7;
-
-            for (
-                let day = 1;
-                day <= remaining;
-                day++
-            ) {
-
-                html += `
-                    <button
-                        type="button"
-                        class="calendar-day other-month disabled"
-                        disabled
-                    >
-                        ${day}
-                    </button>
-                `;
-            }
-
-            html += `</div>`;
-
-            popup.innerHTML =
-                html;
-
-            popup
-                .querySelectorAll(
-                    ".calendar-nav"
-                )
-                .forEach(
-                    function(button) {
-
-                        button.addEventListener(
-                            "click",
-                            function(event) {
-
-                                event.stopPropagation();
-
-                                const direction =
-                                    Number(
-                                        button.dataset.direction
-                                    );
-
-                                state.month =
-                                    new Date(
-                                        state.month.getFullYear(),
-                                        state.month.getMonth() +
-                                            direction,
-                                        1
-                                    );
-
-                                renderCalendar(
-                                    type
-                                );
-                            }
-                        );
-                    }
+                    day
                 );
 
-            popup
-                .querySelectorAll(
-                    ".calendar-day:not(.disabled)"
-                )
-                .forEach(
-                    function(button) {
+            const isToday =
+                current.toDateString() ===
+                today.toDateString();
 
-                        button.addEventListener(
-                            "click",
-                            function(event) {
+            const isSelected =
+                state.date &&
+                current.toDateString() ===
+                state.date.toDateString();
 
-                                event.stopPropagation();
-
-                                const selected =
-                                    new Date(
-                                        year,
-                                        month,
-                                        Number(
-                                            button.dataset.day
-                                        )
-                                    );
-
-                                state.date =
-                                    selected;
-
-                                const display =
-                                    document.getElementById(
-                                        type === "start"
-                                            ? "startDisplay"
-                                            : "endDisplay"
-                                    );
-
-                                display.value =
-                                    formatDate(
-                                        selected
-                                    );
-
-                                state.month =
-                                    new Date(
-                                        year,
-                                        month,
-                                        1
-                                    );
-
-                                updateAnalysisDates();
-
-                                popup.classList.remove(
-                                    "open"
-                                );
-
-                                renderCalendar(
-                                    type
-                                );
-                            }
-                        );
-                    }
-                );
+            html += `
+                <button
+                    type="button"
+                    class="calendar-day ${
+                        isToday ? "today" : ""
+                    } ${
+                        isSelected ? "selected" : ""
+                    }"
+                    data-day="${day}"
+                >
+                    ${day}
+                </button>
+            `;
         }
 
-        function openCalendar(type) {
+        const totalCells =
+            firstDay +
+            daysInMonth;
 
-            const popup =
-                document.getElementById(
-                    type === "start"
-                        ? "startCalendar"
-                        : "endCalendar"
-                );
+        const remaining =
+            (7 - (totalCells % 7)) % 7;
 
-            document
-                .querySelectorAll(
-                    ".calendar-popup"
-                )
-                .forEach(
-                    function(item) {
+        for (
+            let day = 1;
+            day <= remaining;
+            day++
+        ) {
 
-                        if (
-                            item !== popup
-                        ) {
+            html += `
+                <button
+                    type="button"
+                    class="calendar-day other-month disabled"
+                    disabled
+                >
+                    ${day}
+                </button>
+            `;
+        }
 
-                            item.classList.remove(
-                                "open"
+        html += `</div>`;
+
+        popup.innerHTML =
+            html;
+
+        popup
+            .querySelectorAll(
+                ".calendar-nav"
+            )
+            .forEach(
+                function(button) {
+
+                    button.addEventListener(
+                        "click",
+                        function(event) {
+
+                            event.stopPropagation();
+
+                            const direction =
+                                Number(
+                                    button.dataset.direction
+                                );
+
+                            state.month =
+                                new Date(
+                                    state.month.getFullYear(),
+                                    state.month.getMonth() +
+                                        direction,
+                                    1
+                                );
+
+                            renderCalendar(
+                                type
                             );
                         }
-                    }
-                );
-
-            popup.classList.toggle(
-                "open"
-            );
-
-            if (
-                popup.classList.contains(
-                    "open"
-                )
-            ) {
-
-                renderCalendar(
-                    type
-                );
-            }
-        }
-
-        document
-            .getElementById("startDisplay")
-            .addEventListener(
-                "click",
-                function(event) {
-
-                    event.stopPropagation();
-
-                    openCalendar(
-                        "start"
                     );
                 }
             );
 
-        document
-            .getElementById("endDisplay")
-            .addEventListener(
-                "click",
-                function(event) {
+        popup
+            .querySelectorAll(
+                ".calendar-day:not(.disabled)"
+            )
+            .forEach(
+                function(button) {
 
-                    event.stopPropagation();
+                    button.addEventListener(
+                        "click",
+                        function(event) {
 
-                    openCalendar(
-                        "end"
-                    );
-                }
-            );
+                            event.stopPropagation();
 
-        document.addEventListener(
-            "click",
-            function() {
+                            const selected =
+                                new Date(
+                                    year,
+                                    month,
+                                    Number(
+                                        button.dataset.day
+                                    )
+                                );
 
-                document
-                    .querySelectorAll(
-                        ".calendar-popup"
-                    )
-                    .forEach(
-                        function(popup) {
+                            state.date =
+                                selected;
+
+                            const display =
+                                document.getElementById(
+                                    type === "start"
+                                        ? "startDisplay"
+                                        : "endDisplay"
+                                );
+
+                            display.value =
+                                formatDate(
+                                    selected
+                                );
+
+                            state.month =
+                                new Date(
+                                    year,
+                                    month,
+                                    1
+                                );
+
+                            updateAnalysisDates();
 
                             popup.classList.remove(
                                 "open"
                             );
+
+                            renderCalendar(
+                                type
+                            );
                         }
                     );
-            }
-        );
+                }
+            );
+    }
+
+    function openCalendar(type) {
+
+        const popup =
+            document.getElementById(
+                type === "start"
+                    ? "startCalendar"
+                    : "endCalendar"
+            );
 
         document
             .querySelectorAll(
                 ".calendar-popup"
             )
             .forEach(
-                function(popup) {
+                function(item) {
 
-                    popup.addEventListener(
-                        "click",
-                        function(event) {
+                    if (
+                        item !== popup
+                    ) {
 
-                            event.stopPropagation();
-
-                        }
-                    );
+                        item.classList.remove(
+                            "open"
+                        );
+                    }
                 }
             );
 
-        /* =====================================================
-           DATAS DA ANÁLISE
-        ===================================================== */
+        popup.classList.toggle(
+            "open"
+        );
 
-        function updateAnalysisDates() {
-
-            const startDate =
-                calendarState.start.date;
-
-            const endDate =
-                calendarState.end.date;
-
-            analysisStart =
-                startDate
-                    ? new Date(
-                        startDate.getFullYear(),
-                        startDate.getMonth(),
-                        startDate.getDate(),
-                        0,
-                        0,
-                        0
-                    )
-                    : null;
-
-            analysisEnd =
-                endDate
-                    ? new Date(
-                        endDate.getFullYear(),
-                        endDate.getMonth(),
-                        endDate.getDate(),
-                        23,
-                        59,
-                        59
-                    )
-                    : null;
-
-            renderTable();
-        }
-
-        /* =====================================================
-           PERÍODO
-        ===================================================== */
-
-        function sessionIsInPeriod(session) {
-
-            if (
-                !analysisStart ||
-                !analysisEnd
-            ) {
-                return false;
-            }
-
-            const start =
-                session.start;
-
-            const stop =
-                session.stop;
-
-            if (!start && !stop) {
-                return false;
-            }
-
-            const referenceDate =
-                start || stop;
-
-            return (
-                referenceDate >= analysisStart &&
-                referenceDate <= analysisEnd
-            );
-        }
-
-        function sessionIsInPeriodWithDeleted(session) {
-
-            if (session.deleted) {
-                return false;
-            }
-
-            return sessionIsInPeriod(
-                session
-            );
-        }
-
-        /* =====================================================
-           CÁLCULO
-        ===================================================== */
-
-        function calculateRowOffline(
-            index,
-            activeSessions
+        if (
+            popup.classList.contains(
+                "open"
+            )
         ) {
 
-            const current =
-                activeSessions[index];
-
-            if (
-                !current ||
-                !current.start
-            ) {
-                return 0;
-            }
-
-            const next =
-                activeSessions[index + 1];
-
-            if (
-                !next ||
-                !next.stop
-            ) {
-                return 0;
-            }
-
-            const offlineStart =
-                next.stop;
-
-            const offlineEnd =
-                current.start;
-
-            if (
-                offlineEnd <=
-                offlineStart
-            ) {
-                return 0;
-            }
-
-            let start =
-                offlineStart;
-
-            let end =
-                offlineEnd;
-
-            if (analysisStart) {
-
-                if (
-                    end <=
-                    analysisStart
-                ) {
-                    return 0;
-                }
-
-                if (
-                    start <
-                    analysisStart
-                ) {
-                    start =
-                        analysisStart;
-                }
-            }
-
-            if (analysisEnd) {
-
-                if (
-                    start >=
-                    analysisEnd
-                ) {
-                    return 0;
-                }
-
-                if (
-                    end >
-                    analysisEnd
-                ) {
-                    end =
-                        analysisEnd;
-                }
-            }
-
-            if (
-                end <=
-                start
-            ) {
-                return 0;
-            }
-
-            return (
-                end.getTime() -
-                start.getTime()
-            ) / 1000;
+            renderCalendar(
+                type
+            );
         }
+    }
 
-        function updateResult(
-            activeSessions,
-            totalOffline,
-            drops
-        ) {
+    document
+        .getElementById("startDisplay")
+        .addEventListener(
+            "click",
+            function(event) {
 
-            document.getElementById(
-                "totalOffline"
-            ).textContent =
-                formatSeconds(
-                    totalOffline
+                event.stopPropagation();
+
+                openCalendar(
+                    "start"
                 );
-
-            document.getElementById(
-                "totalDrops"
-            ).textContent =
-                drops;
-        }
-
-        /* =====================================================
-           EXCLUSÃO
-        ===================================================== */
-
-        function deleteSession(index) {
-
-            if (
-                !sessions[index]
-            ) {
-                return;
             }
+        );
 
-            sessions[index].deleted =
-                true;
+    document
+        .getElementById("endDisplay")
+        .addEventListener(
+            "click",
+            function(event) {
 
-            renderTable();
+                event.stopPropagation();
 
-            showStatus(
-                "Sessão excluída da análise.",
-                "success"
-            );
-        }
+                openCalendar(
+                    "end"
+                );
+            }
+        );
 
-        window.deleteSession =
-            deleteSession;
-
-        /* =====================================================
-           EDIÇÃO DAS SESSÕES
-        ===================================================== */
-
-        function bindSessionInputs() {
+    document.addEventListener(
+        "click",
+        function() {
 
             document
                 .querySelectorAll(
-                    ".session-input"
+                    ".calendar-popup"
                 )
                 .forEach(
-                    function(input) {
+                    function(popup) {
 
-                        input.addEventListener(
-                            "change",
-                            function() {
-
-                                const index =
-                                    Number(
-                                        input.dataset.index
-                                    );
-
-                                const field =
-                                    input.dataset.field;
-
-                                if (
-                                    !sessions[index]
-                                ) {
-                                    return;
-                                }
-
-                                const parsed =
-                                    parseManualDate(
-                                        input.value
-                                    );
-
-                                if (
-                                    input.value.trim() &&
-                                    !parsed
-                                ) {
-
-                                    showStatus(
-                                        "Data inválida. Use o formato DD/MM/AAAA HH:MM:SS.",
-                                        "error"
-                                    );
-
-                                    input.value =
-                                        formatManualDate(
-                                            sessions[index][
-                                                field
-                                            ]
-                                        );
-
-                                    return;
-                                }
-
-                                sessions[index][
-                                    field
-                                ] =
-                                    parsed;
-
-                                sessions.sort(
-                                    function(a, b) {
-
-                                        const aTime =
-                                            a.start
-                                                ? a.start.getTime()
-                                                : 0;
-
-                                        const bTime =
-                                            b.start
-                                                ? b.start.getTime()
-                                                : 0;
-
-                                        return (
-                                            bTime -
-                                            aTime
-                                        );
-                                    }
-                                );
-
-                                renderTable();
-                            }
+                        popup.classList.remove(
+                            "open"
                         );
                     }
                 );
         }
+    );
 
-        /* =====================================================
-           RENDERIZAÇÃO
-        ===================================================== */
+    document
+        .querySelectorAll(
+            ".calendar-popup"
+        )
+        .forEach(
+            function(popup) {
 
-        function renderTable() {
+                popup.addEventListener(
+                    "click",
+                    function(event) {
 
-            const body =
-                document.getElementById(
-                    "sessionsBody"
+                        event.stopPropagation();
+
+                    }
                 );
+            }
+        );
 
-            const activeSessions =
-                getVisibleSessions();
+    /* =====================================================
+       DATAS DA ANÁLISE
+    ===================================================== */
 
-            if (
-                !activeSessions.length
-            ) {
+    function updateAnalysisDates() {
 
-                body.innerHTML =
-                    `
-                    <tr>
-                        <td colspan="4">
-                            <div class="empty-state">
-                                ${
-                                    sessions.length
-                                        ? "Nenhuma sessão encontrada no período selecionado."
-                                        : "Nenhuma sessão importada."
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                    `;
+        const startDate =
+            calendarState.start.date;
 
-                updateResult(
-                    [],
+        const endDate =
+            calendarState.end.date;
+
+        analysisStart =
+            startDate
+                ? new Date(
+                    startDate.getFullYear(),
+                    startDate.getMonth(),
+                    startDate.getDate(),
+                    0,
                     0,
                     0
+                )
+                : null;
+
+        analysisEnd =
+            endDate
+                ? new Date(
+                    endDate.getFullYear(),
+                    endDate.getMonth(),
+                    endDate.getDate(),
+                    23,
+                    59,
+                    59
+                )
+                : null;
+
+        /*
+         * Só faz a análise quando as DUAS datas
+         * estiverem definidas.
+         */
+        if (
+            analysisStart &&
+            analysisEnd
+        ) {
+
+            if (
+                analysisStart >
+                analysisEnd
+            ) {
+
+                showStatus(
+                    "A data inicial não pode ser maior que a data final.",
+                    "error"
                 );
+
+                analysisStart = null;
+                analysisEnd = null;
 
                 return;
             }
 
-            let totalOffline =
-                0;
+            renderTable();
+        }
+    }
 
-            let drops =
-                0;
+    /* =====================================================
+       CÁLCULO DA QUEDA
+    ===================================================== */
 
-            let html =
-                "";
+    function calculateRowOffline(
+        index,
+        activeSessions
+    ) {
 
-            activeSessions.forEach(
-                function(
-                    session,
-                    index
-                ) {
+        const current =
+            activeSessions[index];
 
-                    const offlineSeconds =
-                        calculateRowOffline(
+        if (
+            !current ||
+            !current.start
+        ) {
+            return 0;
+        }
+
+        const next =
+            activeSessions[index + 1];
+
+        if (
+            !next ||
+            !next.stop
+        ) {
+            return 0;
+        }
+
+        const offlineStart =
+            next.stop;
+
+        const offlineEnd =
+            current.start;
+
+        if (
+            offlineEnd <=
+            offlineStart
+        ) {
+            return 0;
+        }
+
+        let start =
+            offlineStart;
+
+        let end =
+            offlineEnd;
+
+        /*
+         * Quando existe período selecionado,
+         * limita a queda ao período.
+         */
+
+        if (analysisStart) {
+
+            if (
+                end <=
+                analysisStart
+            ) {
+                return 0;
+            }
+
+            if (
+                start <
+                analysisStart
+            ) {
+                start =
+                    analysisStart;
+            }
+        }
+
+        if (analysisEnd) {
+
+            if (
+                start >
+                analysisEnd
+            ) {
+                return 0;
+            }
+
+            if (
+                end >
+                analysisEnd
+            ) {
+                end =
+                    analysisEnd;
+            }
+        }
+
+        if (
+            end <=
+            start
+        ) {
+            return 0;
+        }
+
+        return (
+            end.getTime() -
+            start.getTime()
+        ) / 1000;
+    }
+
+    /* =====================================================
+       RESULTADO
+    ===================================================== */
+
+    function updateResult(
+        activeSessions,
+        totalOffline,
+        drops
+    ) {
+
+        document.getElementById(
+            "totalOffline"
+        ).textContent =
+            formatSeconds(
+                totalOffline
+            );
+
+        document.getElementById(
+            "totalDrops"
+        ).textContent =
+            drops;
+    }
+
+    /* =====================================================
+       EXCLUSÃO
+    ===================================================== */
+
+    function deleteSession(index) {
+
+        if (
+            !sessions[index]
+        ) {
+            return;
+        }
+
+        sessions[index].deleted =
+            true;
+
+        renderTable();
+
+        showStatus(
+            "Sessão excluída da análise.",
+            "success"
+        );
+    }
+
+    window.deleteSession =
+        deleteSession;
+
+    /* =====================================================
+       EDIÇÃO DAS SESSÕES
+    ===================================================== */
+
+    function bindSessionInputs() {
+
+        document
+            .querySelectorAll(
+                ".session-input"
+            )
+            .forEach(
+                function(input) {
+
+                    input.addEventListener(
+                        "change",
+                        function() {
+
+                            const index =
+                                Number(
+                                    input.dataset.index
+                                );
+
+                            const field =
+                                input.dataset.field;
+
+                            if (
+                                !sessions[index]
+                            ) {
+                                return;
+                            }
+
+                            const parsed =
+                                parseManualDate(
+                                    input.value
+                                );
+
+                            if (
+                                input.value.trim() &&
+                                !parsed
+                            ) {
+
+                                showStatus(
+                                    "Data inválida. Use o formato DD/MM/AAAA HH:MM:SS.",
+                                    "error"
+                                );
+
+                                input.value =
+                                    formatManualDate(
+                                        sessions[index][
+                                            field
+                                        ]
+                                    );
+
+                                return;
+                            }
+
+                            sessions[index][
+                                field
+                            ] =
+                                parsed;
+
+                            sessions.sort(
+                                function(a, b) {
+
+                                    const aTime =
+                                        a.start
+                                            ? a.start.getTime()
+                                            : 0;
+
+                                    const bTime =
+                                        b.start
+                                            ? b.start.getTime()
+                                            : 0;
+
+                                    return (
+                                        bTime -
+                                        aTime
+                                    );
+                                }
+                            );
+
+                            renderTable();
+                        }
+                    );
+                }
+            );
+    }
+
+    /* =====================================================
+       RENDERIZAÇÃO DA TABELA
+       
+       IMPORTANTE:
+       - Sem datas escolhidas:
+         mostra TODAS as sessões importadas.
+       - Com as duas datas escolhidas:
+         mostra somente as sessões do período.
+    ===================================================== */
+
+    function renderTable() {
+
+        const body =
+            document.getElementById(
+                "sessionsBody"
+            );
+
+        /*
+         * Antes de escolher o período,
+         * todas as quedas ficam visíveis.
+         */
+        const hasPeriod =
+            analysisStart &&
+            analysisEnd;
+
+        const visibleSessions =
+            hasPeriod
+                ? getVisibleSessions()
+                : sessions
+                    .filter(
+                        function(session) {
+                            return !session.deleted;
+                        }
+                    )
+                    .sort(
+                        function(a, b) {
+
+                            const aTime =
+                                a.start
+                                    ? a.start.getTime()
+                                    : 0;
+
+                            const bTime =
+                                b.start
+                                    ? b.start.getTime()
+                                    : 0;
+
+                            return (
+                                bTime -
+                                aTime
+                            );
+                        }
+                    );
+
+        if (
+            !visibleSessions.length
+        ) {
+
+            body.innerHTML =
+                `
+                <tr>
+                    <td colspan="4">
+                        <div class="empty-state">
+                            ${
+                                sessions.length
+                                    ? "Nenhuma sessão encontrada."
+                                    : "Nenhuma sessão importada."
+                            }
+                        </div>
+                    </td>
+                </tr>
+                `;
+
+            updateResult(
+                [],
+                0,
+                0
+            );
+
+            return;
+        }
+
+        let totalOffline =
+            0;
+
+        let drops =
+            0;
+
+        let html =
+            "";
+
+        visibleSessions.forEach(
+            function(
+                session,
+                index
+            ) {
+
+                /*
+                 * Antes de escolher o período,
+                 * não mostra cálculo de queda.
+                 * Mostra apenas os dados para conferência.
+                 */
+                const offlineSeconds =
+                    hasPeriod
+                        ? calculateRowOffline(
                             index,
-                            activeSessions
-                        );
+                            visibleSessions
+                        )
+                        : 0;
+
+                if (hasPeriod) {
 
                     totalOffline +=
                         offlineSeconds;
@@ -2123,485 +2116,559 @@
 
                         drops++;
                     }
-
-                    const originalIndex =
-                        sessions.indexOf(
-                            session
-                        );
-
-                    html +=
-                        `
-                        <tr>
-
-                            <td>
-                                <input
-                                    type="text"
-                                    class="session-input"
-                                    value="${escapeHtml(
-                                        formatManualDate(
-                                            session.start
-                                        )
-                                    )}"
-                                    data-index="${originalIndex}"
-                                    data-field="start"
-                                    placeholder="DD/MM/AAAA HH:MM:SS"
-                                >
-                            </td>
-
-                            <td>
-                                <input
-                                    type="text"
-                                    class="session-input"
-                                    value="${escapeHtml(
-                                        formatManualDate(
-                                            session.stop
-                                        )
-                                    )}"
-                                    data-index="${originalIndex}"
-                                    data-field="stop"
-                                    placeholder="DD/MM/AAAA HH:MM:SS"
-                                >
-                            </td>
-
-                            <td>
-                                <span class="duration ${
-                                    offlineSeconds > 0
-                                        ? "positive"
-                                        : "zero"
-                                }">
-                                    ${formatSeconds(
-                                        offlineSeconds
-                                    )}
-                                </span>
-                            </td>
-
-                            <td class="action-cell">
-
-                                <button
-                                    type="button"
-                                    class="small-button"
-                                    onclick="deleteSession(${originalIndex})"
-                                >
-                                    Excluir
-                                </button>
-
-                            </td>
-
-                        </tr>
-                        `;
                 }
-            );
 
-            body.innerHTML =
-                html;
+                const originalIndex =
+                    sessions.indexOf(
+                        session
+                    );
 
-            updateResult(
-                activeSessions,
-                totalOffline,
-                drops
-            );
+                html +=
+                    `
+                    <tr>
 
-            bindSessionInputs();
-        }
+                        <td>
+                            <input
+                                type="text"
+                                class="session-input"
+                                value="${escapeHtml(
+                                    formatManualDate(
+                                        session.start
+                                    )
+                                )}"
+                                data-index="${originalIndex}"
+                                data-field="start"
+                                placeholder="DD/MM/AAAA HH:MM:SS"
+                            >
+                        </td>
 
-        /* =====================================================
-           IMPORTAÇÃO DO ARQUIVO
-        ===================================================== */
+                        <td>
+                            <input
+                                type="text"
+                                class="session-input"
+                                value="${escapeHtml(
+                                    formatManualDate(
+                                        session.stop
+                                    )
+                                )}"
+                                data-index="${originalIndex}"
+                                data-field="stop"
+                                placeholder="DD/MM/AAAA HH:MM:SS"
+                            >
+                        </td>
 
-        document
-            .getElementById("importButton")
-            .addEventListener(
-                "click",
-                function() {
+                        <td>
+                            <span class="duration ${
+                                hasPeriod &&
+                                offlineSeconds > 0
+                                    ? "positive"
+                                    : "zero"
+                            }">
+                                ${
+                                    hasPeriod
+                                        ? formatSeconds(
+                                            offlineSeconds
+                                        )
+                                        : "—"
+                                }
+                            </span>
+                        </td>
 
-                    document
-                        .getElementById(
-                            "fileInput"
-                        )
-                        .click();
+                        <td class="action-cell">
+
+                            <button
+                                type="button"
+                                class="small-button"
+                                onclick="deleteSession(${originalIndex})"
+                            >
+                                Excluir
+                            </button>
+
+                        </td>
+
+                    </tr>
+                    `;
+            }
+        );
+
+        body.innerHTML =
+            html;
+
+        /*
+         * Sem período, os resultados permanecem zerados.
+         */
+        updateResult(
+            visibleSessions,
+            hasPeriod
+                ? totalOffline
+                : 0,
+            hasPeriod
+                ? drops
+                : 0
+        );
+
+        bindSessionInputs();
+    }
+
+    /* =====================================================
+       IMPORTAÇÃO
+    ===================================================== */
+
+    document
+        .getElementById("importButton")
+        .addEventListener(
+            "click",
+            function() {
+
+                document
+                    .getElementById(
+                        "fileInput"
+                    )
+                    .click();
+            }
+        );
+
+    document
+        .getElementById("fileInput")
+        .addEventListener(
+            "change",
+            function(event) {
+
+                const file =
+                    event.target.files[0];
+
+                if (!file) {
+                    return;
                 }
-            );
 
-        document
-            .getElementById("fileInput")
-            .addEventListener(
-                "change",
-                function(event) {
+                try {
 
-                    const file =
-                        event.target.files[0];
+                    const reader =
+                        new FileReader();
 
-                    if (!file) {
+                    reader.onload =
+                        function(e) {
 
-                        return;
-                    }
+                            try {
 
-                    try {
-
-                        const reader =
-                            new FileReader();
-
-                        reader.onload =
-                            function(e) {
-
-                                try {
-
-                                    const data =
-                                        new Uint8Array(
-                                            e.target.result
-                                        );
-
-                                    const workbook =
-                                        XLSX.read(
-                                            data,
-                                            {
-                                                type: "array",
-                                                cellDates: true
-                                            }
-                                        );
-
-                                    const firstSheet =
-                                        workbook.Sheets[
-                                            workbook.SheetNames[0]
-                                        ];
-
-                                    const rows =
-                                        XLSX.utils.sheet_to_json(
-                                            firstSheet,
-                                            {
-                                                header: 1,
-                                                defval: ""
-                                            }
-                                        );
-
-                                    if (
-                                        !rows.length
-                                    ) {
-
-                                        throw new Error(
-                                            "O arquivo está vazio."
-                                        );
-                                    }
-
-                                    const header =
-                                        rows[0].map(
-                                            function(value) {
-
-                                                return String(
-                                                    value
-                                                )
-                                                    .trim()
-                                                    .toLowerCase();
-                                            }
-                                        );
-
-                                    let startIndex =
-                                        header.findIndex(
-                                            function(value) {
-
-                                                return (
-                                                    value ===
-                                                        "hr. start" ||
-                                                    value ===
-                                                        "hr start" ||
-                                                    value ===
-                                                        "start" ||
-                                                    value.includes(
-                                                        "hr. start"
-                                                    ) ||
-                                                    value.includes(
-                                                        "hr start"
-                                                    )
-                                                );
-                                            }
-                                        );
-
-                                    let stopIndex =
-                                        header.findIndex(
-                                            function(value) {
-
-                                                return (
-                                                    value ===
-                                                        "hr. stop" ||
-                                                    value ===
-                                                        "hr stop" ||
-                                                    value ===
-                                                        "stop" ||
-                                                    value.includes(
-                                                        "hr. stop"
-                                                    ) ||
-                                                    value.includes(
-                                                        "hr stop"
-                                                    )
-                                                );
-                                            }
-                                        );
-
-                                    if (
-                                        startIndex === -1
-                                    ) {
-
-                                        startIndex =
-                                            0;
-                                    }
-
-                                    if (
-                                        stopIndex === -1
-                                    ) {
-
-                                        stopIndex =
-                                            1;
-                                    }
-
-                                    const imported =
-                                        [];
-
-                                    for (
-                                        let i = 1;
-                                        i < rows.length;
-                                        i++
-                                    ) {
-
-                                        const row =
-                                            rows[i];
-
-                                        const start =
-                                            parseMKDate(
-                                                row[startIndex]
-                                            );
-
-                                        const stop =
-                                            parseMKDate(
-                                                row[stopIndex]
-                                            );
-
-                                        if (
-                                            !start &&
-                                            !stop
-                                        ) {
-
-                                            continue;
-                                        }
-
-                                        imported.push(
-                                            {
-                                                start:
-                                                    start,
-                                                stop:
-                                                    stop,
-                                                deleted:
-                                                    false
-                                            }
-                                        );
-                                    }
-
-                                    if (
-                                        !imported.length
-                                    ) {
-
-                                        throw new Error(
-                                            "Nenhuma sessão válida foi encontrada no arquivo."
-                                        );
-                                    }
-
-                                    sessions =
-                                        imported.sort(
-                                            function(a, b) {
-
-                                                const aTime =
-                                                    a.start
-                                                        ? a.start.getTime()
-                                                        : 0;
-
-                                                const bTime =
-                                                    b.start
-                                                        ? b.start.getTime()
-                                                        : 0;
-
-                                                return (
-                                                    bTime -
-                                                    aTime
-                                                );
-                                            }
-                                        );
-
-                                    renderTable();
-
-                                    showStatus(
-                                        `${sessions.length} sessões importadas com sucesso. O cálculo foi realizado automaticamente.`,
-                                        "success"
+                                const data =
+                                    new Uint8Array(
+                                        e.target.result
                                     );
 
-                                } catch (
-                                    error
+                                const workbook =
+                                    XLSX.read(
+                                        data,
+                                        {
+                                            type: "array",
+                                            cellDates: true
+                                        }
+                                    );
+
+                                const firstSheet =
+                                    workbook.Sheets[
+                                        workbook.SheetNames[0]
+                                    ];
+
+                                const rows =
+                                    XLSX.utils.sheet_to_json(
+                                        firstSheet,
+                                        {
+                                            header: 1,
+                                            defval: ""
+                                        }
+                                    );
+
+                                if (
+                                    !rows.length
                                 ) {
 
-                                    console.error(
-                                        "Erro ao importar arquivo:",
-                                        error
-                                    );
-
-                                    showStatus(
-                                        error.message ||
-                                            "Não foi possível importar o arquivo.",
-                                        "error"
+                                    throw new Error(
+                                        "O arquivo está vazio."
                                     );
                                 }
-                            };
 
-                        reader.readAsArrayBuffer(
-                            file
-                        );
+                                const header =
+                                    rows[0].map(
+                                        function(value) {
 
-                    } catch (
+                                            return String(
+                                                value
+                                            )
+                                                .trim()
+                                                .toLowerCase();
+                                        }
+                                    );
+
+                                let startIndex =
+                                    header.findIndex(
+                                        function(value) {
+
+                                            return (
+                                                value ===
+                                                    "hr. start" ||
+                                                value ===
+                                                    "hr start" ||
+                                                value ===
+                                                    "start" ||
+                                                value.includes(
+                                                    "hr. start"
+                                                ) ||
+                                                value.includes(
+                                                    "hr start"
+                                                )
+                                            );
+                                        }
+                                    );
+
+                                let stopIndex =
+                                    header.findIndex(
+                                        function(value) {
+
+                                            return (
+                                                value ===
+                                                    "hr. stop" ||
+                                                value ===
+                                                    "hr stop" ||
+                                                value ===
+                                                    "stop" ||
+                                                value.includes(
+                                                    "hr. stop"
+                                                ) ||
+                                                value.includes(
+                                                    "hr stop"
+                                                )
+                                            );
+                                        }
+                                    );
+
+                                if (
+                                    startIndex === -1
+                                ) {
+                                    startIndex = 0;
+                                }
+
+                                if (
+                                    stopIndex === -1
+                                ) {
+                                    stopIndex = 1;
+                                }
+
+                                const imported =
+                                    [];
+
+                                for (
+                                    let i = 1;
+                                    i < rows.length;
+                                    i++
+                                ) {
+
+                                    const row =
+                                        rows[i];
+
+                                    const start =
+                                        parseMKDate(
+                                            row[startIndex]
+                                        );
+
+                                    const stop =
+                                        parseMKDate(
+                                            row[stopIndex]
+                                        );
+
+                                    if (
+                                        !start &&
+                                        !stop
+                                    ) {
+                                        continue;
+                                    }
+
+                                    imported.push({
+                                        start: start,
+                                        stop: stop,
+                                        deleted: false
+                                    });
+                                }
+
+                                if (
+                                    !imported.length
+                                ) {
+
+                                    throw new Error(
+                                        "Nenhuma sessão válida foi encontrada no arquivo."
+                                    );
+                                }
+
+                                sessions =
+                                    imported.sort(
+                                        function(a, b) {
+
+                                            const aTime =
+                                                a.start
+                                                    ? a.start.getTime()
+                                                    : 0;
+
+                                            const bTime =
+                                                b.start
+                                                    ? b.start.getTime()
+                                                    : 0;
+
+                                            return (
+                                                bTime -
+                                                aTime
+                                            );
+                                        }
+                                    );
+
+                                /*
+                                 * Importante:
+                                 * aqui NÃO selecionamos período
+                                 * automaticamente.
+                                 *
+                                 * Todas as quedas aparecem
+                                 * para conferência.
+                                 */
+                                renderTable();
+
+                                showStatus(
+                                    `${sessions.length} sessões importadas. Selecione a data inicial e final para realizar a análise.`,
+                                    "success"
+                                );
+
+                            } catch (error) {
+
+                                console.error(
+                                    "Erro ao importar arquivo:",
+                                    error
+                                );
+
+                                showStatus(
+                                    error.message ||
+                                        "Não foi possível importar o arquivo.",
+                                    "error"
+                                );
+                            }
+                        };
+
+                    reader.readAsArrayBuffer(
+                        file
+                    );
+
+                } catch (error) {
+
+                    console.error(
                         error
-                    ) {
-
-                        console.error(
-                            error
-                        );
-
-                        showStatus(
-                            "Não foi possível ler o arquivo.",
-                            "error"
-                        );
-                    }
-
-                    event.target.value =
-                        "";
-                }
-            );
-
-        /* =====================================================
-           LIMPAR
-        ===================================================== */
-
-        document
-            .getElementById("clearButton")
-            .addEventListener(
-                "click",
-                function() {
-
-                    sessions =
-                        [];
-
-                    analysisStart =
-                        null;
-
-                    analysisEnd =
-                        null;
-
-                    calendarState.start.date =
-                        null;
-
-                    calendarState.end.date =
-                        null;
-
-                    calendarState.start.month =
-                        new Date();
-
-                    calendarState.end.month =
-                        new Date();
-
-                    document
-                        .getElementById(
-                            "startDisplay"
-                        )
-                        .value =
-                        "";
-
-                    document
-                        .getElementById(
-                            "endDisplay"
-                        )
-                        .value =
-                        "";
-
-                    renderTable();
+                    );
 
                     showStatus(
-                        "Todos os dados foram limpos.",
-                        "success"
+                        "Não foi possível ler o arquivo.",
+                        "error"
+                    );
+                }
+
+                event.target.value =
+                    "";
+            }
+        );
+
+    /* =====================================================
+       LIMPAR
+    ===================================================== */
+
+    document
+        .getElementById("clearButton")
+        .addEventListener(
+            "click",
+            function() {
+
+                sessions = [];
+
+                analysisStart = null;
+                analysisEnd = null;
+
+                calendarState.start.date =
+                    null;
+
+                calendarState.end.date =
+                    null;
+
+                calendarState.start.month =
+                    new Date();
+
+                calendarState.end.month =
+                    new Date();
+
+                document
+                    .getElementById(
+                        "startDisplay"
+                    )
+                    .value = "";
+
+                document
+                    .getElementById(
+                        "endDisplay"
+                    )
+                    .value = "";
+
+                renderTable();
+
+                showStatus(
+                    "Todos os dados foram limpos.",
+                    "success"
+                );
+            }
+        );
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    function showStatus(
+        message,
+        type
+    ) {
+
+        const status =
+            document.getElementById(
+                "status"
+            );
+
+        status.textContent =
+            message;
+
+        status.className =
+            "status show " +
+            type;
+
+        clearTimeout(
+            window.centralSACStatusTimer
+        );
+
+        window.centralSACStatusTimer =
+            setTimeout(
+                function() {
+
+                    status.classList.remove(
+                        "show"
+                    );
+
+                },
+                5000
+            );
+    }
+
+    /* =====================================================
+       FILTRO
+    ===================================================== */
+
+    function getVisibleSessions() {
+
+        return sessions
+            .filter(
+                function(session) {
+
+                    if (
+                        session.deleted
+                    ) {
+                        return false;
+                    }
+
+                    return sessionIsInPeriod(
+                        session
+                    );
+                }
+            )
+            .sort(
+                function(a, b) {
+
+                    const aTime =
+                        a.start
+                            ? a.start.getTime()
+                            : 0;
+
+                    const bTime =
+                        b.start
+                            ? b.start.getTime()
+                            : 0;
+
+                    return (
+                        bTime -
+                        aTime
                     );
                 }
             );
+    }
 
-        /* =====================================================
-           STATUS
-        ===================================================== */
+    function sessionIsInPeriod(session) {
 
-        function showStatus(
-            message,
-            type
+        /*
+         * Se ainda não escolheu as duas datas,
+         * não usamos este filtro.
+         */
+        if (
+            !analysisStart ||
+            !analysisEnd
         ) {
-
-            const status =
-                document.getElementById(
-                    "status"
-                );
-
-            status.textContent =
-                message;
-
-            status.className =
-                "status show " +
-                type;
-
-            clearTimeout(
-                window.centralSACStatusTimer
-            );
-
-            window.centralSACStatusTimer =
-                setTimeout(
-                    function() {
-
-                        status.classList.remove(
-                            "show"
-                        );
-
-                    },
-                    5000
-                );
+            return false;
         }
 
-        /* =====================================================
-           FILTRO DE SESSÕES
-        ===================================================== */
+        /*
+         * Uma sessão entra no período quando
+         * seu início ou término está dentro
+         * do intervalo.
+         */
+        const start =
+            session.start;
 
-        function getVisibleSessions() {
+        const stop =
+            session.stop;
 
-            return sessions
-                .filter(
-                    sessionIsInPeriodWithDeleted
-                )
-                .sort(
-                    function(a, b) {
-
-                        const aTime =
-                            a.start
-                                ? a.start.getTime()
-                                : 0;
-
-                        const bTime =
-                            b.start
-                                ? b.start.getTime()
-                                : 0;
-
-                        return (
-                            bTime -
-                            aTime
-                        );
-                    }
-                );
+        if (
+            !start &&
+            !stop
+        ) {
+            return false;
         }
 
-        /* =====================================================
-           INICIALIZAÇÃO
-        ===================================================== */
+        if (
+            start &&
+            start >= analysisStart &&
+            start <= analysisEnd
+        ) {
+            return true;
+        }
 
-        renderTable();
+        if (
+            stop &&
+            stop >= analysisStart &&
+            stop <= analysisEnd
+        ) {
+            return true;
+        }
 
-    </script>
+        /*
+         * Também considera sessões que atravessam
+         * o período inteiro.
+         */
+        if (
+            start &&
+            stop &&
+            start < analysisStart &&
+            stop > analysisEnd
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /* =====================================================
+       INICIALIZAÇÃO
+    ===================================================== */
+
+    renderTable();
+
+</script>
 
 </body>
 
