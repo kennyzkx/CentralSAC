@@ -245,199 +245,6 @@
             margin-bottom: 24px;
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .field {
-            display: flex;
-            flex-direction: column;
-            gap: 9px;
-            position: relative;
-        }
-
-        .field label {
-            font-size: 11px;
-            font-weight: 650;
-        }
-
-        .date-wrapper {
-            position: relative;
-        }
-
-        .date-display {
-            height: 46px;
-            width: 100%;
-            padding: 0 45px 0 13px;
-            border: 1px solid var(--borda);
-            border-radius: 8px;
-            outline: none;
-            font-family: inherit;
-            font-size: 13px;
-            background: var(--fundo);
-            color: var(--texto);
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .date-display::placeholder {
-            color: #737B87;
-        }
-
-        .date-display:focus {
-            border-color: var(--laranja);
-            box-shadow: 0 0 0 3px rgba(255, 90, 0, .12);
-        }
-
-        .calendar-icon {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            font-size: 17px;
-        }
-
-        .calendar-popup {
-            display: none;
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            width: 310px;
-            background: var(--card);
-            border: 1px solid var(--borda);
-            border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, .4);
-            padding: 15px;
-            z-index: 100;
-        }
-
-        .calendar-popup.open {
-            display: block;
-            animation: calendarAppear .15s ease;
-        }
-
-        @keyframes calendarAppear {
-            from {
-                opacity: 0;
-                transform: translateY(-5px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .calendar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .calendar-title {
-            font-size: 13px;
-            font-weight: 750;
-            text-transform: capitalize;
-        }
-
-        .calendar-nav {
-            width: 32px;
-            height: 32px;
-            border: 1px solid var(--borda);
-            background: var(--fundo-menu);
-            color: var(--texto);
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 15px;
-            transition: .2s;
-        }
-
-        .calendar-nav:hover {
-            border-color: var(--laranja);
-            color: var(--laranja);
-        }
-
-        .calendar-weekdays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            margin-bottom: 5px;
-        }
-
-        .calendar-weekdays div {
-            text-align: center;
-            font-size: 10px;
-            color: var(--texto-secundario);
-            font-weight: 700;
-            padding: 5px 0;
-        }
-
-        .calendar-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-
-        .calendar-day {
-            height: 32px;
-            border: none;
-            background: transparent;
-            color: var(--texto);
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 11px;
-            transition: .15s;
-        }
-
-        .calendar-day:hover {
-            background: var(--card-hover);
-        }
-
-        .calendar-day.other-month {
-            color: #555C67;
-        }
-
-        .calendar-day.today {
-            border: 1px solid var(--laranja);
-        }
-
-        .calendar-day.selected {
-            background: var(--laranja);
-            color: white;
-            font-weight: bold;
-        }
-
-        .calendar-day.disabled {
-            color: #454A53;
-            cursor: not-allowed;
-        }
-
-        .calendar-day.disabled:hover {
-            background: transparent;
-        }
-
-        .manual-date {
-            width: 100%;
-            height: 46px;
-            padding: 0 13px;
-            border: 1px solid var(--borda);
-            border-radius: 8px;
-            outline: none;
-            font-family: inherit;
-            font-size: 13px;
-            background: var(--fundo);
-            color: var(--texto);
-        }
-
-        .manual-date:focus {
-            border-color: var(--laranja);
-            box-shadow: 0 0 0 3px rgba(255, 90, 0, .12);
-        }
-
         .button-row {
             display: flex;
             flex-wrap: wrap;
@@ -450,8 +257,7 @@
         }
 
         .primary-button,
-        .secondary-button,
-        .danger-button {
+        .secondary-button {
             border: none;
             border-radius: 8px;
             padding: 12px 17px;
@@ -479,16 +285,6 @@
         .secondary-button:hover {
             border-color: var(--laranja);
             color: var(--laranja);
-        }
-
-        .danger-button {
-            background: rgba(239, 68, 68, .12);
-            border: 1px solid rgba(239, 68, 68, .3);
-            color: #F87171;
-        }
-
-        .danger-button:hover {
-            background: rgba(239, 68, 68, .2);
         }
 
         .status {
@@ -638,21 +434,6 @@
             font-size: 12px;
         }
 
-        .info-box {
-            background: rgba(255, 90, 0, .06);
-            border: 1px solid rgba(255, 90, 0, .18);
-            border-radius: 10px;
-            padding: 14px;
-            color: #C9CED5;
-            font-size: 11px;
-            line-height: 1.7;
-            margin-top: 18px;
-        }
-
-        .info-box strong {
-            color: white;
-        }
-
         .file-input {
             display: none;
         }
@@ -689,13 +470,8 @@
                 padding: 20px 16px;
             }
 
-            .form-grid,
             .result-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .calendar-popup {
-                width: min(310px, calc(100vw - 50px));
             }
         }
     </style>
@@ -794,10 +570,7 @@
 
     </aside>
 
-    <div
-        class="overlay"
-        id="overlay"
-    ></div>
+    <div class="overlay" id="overlay"></div>
 
     <main class="container">
 
@@ -812,10 +585,9 @@
             </h1>
 
             <p>
-                Importe o relatório de sessões do cliente, selecione o período
-                que deseja analisar e acompanhe automaticamente o tempo total
-                em que o cliente ficou offline e a quantidade de quedas
-                registradas dentro do período.
+                Importe o relatório de sessões do cliente e acompanhe
+                automaticamente o tempo total em que o cliente ficou offline
+                e a quantidade de quedas registradas.
             </p>
 
         </section>
@@ -823,116 +595,14 @@
         <section class="card">
 
             <div class="section-title">
-                1. Selecionar período
-            </div>
-
-            <div class="section-description">
-                Informe a data e horário inicial e final da análise.
-                O cálculo considera somente as sessões que estiverem dentro
-                do intervalo selecionado.
-            </div>
-
-            <div class="form-grid">
-
-                <div class="field">
-
-                    <label for="startDisplay">
-                        Início da análise
-                    </label>
-
-                    <div class="date-wrapper">
-
-                        <input
-                            type="text"
-                            id="startDisplay"
-                            class="date-display"
-                            placeholder="Selecione a data"
-                            readonly
-                        >
-
-                        <span class="calendar-icon">
-                            📅
-                        </span>
-
-                        <div
-                            class="calendar-popup"
-                            id="startCalendar"
-                        ></div>
-
-                    </div>
-
-                    <input
-                        type="text"
-                        id="startTime"
-                        class="manual-date"
-                        placeholder="DD/MM/AAAA HH:MM:SS"
-                        value=""
-                    >
-
-                </div>
-
-                <div class="field">
-
-                    <label for="endDisplay">
-                        Fim da análise
-                    </label>
-
-                    <div class="date-wrapper">
-
-                        <input
-                            type="text"
-                            id="endDisplay"
-                            class="date-display"
-                            placeholder="Selecione a data"
-                            readonly
-                        >
-
-                        <span class="calendar-icon">
-                            📅
-                        </span>
-
-                        <div
-                            class="calendar-popup"
-                            id="endCalendar"
-                        ></div>
-
-                    </div>
-
-                    <input
-                        type="text"
-                        id="endTime"
-                        class="manual-date"
-                        placeholder="DD/MM/AAAA HH:MM:SS"
-                        value=""
-                    >
-
-                </div>
-
-            </div>
-
-            <div class="info-box">
-
-                <strong>Como preencher:</strong>
-                selecione a data no calendário e informe abaixo o horário
-                completo no formato
-                <strong>DD/MM/AAAA HH:MM:SS</strong>.
-                Exemplo:
-                <strong>01/10/2026 00:00:00</strong>.
-
-            </div>
-
-        </section>
-
-        <section class="card">
-
-            <div class="section-title">
-                2. Importar sessões do MK
+                1. Importar sessões do MK
             </div>
 
             <div class="section-description">
                 Selecione o arquivo Excel exportado do MK Solutions contendo
                 as colunas de início e término das sessões.
-                Após a importação, o cálculo será realizado automaticamente.
+                O sistema analisará automaticamente todas as quedas
+                encontradas no arquivo.
             </div>
 
             <input
@@ -976,8 +646,8 @@
             </div>
 
             <div class="section-description">
-                Os valores abaixo são atualizados automaticamente conforme
-                o período e as sessões.
+                Os valores são calculados automaticamente com base nas
+                sessões importadas.
             </div>
 
             <div class="result-grid">
@@ -996,7 +666,7 @@
                     </div>
 
                     <div class="result-help">
-                        Tempo total de indisponibilidade dentro do período.
+                        Tempo total de indisponibilidade calculado.
                     </div>
 
                 </div>
@@ -1015,7 +685,7 @@
                     </div>
 
                     <div class="result-help">
-                        Quedas registradas dentro do período selecionado.
+                        Quantidade de quedas identificadas no arquivo.
                     </div>
 
                 </div>
@@ -1031,8 +701,8 @@
             </div>
 
             <div class="section-description">
-                Você pode editar manualmente os horários das sessões.
-                Ao alterar um horário, o cálculo será atualizado
+                Você pode editar manualmente o início ou término de qualquer
+                queda. Após alterar um horário, o cálculo será atualizado
                 automaticamente.
             </div>
 
@@ -1131,47 +801,17 @@
             closeMenu
         );
 
+
         /* =====================================================
            VARIÁVEIS
         ===================================================== */
 
         let sessions = [];
 
-        let analysisStart = null;
-        let analysisEnd = null;
-
-        const calendarState = {
-
-            start: {
-                date: null,
-                month: new Date()
-            },
-
-            end: {
-                date: null,
-                month: new Date()
-            }
-
-        };
 
         /* =====================================================
-           UTILITÁRIOS DE DATA
+           UTILITÁRIOS
         ===================================================== */
-
-        const monthNames = [
-            "janeiro",
-            "fevereiro",
-            "março",
-            "abril",
-            "maio",
-            "junho",
-            "julho",
-            "agosto",
-            "setembro",
-            "outubro",
-            "novembro",
-            "dezembro"
-        ];
 
         function pad(value) {
 
@@ -1181,20 +821,6 @@
             );
         }
 
-        function formatDate(date) {
-
-            if (!date) {
-                return "";
-            }
-
-            return (
-                pad(date.getDate()) +
-                "/" +
-                pad(date.getMonth() + 1) +
-                "/" +
-                date.getFullYear()
-            );
-        }
 
         function formatManualDate(date) {
 
@@ -1217,6 +843,7 @@
             );
         }
 
+
         function parseManualDate(value) {
 
             if (!value) {
@@ -1224,9 +851,11 @@
             }
 
             const match =
-                value.trim().match(
-                    /^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/
-                );
+                value
+                    .trim()
+                    .match(
+                        /^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/
+                    );
 
             if (!match) {
                 return null;
@@ -1274,6 +903,7 @@
             return date;
         }
 
+
         function formatSeconds(totalSeconds) {
 
             totalSeconds =
@@ -1304,548 +934,17 @@
             );
         }
 
+
         function escapeHtml(value) {
 
             return String(value ?? "")
-                .replace(
-                    /&/g,
-                    "&amp;"
-                )
-                .replace(
-                    /</g,
-                    "&lt;"
-                )
-                .replace(
-                    />/g,
-                    "&gt;"
-                )
-                .replace(
-                    /"/g,
-                    "&quot;"
-                )
-                .replace(
-                    /'/g,
-                    "&#039;"
-                );
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
-        /* =====================================================
-           CALENDÁRIO
-        ===================================================== */
-
-        function renderCalendar(type) {
-
-            const state =
-                calendarState[type];
-
-            const popup =
-                document.getElementById(
-                    type === "start"
-                        ? "startCalendar"
-                        : "endCalendar"
-                );
-
-            const year =
-                state.month.getFullYear();
-
-            const month =
-                state.month.getMonth();
-
-            const firstDay =
-                new Date(
-                    year,
-                    month,
-                    1
-                ).getDay();
-
-            const daysInMonth =
-                new Date(
-                    year,
-                    month + 1,
-                    0
-                ).getDate();
-
-            const previousDays =
-                new Date(
-                    year,
-                    month,
-                    0
-                ).getDate();
-
-            let html = "";
-
-            html +=
-                `
-                <div class="calendar-header">
-
-                    <button
-                        type="button"
-                        class="calendar-nav"
-                        data-calendar="${type}"
-                        data-direction="-1"
-                    >
-                        ‹
-                    </button>
-
-                    <div class="calendar-title">
-                        ${monthNames[month]} ${year}
-                    </div>
-
-                    <button
-                        type="button"
-                        class="calendar-nav"
-                        data-calendar="${type}"
-                        data-direction="1"
-                    >
-                        ›
-                    </button>
-
-                </div>
-                `;
-
-            html +=
-                `
-                <div class="calendar-weekdays">
-                    <div>Dom</div>
-                    <div>Seg</div>
-                    <div>Ter</div>
-                    <div>Qua</div>
-                    <div>Qui</div>
-                    <div>Sex</div>
-                    <div>Sáb</div>
-                </div>
-                `;
-
-            html +=
-                `<div class="calendar-days">`;
-
-            for (
-                let i = firstDay - 1;
-                i >= 0;
-                i--
-            ) {
-
-                const day =
-                    previousDays - i;
-
-                html +=
-                    `
-                    <button
-                        type="button"
-                        class="calendar-day other-month disabled"
-                        disabled
-                    >
-                        ${day}
-                    </button>
-                    `;
-            }
-
-            const today =
-                new Date();
-
-            for (
-                let day = 1;
-                day <= daysInMonth;
-                day++
-            ) {
-
-                const current =
-                    new Date(
-                        year,
-                        month,
-                        day
-                    );
-
-                const isToday =
-                    current.toDateString() ===
-                    today.toDateString();
-
-                const isSelected =
-                    state.date &&
-                    current.toDateString() ===
-                    state.date.toDateString();
-
-                html +=
-                    `
-                    <button
-                        type="button"
-                        class="calendar-day ${
-                            isToday ? "today" : ""
-                        } ${
-                            isSelected ? "selected" : ""
-                        }"
-                        data-calendar="${type}"
-                        data-day="${day}"
-                    >
-                        ${day}
-                    </button>
-                    `;
-            }
-
-            const totalCells =
-                firstDay +
-                daysInMonth;
-
-            const remaining =
-                (7 - (totalCells % 7)) % 7;
-
-            for (
-                let day = 1;
-                day <= remaining;
-                day++
-            ) {
-
-                html +=
-                    `
-                    <button
-                        type="button"
-                        class="calendar-day other-month disabled"
-                        disabled
-                    >
-                        ${day}
-                    </button>
-                    `;
-            }
-
-            html +=
-                `</div>`;
-
-            popup.innerHTML =
-                html;
-
-            popup
-                .querySelectorAll(
-                    ".calendar-nav"
-                )
-                .forEach(
-                    function(button) {
-
-                        button.addEventListener(
-                            "click",
-                            function(event) {
-
-                                event.stopPropagation();
-
-                                const direction =
-                                    Number(
-                                        button.dataset.direction
-                                    );
-
-                                state.month =
-                                    new Date(
-                                        state.month.getFullYear(),
-                                        state.month.getMonth() +
-                                            direction,
-                                        1
-                                    );
-
-                                renderCalendar(
-                                    type
-                                );
-                            }
-                        );
-                    }
-                );
-
-            popup
-                .querySelectorAll(
-                    ".calendar-day:not(.disabled)"
-                )
-                .forEach(
-                    function(button) {
-
-                        button.addEventListener(
-                            "click",
-                            function(event) {
-
-                                event.stopPropagation();
-
-                                const selected =
-                                    new Date(
-                                        year,
-                                        month,
-                                        Number(
-                                            button.dataset.day
-                                        )
-                                    );
-
-                                state.date =
-                                    selected;
-
-                                const display =
-                                    document.getElementById(
-                                        type === "start"
-                                            ? "startDisplay"
-                                            : "endDisplay"
-                                    );
-
-                                display.value =
-                                    formatDate(
-                                        selected
-                                    );
-
-                                state.month =
-                                    new Date(
-                                        year,
-                                        month,
-                                        1
-                                    );
-
-                                if (
-                                    type === "start"
-                                ) {
-
-                                    updateAnalysisDates();
-
-                                } else {
-
-                                    updateAnalysisDates();
-
-                                }
-
-                                popup.classList.remove(
-                                    "open"
-                                );
-
-                                renderCalendar(
-                                    type
-                                );
-                            }
-                        );
-                    }
-                );
-        }
-
-        function openCalendar(type) {
-
-            const popup =
-                document.getElementById(
-                    type === "start"
-                        ? "startCalendar"
-                        : "endCalendar"
-                );
-
-            document
-                .querySelectorAll(
-                    ".calendar-popup"
-                )
-                .forEach(
-                    function(item) {
-
-                        if (
-                            item !== popup
-                        ) {
-
-                            item.classList.remove(
-                                "open"
-                            );
-                        }
-                    }
-                );
-
-            popup.classList.toggle(
-                "open"
-            );
-
-            if (
-                popup.classList.contains(
-                    "open"
-                )
-            ) {
-
-                renderCalendar(
-                    type
-                );
-            }
-        }
-
-        document
-            .getElementById("startDisplay")
-            .addEventListener(
-                "click",
-                function(event) {
-
-                    event.stopPropagation();
-
-                    openCalendar(
-                        "start"
-                    );
-                }
-            );
-
-        document
-            .getElementById("endDisplay")
-            .addEventListener(
-                "click",
-                function(event) {
-
-                    event.stopPropagation();
-
-                    openCalendar(
-                        "end"
-                    );
-                }
-            );
-
-        document.addEventListener(
-            "click",
-            function() {
-
-                document
-                    .querySelectorAll(
-                        ".calendar-popup"
-                    )
-                    .forEach(
-                        function(popup) {
-
-                            popup.classList.remove(
-                                "open"
-                            );
-                        }
-                    );
-            }
-        );
-
-        document
-            .querySelectorAll(
-                ".calendar-popup"
-            )
-            .forEach(
-                function(popup) {
-
-                    popup.addEventListener(
-                        "click",
-                        function(event) {
-
-                            event.stopPropagation();
-
-                        }
-                    );
-                }
-            );
-
-        /* =====================================================
-           DATAS DA ANÁLISE
-        ===================================================== */
-
-        function updateAnalysisDates() {
-
-            const startDate =
-                calendarState.start.date;
-
-            const endDate =
-                calendarState.end.date;
-
-            const startTimeValue =
-                document.getElementById(
-                    "startTime"
-                ).value.trim();
-
-            const endTimeValue =
-                document.getElementById(
-                    "endTime"
-                ).value.trim();
-
-            if (
-                startDate &&
-                startTimeValue
-            ) {
-
-                const parsedStart =
-                    parseManualDate(
-                        startTimeValue
-                    );
-
-                if (parsedStart) {
-
-                    analysisStart =
-                        parsedStart;
-
-                } else {
-
-                    const time =
-                        startTimeValue.match(
-                            /^(\d{2}):(\d{2}):(\d{2})$/
-                        );
-
-                    if (time) {
-
-                        analysisStart =
-                            new Date(
-                                startDate.getFullYear(),
-                                startDate.getMonth(),
-                                startDate.getDate(),
-                                Number(time[1]),
-                                Number(time[2]),
-                                Number(time[3])
-                            );
-                    }
-                }
-
-            } else {
-
-                analysisStart =
-                    null;
-            }
-
-            if (
-                endDate &&
-                endTimeValue
-            ) {
-
-                const parsedEnd =
-                    parseManualDate(
-                        endTimeValue
-                    );
-
-                if (parsedEnd) {
-
-                    analysisEnd =
-                        parsedEnd;
-
-                } else {
-
-                    const time =
-                        endTimeValue.match(
-                            /^(\d{2}):(\d{2}):(\d{2})$/
-                        );
-
-                    if (time) {
-
-                        analysisEnd =
-                            new Date(
-                                endDate.getFullYear(),
-                                endDate.getMonth(),
-                                endDate.getDate(),
-                                Number(time[1]),
-                                Number(time[2]),
-                                Number(time[3])
-                            );
-                    }
-                }
-
-            } else {
-
-                analysisEnd =
-                    null;
-            }
-
-            renderTable();
-        }
-
-        document
-            .getElementById("startTime")
-            .addEventListener(
-                "change",
-                updateAnalysisDates
-            );
-
-        document
-            .getElementById("endTime")
-            .addEventListener(
-                "change",
-                updateAnalysisDates
-            );
 
         /* =====================================================
            PARSER DO MK
@@ -1858,7 +957,6 @@
                 value === undefined ||
                 value === ""
             ) {
-
                 return null;
             }
 
@@ -1889,8 +987,7 @@
                 const result =
                     new Date(
                         excelEpoch.getTime() +
-                        value *
-                            86400000
+                        value * 86400000
                     );
 
                 return isNaN(
@@ -1961,80 +1058,15 @@
                 : parsed;
         }
 
-        /* =====================================================
-           PERÍODO
-        ===================================================== */
-
-        function sessionIsInPeriod(
-            session
-        ) {
-
-            if (
-                !analysisStart ||
-                !analysisEnd
-            ) {
-
-                return true;
-            }
-
-            if (
-                analysisStart >
-                analysisEnd
-            ) {
-
-                return false;
-            }
-
-            const start =
-                session.start;
-
-            const stop =
-                session.stop ||
-                session.start;
-
-            if (!start) {
-
-                return false;
-            }
-
-            return (
-                start <= analysisEnd &&
-                stop >= analysisStart
-            );
-        }
-
-        function sessionIsInPeriodWithDeleted(
-            session
-        ) {
-
-            if (
-                session.deleted
-            ) {
-
-                return false;
-            }
-
-            return sessionIsInPeriod(
-                session
-            );
-        }
 
         /* =====================================================
-           CÁLCULO
+           CÁLCULO DAS QUEDAS
         ===================================================== */
 
         function calculateRowOffline(
             index,
             activeSessions
         ) {
-
-            if (
-                !analysisStart ||
-                !analysisEnd
-            ) {
-
-                return 0;
-            }
 
             const current =
                 activeSessions[index];
@@ -2043,7 +1075,6 @@
                 !current ||
                 !current.start
             ) {
-
                 return 0;
             }
 
@@ -2054,67 +1085,19 @@
                 !next ||
                 !next.stop
             ) {
-
                 return 0;
             }
 
-            let offlineStart =
+            const offlineStart =
                 next.stop;
 
-            let offlineEnd =
+            const offlineEnd =
                 current.start;
 
             if (
                 offlineEnd <=
                 offlineStart
             ) {
-
-                return 0;
-            }
-
-            const periodStart =
-                analysisStart;
-
-            const periodEnd =
-                analysisEnd;
-
-            if (
-                offlineEnd <=
-                periodStart
-            ) {
-
-                return 0;
-            }
-
-            if (
-                offlineStart >=
-                periodEnd
-            ) {
-
-                return 0;
-            }
-
-            offlineStart =
-                new Date(
-                    Math.max(
-                        offlineStart.getTime(),
-                        periodStart.getTime()
-                    )
-                );
-
-            offlineEnd =
-                new Date(
-                    Math.min(
-                        offlineEnd.getTime(),
-                        periodEnd.getTime()
-                    )
-                );
-
-            if (
-                offlineEnd <=
-                offlineStart
-            ) {
-
                 return 0;
             }
 
@@ -2124,75 +1107,52 @@
             ) / 1000;
         }
 
+
         /* =====================================================
-           ATUALIZA RESULTADO
+           RESULTADO
         ===================================================== */
 
         function updateResult(
-            activeSessions = [],
-            calculatedTotal = null,
-            calculatedDrops = null
+            activeSessions = []
         ) {
 
-            let total =
-                calculatedTotal;
+            let total = 0;
+            let drops = 0;
 
-            let drops =
-                calculatedDrops;
+            activeSessions.forEach(
+                function(session, index) {
 
-            if (
-                total === null ||
-                drops === null
-            ) {
+                    const seconds =
+                        calculateRowOffline(
+                            index,
+                            activeSessions
+                        );
 
-                total = 0;
-                drops = 0;
+                    total += seconds;
 
-                activeSessions =
-                    activeSessions.length
-                        ? activeSessions
-                        : getVisibleSessions();
-
-                activeSessions.forEach(
-                    function(session, index) {
-
-                        const seconds =
-                            calculateRowOffline(
-                                index,
-                                activeSessions
-                            );
-
-                        total +=
-                            seconds;
-
-                        if (
-                            seconds > 0
-                        ) {
-
-                            drops++;
-                        }
+                    if (
+                        seconds > 0
+                    ) {
+                        drops++;
                     }
-                );
-            }
+                }
+            );
 
             document
                 .getElementById(
                     "totalOffline"
                 )
                 .textContent =
-                formatSeconds(
-                    total
-                );
+                formatSeconds(total);
 
             document
                 .getElementById(
                     "totalDrops"
                 )
                 .textContent =
-                String(
-                    drops
-                );
+                String(drops);
         }
+
 
         /* =====================================================
            SESSÕES
@@ -2269,14 +1229,12 @@
                 );
         }
 
-        function deleteSession(
-            index
-        ) {
+
+        function deleteSession(index) {
 
             if (
                 !sessions[index]
             ) {
-
                 return;
             }
 
@@ -2286,33 +1244,15 @@
             renderTable();
 
             showStatus(
-                "Sessão excluída do cálculo.",
+                "Queda excluída do cálculo.",
                 "success"
             );
         }
 
-        function restoreSession(
-            index
-        ) {
-
-            if (
-                !sessions[index]
-            ) {
-
-                return;
-            }
-
-            sessions[index].deleted =
-                false;
-
-            renderTable();
-        }
 
         window.deleteSession =
             deleteSession;
 
-        window.restoreSession =
-            restoreSession;
 
         /* =====================================================
            RENDERIZAÇÃO
@@ -2326,7 +1266,28 @@
                 );
 
             const activeSessions =
-                getVisibleSessions();
+                sessions
+                    .filter(
+                        function(session) {
+                            return !session.deleted;
+                        }
+                    )
+                    .sort(
+                        function(a, b) {
+
+                            const aTime =
+                                a.start
+                                    ? a.start.getTime()
+                                    : 0;
+
+                            const bTime =
+                                b.start
+                                    ? b.start.getTime()
+                                    : 0;
+
+                            return bTime - aTime;
+                        }
+                    );
 
             if (
                 !activeSessions.length
@@ -2339,7 +1300,7 @@
                             <div class="empty-state">
                                 ${
                                     sessions.length
-                                        ? "Nenhuma sessão encontrada no período selecionado."
+                                        ? "Nenhuma queda encontrada."
                                         : "Nenhuma sessão importada."
                                 }
                             </div>
@@ -2347,23 +1308,15 @@
                     </tr>
                     `;
 
-                updateResult(
-                    [],
-                    0,
-                    0
-                );
+                updateResult([]);
 
                 return;
             }
 
-            let totalOffline =
-                0;
+            let totalOffline = 0;
+            let drops = 0;
 
-            let drops =
-                0;
-
-            let html =
-                "";
+            let html = "";
 
             activeSessions.forEach(
                 function(
@@ -2383,7 +1336,6 @@
                     if (
                         offlineSeconds > 0
                     ) {
-
                         drops++;
                     }
 
@@ -2458,14 +1410,25 @@
             body.innerHTML =
                 html;
 
-            updateResult(
-                activeSessions,
-                totalOffline,
-                drops
-            );
+            document
+                .getElementById(
+                    "totalOffline"
+                )
+                .textContent =
+                formatSeconds(
+                    totalOffline
+                );
+
+            document
+                .getElementById(
+                    "totalDrops"
+                )
+                .textContent =
+                String(drops);
 
             bindSessionInputs();
         }
+
 
         /* =====================================================
            IMPORTAÇÃO DO ARQUIVO
@@ -2485,6 +1448,7 @@
                 }
             );
 
+
         document
             .getElementById("fileInput")
             .addEventListener(
@@ -2495,7 +1459,6 @@
                         event.target.files[0];
 
                     if (!file) {
-
                         return;
                     }
 
@@ -2563,18 +1526,11 @@
                                             function(value) {
 
                                                 return (
-                                                    value ===
-                                                        "hr. start" ||
-                                                    value ===
-                                                        "hr start" ||
-                                                    value ===
-                                                        "start" ||
-                                                    value.includes(
-                                                        "hr. start"
-                                                    ) ||
-                                                    value.includes(
-                                                        "hr start"
-                                                    )
+                                                    value === "hr. start" ||
+                                                    value === "hr start" ||
+                                                    value === "start" ||
+                                                    value.includes("hr. start") ||
+                                                    value.includes("hr start")
                                                 );
                                             }
                                         );
@@ -2584,18 +1540,11 @@
                                             function(value) {
 
                                                 return (
-                                                    value ===
-                                                        "hr. stop" ||
-                                                    value ===
-                                                        "hr stop" ||
-                                                    value ===
-                                                        "stop" ||
-                                                    value.includes(
-                                                        "hr. stop"
-                                                    ) ||
-                                                    value.includes(
-                                                        "hr stop"
-                                                    )
+                                                    value === "hr. stop" ||
+                                                    value === "hr stop" ||
+                                                    value === "stop" ||
+                                                    value.includes("hr. stop") ||
+                                                    value.includes("hr stop")
                                                 );
                                             }
                                         );
@@ -2603,21 +1552,16 @@
                                     if (
                                         startIndex === -1
                                     ) {
-
-                                        startIndex =
-                                            0;
+                                        startIndex = 0;
                                     }
 
                                     if (
                                         stopIndex === -1
                                     ) {
-
-                                        stopIndex =
-                                            1;
+                                        stopIndex = 1;
                                     }
 
-                                    const imported =
-                                        [];
+                                    const imported = [];
 
                                     for (
                                         let i = 1;
@@ -2642,20 +1586,14 @@
                                             !start &&
                                             !stop
                                         ) {
-
                                             continue;
                                         }
 
-                                        imported.push(
-                                            {
-                                                start:
-                                                    start,
-                                                stop:
-                                                    stop,
-                                                deleted:
-                                                    false
-                                            }
-                                        );
+                                        imported.push({
+                                            start: start,
+                                            stop: stop,
+                                            deleted: false
+                                        });
                                     }
 
                                     if (
@@ -2681,10 +1619,7 @@
                                                         ? b.start.getTime()
                                                         : 0;
 
-                                                return (
-                                                    bTime -
-                                                    aTime
-                                                );
+                                                return bTime - aTime;
                                             }
                                         );
 
@@ -2735,6 +1670,7 @@
                 }
             );
 
+
         /* =====================================================
            LIMPAR
         ===================================================== */
@@ -2745,54 +1681,7 @@
                 "click",
                 function() {
 
-                    sessions =
-                        [];
-
-                    analysisStart =
-                        null;
-
-                    analysisEnd =
-                        null;
-
-                    calendarState.start.date =
-                        null;
-
-                    calendarState.end.date =
-                        null;
-
-                    calendarState.start.month =
-                        new Date();
-
-                    calendarState.end.month =
-                        new Date();
-
-                    document
-                        .getElementById(
-                            "startDisplay"
-                        )
-                        .value =
-                        "";
-
-                    document
-                        .getElementById(
-                            "endDisplay"
-                        )
-                        .value =
-                        "";
-
-                    document
-                        .getElementById(
-                            "startTime"
-                        )
-                        .value =
-                        "";
-
-                    document
-                        .getElementById(
-                            "endTime"
-                        )
-                        .value =
-                        "";
+                    sessions = [];
 
                     renderTable();
 
@@ -2802,6 +1691,7 @@
                     );
                 }
             );
+
 
         /* =====================================================
            STATUS
@@ -2841,36 +1731,6 @@
                 );
         }
 
-        /* =====================================================
-           FILTRO DE SESSÕES
-        ===================================================== */
-
-        function getVisibleSessions() {
-
-            return sessions
-                .filter(
-                    sessionIsInPeriodWithDeleted
-                )
-                .sort(
-                    function(a, b) {
-
-                        const aTime =
-                            a.start
-                                ? a.start.getTime()
-                                : 0;
-
-                        const bTime =
-                            b.start
-                                ? b.start.getTime()
-                                : 0;
-
-                        return (
-                            bTime -
-                            aTime
-                        );
-                    }
-                );
-        }
 
         /* =====================================================
            INICIALIZAÇÃO
