@@ -1,1975 +1,2497 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Alcans | Análise de Consumo</title>
-
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="auth.js"></script>
-
-    <style>
-        :root {
-            --laranja: #FF5A00;
-            --laranja-hover: #FF6A1A;
-            --fundo: #111419;
-            --fundo-menu: #15181E;
-            --card: #191D24;
-            --card-hover: #20252D;
-            --borda: #303640;
-            --texto: #F5F6F8;
-            --texto-secundario: #9BA3AE;
-            --verde: #31C48D;
-            --vermelho: #EF4444;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: var(--fundo);
-            color: var(--texto);
-            min-height: 100vh;
-        }
-
-        .header {
-            height: 66px;
-            background: var(--laranja);
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 0 24px;
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-menu {
-            width: 42px;
-            height: 42px;
-            border: none;
-            background: transparent;
-            color: white;
-            border-radius: 8px;
-            font-size: 25px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .header-menu:hover {
-            background: rgba(255, 255, 255, .12);
-        }
-
-        .logo-area {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header-logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .header-logo img {
-            width: 112px;
-            height: auto;
-            display: block;
-        }
-
-        .logo-sub {
-            font-size: 8px;
-            letter-spacing: .8px;
-            margin-top: 2px;
-            opacity: .9;
-        }
-
-        .header-label {
-            margin-left: auto;
-            font-size: 11px;
-            color: rgba(255, 255, 255, .88);
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 66px;
-            left: 0;
-            bottom: 0;
-            width: 280px;
-            background: var(--fundo-menu);
-            border-right: 1px solid var(--borda);
-            padding: 22px 14px;
-            transform: translateX(-100%);
-            transition: .25s ease;
-            z-index: 900;
-            overflow-y: auto;
-        }
-
-        .sidebar.open {
-            transform: translateX(0);
-            box-shadow: 20px 0 50px rgba(0, 0, 0, .4);
-        }
-
-        .menu-title {
-            font-size: 11px;
-            color: #737B87;
-            text-transform: uppercase;
-            margin: 5px 12px 12px;
-            font-weight: bold;
-        }
-
-        .menu-item {
-            width: 100%;
-            border: none;
-            background: transparent;
-            color: #CBD0D8;
-            text-align: left;
-            padding: 13px 12px;
-            border-radius: 9px;
-            margin: 3px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: .2s;
-        }
-
-        .menu-item:hover {
-            background: var(--card-hover);
-            color: white;
-        }
-
-        .menu-item.active {
-            background: var(--card-hover);
-            color: white;
-            box-shadow: inset 3px 0 0 var(--laranja);
-        }
-
-        .menu-icon {
-            width: 22px;
-            text-align: center;
-            color: var(--laranja);
-            font-size: 17px;
-        }
-
-        .overlay {
-            position: fixed;
-            inset: 66px 0 0;
-            background: rgba(0, 0, 0, .55);
-            display: none;
-            z-index: 800;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        .container {
-            max-width: 1250px;
-            margin: auto;
-            padding: 40px 28px 70px;
-        }
-
-        .hero {
-            background: var(--card);
-            border: 1px solid var(--borda);
-            padding: 30px 32px;
-            border-radius: 16px;
-            position: relative;
-            overflow: visible;
-            margin-bottom: 22px;
-        }
-
-        .hero::after {
-            content: "";
-            position: absolute;
-            right: -80px;
-            top: -100px;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: rgba(255, 90, 0, .09);
-            pointer-events: none;
-        }
-
-        .hero-tag {
-            font-size: 10px;
-            letter-spacing: 1.5px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--laranja);
-        }
-
-        .hero h1 {
-            font-size: 30px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-        }
-
-        .hero p {
-            font-size: 13px;
-            line-height: 1.7;
-            color: var(--texto-secundario);
-            max-width: 760px;
-        }
-
-        .card {
-            background: var(--card);
-            border: 1px solid var(--borda);
-            border-radius: 15px;
-            padding: 28px;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 750;
-            margin-bottom: 7px;
-        }
-
-        .section-description {
-            color: var(--texto-secundario);
-            font-size: 12px;
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .field {
-            display: flex;
-            flex-direction: column;
-            gap: 9px;
-            position: relative;
-        }
-
-        .field label {
-            font-size: 11px;
-            font-weight: 650;
-        }
-
-        .date-wrapper {
-            position: relative;
-        }
-
-        .date-display {
-            height: 46px;
-            width: 100%;
-            padding: 0 45px 0 13px;
-            border: 1px solid var(--borda);
-            border-radius: 8px;
-            outline: none;
-            font-family: inherit;
-            font-size: 13px;
-            background: var(--fundo);
-            color: var(--texto);
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .date-display::placeholder {
-            color: #737B87;
-        }
-
-        .date-display:focus {
-            border-color: var(--laranja);
-            box-shadow: 0 0 0 3px rgba(255, 90, 0, .12);
-        }
-
-        .calendar-icon {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            font-size: 17px;
-        }
-
-        .calendar-popup {
-            display: none;
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            width: 310px;
-            background: var(--card);
-            border: 1px solid var(--borda);
-            border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, .4);
-            padding: 15px;
-            z-index: 100;
-        }
-
-        .calendar-popup.open {
-            display: block;
-            animation: calendarAppear .15s ease;
-        }
-
-        @keyframes calendarAppear {
-            from {
-                opacity: 0;
-                transform: translateY(-5px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .calendar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .calendar-title {
-            font-size: 13px;
-            font-weight: 750;
-            text-transform: capitalize;
-        }
-
-        .calendar-nav {
-            width: 32px;
-            height: 32px;
-            border: 1px solid var(--borda);
-            background: var(--fundo-menu);
-            color: var(--texto);
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 15px;
-            transition: .2s;
-        }
-
-        .calendar-nav:hover {
-            border-color: var(--laranja);
-            color: var(--laranja);
-        }
-
-        .calendar-weekdays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            margin-bottom: 5px;
-        }
-
-        .calendar-weekdays div {
-            text-align: center;
-            font-size: 10px;
-            color: var(--texto-secundario);
-            font-weight: 700;
-            padding: 5px 0;
-        }
-
-        .calendar-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-
-        .calendar-day {
-            height: 32px;
-            border: none;
-            background: transparent;
-            color: var(--texto);
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 11px;
-            transition: .15s;
-        }
-
-        .calendar-day:hover {
-            background: var(--card-hover);
-        }
-
-        .calendar-day.other-month {
-            color: #555C67;
-        }
-
-        .calendar-day.today {
-            border: 1px solid var(--laranja);
-        }
-
-        .calendar-day.selected {
-            background: var(--laranja);
-            color: white;
-            font-weight: bold;
-        }
-
-        .calendar-day.disabled {
-            color: #454A53;
-            cursor: not-allowed;
-        }
-
-        .calendar-day.disabled:hover {
-            background: transparent;
-        }
-
-        .button-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-        .primary-button,
-        .secondary-button {
-            border: none;
-            border-radius: 8px;
-            padding: 12px 17px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: .2s;
-        }
-
-        .primary-button {
-            background: var(--laranja);
-            color: white;
-        }
-
-        .primary-button:hover {
-            background: var(--laranja-hover);
-        }
-
-        .secondary-button {
-            background: var(--fundo-menu);
-            border: 1px solid var(--borda);
-            color: var(--texto);
-        }
-
-        .secondary-button:hover {
-            border-color: var(--laranja);
-            color: var(--laranja);
-        }
-
-        .status {
-            display: none;
-            padding: 12px 14px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-        .status.show {
-            display: block;
-        }
-
-        .status.success {
-            background: rgba(49, 196, 141, .1);
-            border: 1px solid rgba(49, 196, 141, .25);
-            color: #6EE7B7;
-        }
-
-        .status.error {
-            background: rgba(239, 68, 68, .1);
-            border: 1px solid rgba(239, 68, 68, .25);
-            color: #FCA5A5;
-        }
-
-        .result-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .result-box {
-            background: var(--fundo);
-            border: 1px solid var(--borda);
-            border-radius: 11px;
-            padding: 20px;
-        }
-
-        .result-label {
-            font-size: 10px;
-            color: var(--texto-secundario);
-            text-transform: uppercase;
-            letter-spacing: .7px;
-            margin-bottom: 8px;
-        }
-
-        .result-value {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--laranja);
-        }
-
-        .result-help {
-            margin-top: 6px;
-            color: var(--texto-secundario);
-            font-size: 10px;
-        }
-
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            border: 1px solid var(--borda);
-            border-radius: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 720px;
-        }
-
-        th {
-            background: var(--fundo-menu);
-            color: #AEB5BF;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            padding: 13px 12px;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 10px 12px;
-            border-top: 1px solid var(--borda);
-            font-size: 12px;
-            vertical-align: middle;
-        }
-
-        .session-input {
-            width: 100%;
-            min-width: 185px;
-            background: var(--fundo);
-            color: var(--texto);
-            border: 1px solid var(--borda);
-            border-radius: 7px;
-            padding: 9px 10px;
-            outline: none;
-            font-family: inherit;
-            font-size: 11px;
-        }
-
-        .session-input:focus {
-            border-color: var(--laranja);
-            box-shadow: 0 0 0 2px rgba(255, 90, 0, .1);
-        }
-
-        .duration {
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .duration.positive {
-            color: #F59E0B;
-        }
-
-        .duration.zero {
-            color: #7B8490;
-        }
-
-        .action-cell {
-            white-space: nowrap;
-        }
-
-        .small-button {
-            border: 1px solid var(--borda);
-            background: var(--fundo-menu);
-            color: #D6DAE0;
-            border-radius: 7px;
-            padding: 8px 10px;
-            cursor: pointer;
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .small-button:hover {
-            border-color: var(--vermelho);
-            color: #F87171;
-        }
-
-        .empty-state {
-            padding: 45px 20px;
-            text-align: center;
-            color: var(--texto-secundario);
-            font-size: 12px;
-        }
-
-        .info-box {
-            background: rgba(255, 90, 0, .06);
-            border: 1px solid rgba(255, 90, 0, .18);
-            border-radius: 10px;
-            padding: 14px;
-            color: #C9CED5;
-            font-size: 11px;
-            line-height: 1.7;
-            margin-top: 18px;
-        }
-
-        .info-box strong {
-            color: white;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .footer {
-            text-align: center;
-            color: #626A75;
-            font-size: 10px;
-            padding: 0 20px 30px;
-        }
-
-        @media (max-width: 760px) {
-            .header {
-                padding: 0 14px;
-            }
-
-            .header-label {
-                display: none;
-            }
-
-            .container {
-                padding: 25px 14px 50px;
-            }
-
-            .hero {
-                padding: 24px 20px;
-            }
-
-            .hero h1 {
-                font-size: 24px;
-            }
-
-            .card {
-                padding: 20px 16px;
-            }
-
-            .form-grid,
-            .result-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .calendar-popup {
-                width: min(310px, calc(100vw - 50px));
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Alcans | Análise de Consumo</title>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="auth.js"></script>
+
+<style>
+:root {
+    --laranja: #FF5A00;
+    --laranja-hover: #FF6A1A;
+    --fundo: #111419;
+    --fundo-menu: #15181E;
+    --card: #191D24;
+    --card-hover: #20252D;
+    --borda: #303640;
+    --texto: #F5F6F8;
+    --texto-secundario: #9BA3AE;
+    --verde: #31C48D;
+    --vermelho: #EF4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    min-height: 100vh;
+}
+
+.header {
+    height: 66px;
+    background: var(--laranja);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-menu {
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: transparent;
+    color: white;
+    border-radius: 8px;
+    font-size: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-menu:hover {
+    background: rgba(255,255,255,.12);
+}
+
+.logo-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo img {
+    width: 112px;
+    height: auto;
+    display: block;
+}
+
+.logo-sub {
+    font-size: 8px;
+    letter-spacing: .8px;
+    margin-top: 2px;
+    opacity: .9;
+}
+
+.header-label {
+    margin-left: auto;
+    font-size: 11px;
+    color: rgba(255,255,255,.88);
+}
+
+.sidebar {
+    position: fixed;
+    top: 66px;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: var(--fundo-menu);
+    border-right: 1px solid var(--borda);
+    padding: 22px 14px;
+    transform: translateX(-100%);
+    transition: .25s ease;
+    z-index: 900;
+    overflow-y: auto;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+    box-shadow: 20px 0 50px rgba(0,0,0,.4);
+}
+
+.menu-title {
+    font-size: 11px;
+    color: #737B87;
+    text-transform: uppercase;
+    margin: 5px 12px 12px;
+    font-weight: bold;
+}
+
+.menu-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #CBD0D8;
+    text-align: left;
+    padding: 13px 12px;
+    border-radius: 9px;
+    margin: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.menu-item:hover {
+    background: var(--card-hover);
+    color: white;
+}
+
+.menu-item.active {
+    background: var(--card-hover);
+    color: white;
+    box-shadow: inset 3px 0 0 var(--laranja);
+}
+
+.menu-icon {
+    width: 22px;
+    text-align: center;
+    color: var(--laranja);
+    font-size: 17px;
+}
+
+.overlay {
+    position: fixed;
+    inset: 66px 0 0;
+    background: rgba(0,0,0,.55);
+    display: none;
+    z-index: 800;
+}
+
+.overlay.active {
+    display: block;
+}
+
+.container {
+    max-width: 1250px;
+    margin: auto;
+    padding: 40px 28px 70px;
+}
+
+.hero {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    padding: 30px 32px;
+    border-radius: 16px;
+    position: relative;
+    overflow: visible;
+    margin-bottom: 22px;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    right: -80px;
+    top: -100px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(255,90,0,.09);
+    pointer-events: none;
+}
+
+.hero-tag {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--laranja);
+}
+
+.hero h1 {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--texto-secundario);
+    max-width: 760px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 15px;
+    padding: 28px;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 750;
+    margin-bottom: 7px;
+}
+
+.section-description {
+    color: var(--texto-secundario);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    position: relative;
+}
+
+.field label,
+.client-field label {
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.date-wrapper {
+    position: relative;
+}
+
+.date-display {
+    height: 46px;
+    width: 100%;
+    padding: 0 45px 0 13px;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--fundo);
+    color: var(--texto);
+    cursor: pointer;
+    user-select: none;
+}
+
+.date-display:focus {
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 3px rgba(255,90,0,.12);
+}
+
+.calendar-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 17px;
+}
+
+.calendar-popup {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 310px;
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.4);
+    padding: 15px;
+    z-index: 100;
+}
+
+.calendar-popup.open {
+    display: block;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.calendar-title {
+    font-size: 13px;
+    font-weight: 750;
+    text-transform: capitalize;
+}
+
+.calendar-nav {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--borda);
+    background: var(--fundo-menu);
+    color: var(--texto);
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.calendar-nav:hover {
+    border-color: var(--laranja);
+    color: var(--laranja);
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    gap: 4px;
+    margin-bottom: 5px;
+}
+
+.calendar-weekdays div {
+    text-align: center;
+    font-size: 10px;
+    color: var(--texto-secundario);
+    font-weight: 700;
+    padding: 5px 0;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    gap: 4px;
+}
+
+.calendar-day {
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--texto);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.calendar-day:hover {
+    background: var(--card-hover);
+}
+
+.calendar-day.other-month {
+    color: #555C67;
+}
+
+.calendar-day.today {
+    border: 1px solid var(--laranja);
+}
+
+.calendar-day.selected {
+    background: var(--laranja);
+    color: white;
+    font-weight: bold;
+}
+
+.client-field {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.client-field input {
+    width: 100%;
+    height: 46px;
+    padding: 0 13px;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--fundo);
+    color: var(--texto);
+}
+
+.client-field input:focus {
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 3px rgba(255,90,0,.12);
+}
+
+.info-box {
+    background: rgba(255,90,0,.06);
+    border: 1px solid rgba(255,90,0,.18);
+    border-radius: 10px;
+    padding: 14px;
+    color: #C9CED5;
+    font-size: 11px;
+    line-height: 1.7;
+    margin-top: 18px;
+}
+
+.info-box strong {
+    color: white;
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.primary-button,
+.secondary-button {
+    border-radius: 8px;
+    padding: 12px 17px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.primary-button {
+    border: none;
+    background: var(--laranja);
+    color: white;
+}
+
+.primary-button:hover {
+    background: var(--laranja-hover);
+}
+
+.primary-button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.secondary-button {
+    background: var(--fundo-menu);
+    border: 1px solid var(--borda);
+    color: var(--texto);
+}
+
+.secondary-button:hover {
+    border-color: var(--laranja);
+    color: var(--laranja);
+}
+
+.status {
+    display: none;
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.status.show {
+    display: block;
+}
+
+.status.success {
+    background: rgba(49,196,141,.1);
+    border: 1px solid rgba(49,196,141,.25);
+    color: #6EE7B7;
+}
+
+.status.error {
+    background: rgba(239,68,68,.1);
+    border: 1px solid rgba(239,68,68,.25);
+    color: #FCA5A5;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.result-box {
+    background: var(--fundo);
+    border: 1px solid var(--borda);
+    border-radius: 11px;
+    padding: 20px;
+}
+
+.result-label {
+    font-size: 10px;
+    color: var(--texto-secundario);
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    margin-bottom: 8px;
+}
+
+.result-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--laranja);
+}
+
+.result-help {
+    margin-top: 6px;
+    color: var(--texto-secundario);
+    font-size: 10px;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+}
+
+th {
+    background: var(--fundo-menu);
+    color: #AEB5BF;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 13px 12px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+td {
+    padding: 10px 12px;
+    border-top: 1px solid var(--borda);
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.session-input {
+    width: 100%;
+    min-width: 185px;
+    background: var(--fundo);
+    color: var(--texto);
+    border: 1px solid var(--borda);
+    border-radius: 7px;
+    padding: 9px 10px;
+    outline: none;
+    font-family: inherit;
+    font-size: 11px;
+}
+
+.session-input:focus {
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 2px rgba(255,90,0,.1);
+}
+
+.duration {
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.duration.positive {
+    color: #F59E0B;
+}
+
+.duration.zero {
+    color: #7B8490;
+}
+
+.duration.maximum {
+    color: #EF4444 !important;
+    font-weight: 900;
+}
+
+.small-button {
+    border: 1px solid var(--borda);
+    background: var(--fundo-menu);
+    color: #D6DAE0;
+    border-radius: 7px;
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.small-button:hover {
+    border-color: var(--vermelho);
+    color: #F87171;
+}
+
+.empty-state {
+    padding: 45px 20px;
+    text-align: center;
+    color: var(--texto-secundario);
+    font-size: 12px;
+}
+
+.file-input {
+    display: none;
+}
+
+.footer {
+    text-align: center;
+    color: #626A75;
+    font-size: 10px;
+    padding: 0 20px 30px;
+}
+
+@media (max-width:760px) {
+    .header {
+        padding: 0 14px;
+    }
+
+    .header-label {
+        display: none;
+    }
+
+    .container {
+        padding: 25px 14px 50px;
+    }
+
+    .hero {
+        padding: 24px 20px;
+    }
+
+    .hero h1 {
+        font-size: 24px;
+    }
+
+    .card {
+        padding: 20px 16px;
+    }
+
+    .form-grid,
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-popup {
+        width: min(310px,calc(100vw - 50px));
+    }
+}
+</style>
 </head>
 
 <body>
 
 <header class="header">
 
-    <button
-        class="header-menu"
-        id="menuButton"
-        type="button"
-        aria-label="Abrir menu"
-    >
-        ☰
-    </button>
+<button
+    class="header-menu"
+    id="menuButton"
+    type="button"
+>
+☰
+</button>
 
-    <div class="logo-area">
+<div class="logo-area">
 
-        <div class="header-logo">
-            <img src="logo-alcans.png" alt="Alcans">
-        </div>
+<div class="header-logo">
+<img src="logo-alcans.png" alt="Alcans">
+</div>
 
-        <div class="logo-sub">
-            CENTRALSAC
-        </div>
+<div class="logo-sub">
+CENTRALSAC
+</div>
 
-    </div>
+</div>
 
-    <div class="header-label">
-        PORTAL DO ATENDENTE
-    </div>
+<div class="header-label">
+PORTAL DO ATENDENTE
+</div>
 
 </header>
 
 <aside class="sidebar" id="sidebar">
 
-    <div class="menu-title">
-        Navegação
-    </div>
+<div class="menu-title">
+Navegação
+</div>
 
-    <button class="menu-item"
-        onclick="window.location.href='index.html'"
-        type="button">
-        <span class="menu-icon">🏠</span>
-        Início
-    </button>
+<button
+    class="menu-item"
+    onclick="window.location.href='index.html'"
+    type="button"
+>
+<span class="menu-icon">🏠</span>
+Início
+</button>
 
-    <button class="menu-item"
-        onclick="window.location.href='calculadora.html'"
-        type="button">
-        <span class="menu-icon">🧮</span>
-        Calcular multas
-    </button>
+<button
+    class="menu-item"
+    onclick="window.location.href='calculadora.html'"
+    type="button"
+>
+<span class="menu-icon">🧮</span>
+Calcular multas
+</button>
 
-    <button class="menu-item"
-        onclick="window.location.href='procedimentos.html'"
-        type="button">
-        <span class="menu-icon">📋</span>
-        Procedimentos
-    </button>
+<button
+    class="menu-item"
+    onclick="window.location.href='procedimentos.html'"
+    type="button"
+>
+<span class="menu-icon">📋</span>
+Procedimentos
+</button>
 
-    <button class="menu-item"
-        onclick="window.location.href='sistemas.html'"
-        type="button">
-        <span class="menu-icon">🖥️</span>
-        Sistemas
-    </button>
+<button
+    class="menu-item"
+    onclick="window.location.href='sistemas.html'"
+    type="button"
+>
+<span class="menu-icon">🖥️</span>
+Sistemas
+</button>
 
-    <button class="menu-item active"
-        onclick="window.location.href='indisponibilidade.html'"
-        type="button">
-        <span class="menu-icon">📊</span>
-        Análise de Consumo
-    </button>
+<button
+    class="menu-item active"
+    onclick="window.location.href='indisponibilidade.html'"
+    type="button"
+>
+<span class="menu-icon">📊</span>
+Análise de Consumo
+</button>
 
-    <button class="menu-item"
-        onclick="window.location.href='escala.html'"
-        type="button">
-        <span class="menu-icon">📅</span>
-        Escala
-    </button>
+<button
+    class="menu-item"
+    onclick="window.location.href='escala.html'"
+    type="button"
+>
+<span class="menu-icon">📅</span>
+Escala
+</button>
 
 </aside>
 
-<div class="overlay" id="overlay"></div>
+<div
+    class="overlay"
+    id="overlay"
+></div>
 
 <main class="container">
 
-    <section class="hero">
+<section class="hero">
 
-        <div class="hero-tag">
-            CENTRALSAC • FERRAMENTA INTERNA
-        </div>
+<div class="hero-tag">
+CENTRALSAC • FERRAMENTA INTERNA
+</div>
 
-        <h1>
-            Análise de Consumo
-        </h1>
+<h1>
+Análise de Consumo
+</h1>
 
-        <p>
-            Importe o relatório de sessões do cliente, selecione o período
-            que deseja analisar e acompanhe automaticamente o tempo total
-            em que o cliente ficou offline e a quantidade de quedas
-            registradas dentro do período.
-        </p>
+<p>
+Importe o relatório de sessões do cliente, confira todas as quedas,
+analise a base completa mesmo sem selecionar um período e,
+posteriormente, selecione as datas para gerar uma análise específica.
+</p>
 
-    </section>
+</section>
 
-    <section class="card">
+<section class="card">
 
-        <div class="section-title">
-            1. Selecionar período
-        </div>
+<div class="section-title">
+1. Selecionar período
+</div>
 
-        <div class="section-description">
-            Primeiro importe o arquivo para carregar todas as quedas.
-            Depois selecione a data inicial e final pelo calendário para
-            filtrar e calcular somente o período desejado.
-        </div>
+<div class="section-description">
+A análise da base completa é feita automaticamente assim que o arquivo
+é importado. As datas servem para filtrar posteriormente um período
+específico.
+</div>
 
-        <div class="form-grid">
+<div class="form-grid">
 
-            <div class="field">
+<div class="field">
 
-                <label for="startDisplay">
-                    Início da análise
-                </label>
+<label for="startDisplay">
+Data inicial
+</label>
 
-                <div class="date-wrapper">
+<div class="date-wrapper">
 
-                    <input
-                        type="text"
-                        id="startDisplay"
-                        class="date-display"
-                        placeholder="Selecione a data"
-                        readonly
-                    >
+<input
+    type="text"
+    id="startDisplay"
+    class="date-display"
+    placeholder="Selecione a data"
+    readonly
+>
 
-                    <span class="calendar-icon">
-                        📅
-                    </span>
+<span class="calendar-icon">
+📅
+</span>
 
-                    <div
-                        class="calendar-popup"
-                        id="startCalendar"
-                    ></div>
+<div
+    class="calendar-popup"
+    id="startCalendar"
+></div>
 
-                </div>
+</div>
 
-            </div>
+</div>
 
-            <div class="field">
+<div class="field">
 
-                <label for="endDisplay">
-                    Fim da análise
-                </label>
+<label for="endDisplay">
+Data final
+</label>
 
-                <div class="date-wrapper">
+<div class="date-wrapper">
 
-                    <input
-                        type="text"
-                        id="endDisplay"
-                        class="date-display"
-                        placeholder="Selecione a data"
-                        readonly
-                    >
+<input
+    type="text"
+    id="endDisplay"
+    class="date-display"
+    placeholder="Selecione a data"
+    readonly
+>
 
-                    <span class="calendar-icon">
-                        📅
-                    </span>
+<span class="calendar-icon">
+📅
+</span>
 
-                    <div
-                        class="calendar-popup"
-                        id="endCalendar"
-                    ></div>
+<div
+    class="calendar-popup"
+    id="endCalendar"
+></div>
 
-                </div>
+</div>
 
-            </div>
+</div>
 
-        </div>
+</div>
 
-        <div class="info-box">
+<div class="client-field">
 
-            <strong>Importante:</strong>
-            depois de importar o arquivo, todas as quedas serão exibidas
-            na tabela para conferência. A análise e os resultados só serão
-            filtrados/calculados depois que você definir a
-            <strong>data inicial</strong> e a
-            <strong>data final</strong>.
+<label for="clientName">
+Cliente
+</label>
 
-        </div>
+<input
+    type="text"
+    id="clientName"
+    placeholder="Nome ou identificação do cliente"
+>
 
-    </section>
+</div>
 
-    <section class="card">
+<div class="info-box">
 
-        <div class="section-title">
-            2. Importar sessões do MK
-        </div>
+<strong>Como funciona:</strong>
+ao importar o Excel, o sistema já calcula automaticamente toda a base.
+Quando você selecionar uma data inicial e final, a análise será
+recalculada somente para o período escolhido.
 
-        <div class="section-description">
-            Selecione o arquivo Excel exportado do MK Solutions contendo
-            as colunas de início e término das sessões.
-        </div>
+</div>
 
-        <input
-            type="file"
-            id="fileInput"
-            class="file-input"
-            accept=".xlsx,.xls,.csv"
-        >
+</section>
 
-        <div class="button-row">
+<section class="card">
 
-            <button
-                class="primary-button"
-                id="importButton"
-                type="button"
-            >
-                📁 Importar arquivo
-            </button>
+<div class="section-title">
+2. Importar sessões do MK
+</div>
 
-            <button
-                class="secondary-button"
-                id="clearButton"
-                type="button"
-            >
-                Limpar dados
-            </button>
+<div class="section-description">
+Selecione o arquivo Excel exportado do MK Solutions contendo as colunas
+de início e término das sessões.
+</div>
 
-        </div>
+<input
+    type="file"
+    id="fileInput"
+    class="file-input"
+    accept=".xlsx,.xls,.csv"
+>
 
-        <div
-            class="status"
-            id="status"
-        ></div>
+<div class="button-row">
 
-    </section>
+<button
+    class="primary-button"
+    id="importButton"
+    type="button"
+>
+📁 Importar arquivo
+</button>
 
-    <section class="card">
+<button
+    class="secondary-button"
+    id="clearButton"
+    type="button"
+>
+Limpar dados
+</button>
 
-        <div class="section-title">
-            Resultado da análise
-        </div>
+</div>
 
-        <div class="section-description">
-            Os resultados serão calculados somente depois que o período
-            inicial e final forem definidos.
-        </div>
+<div
+    class="status"
+    id="status"
+></div>
 
-        <div class="result-grid">
+</section>
 
-            <div class="result-box">
+<section class="card">
 
-                <div class="result-label">
-                    Total do período offline
-                </div>
+<div class="section-title">
+Resultado da análise
+</div>
 
-                <div
-                    class="result-value"
-                    id="totalOffline"
-                >
-                    0:00:00
-                </div>
+<div class="section-description" id="analysisDescription">
+Resultado calculado com base em toda a base importada.
+</div>
 
-                <div class="result-help">
-                    Tempo total de indisponibilidade dentro do período.
-                </div>
+<div class="result-grid">
 
-            </div>
+<div class="result-box">
 
-            <div class="result-box">
+<div class="result-label">
+Total do período offline
+</div>
 
-                <div class="result-label">
-                    Quantidade de quedas
-                </div>
+<div
+    class="result-value"
+    id="totalOffline"
+>
+0:00:00
+</div>
 
-                <div
-                    class="result-value"
-                    id="totalDrops"
-                >
-                    0
-                </div>
+<div class="result-help">
+Tempo total de indisponibilidade analisado.
+</div>
 
-                <div class="result-help">
-                    Quedas registradas dentro do período selecionado.
-                </div>
+</div>
 
-            </div>
+<div class="result-box">
 
-        </div>
+<div class="result-label">
+Quantidade de quedas
+</div>
 
-    </section>
+<div
+    class="result-value"
+    id="totalDrops"
+>
+0
+</div>
 
-    <section class="card">
+<div class="result-help">
+Quantidade de quedas identificadas na análise.
+</div>
 
-        <div class="section-title">
-            Sessões importadas
-        </div>
+</div>
 
-        <div class="section-description">
-            Todas as quedas importadas serão exibidas aqui imediatamente,
-            mesmo antes de selecionar o período. Assim você pode conferir
-            e editar os dados antes de fazer a análise.
-        </div>
+</div>
 
-        <div class="table-wrapper">
+<div class="button-row">
 
-            <table>
+<button
+    class="primary-button"
+    id="pdfButton"
+    type="button"
+    disabled
+>
+📄 Gerar relatório PDF
+</button>
 
-                <thead>
+</div>
 
-                    <tr>
+</section>
 
-                        <th>
-                            Início
-                        </th>
+<section class="card">
 
-                        <th>
-                            Término
-                        </th>
+<div class="section-title">
+Sessões importadas
+</div>
 
-                        <th>
-                            Tempo offline
-                        </th>
+<div class="section-description">
+A maior queda de tempo offline ficará destacada em vermelho. Os horários
+também podem ser corrigidos manualmente antes da geração do relatório.
+</div>
 
-                        <th>
-                            Ação
-                        </th>
+<div class="table-wrapper">
 
-                    </tr>
+<table>
 
-                </thead>
+<thead>
 
-                <tbody id="sessionsBody">
+<tr>
 
-                    <tr>
+<th>
+Início
+</th>
 
-                        <td colspan="4">
+<th>
+Término
+</th>
 
-                            <div class="empty-state">
-                                Nenhuma sessão importada.
-                            </div>
+<th>
+Tempo offline
+</th>
 
-                        </td>
+<th>
+Ação
+</th>
 
-                    </tr>
+</tr>
 
-                </tbody>
+</thead>
 
-            </table>
+<tbody id="sessionsBody">
 
-        </div>
+<tr>
 
-    </section>
+<td colspan="4">
+
+<div class="empty-state">
+Nenhuma sessão importada.
+</div>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
 
 </main>
 
 <footer class="footer">
-    CentralSAC • Alcans Telecom
+CentralSAC • Alcans Telecom
 </footer>
 
 <script>
 
-    /* =====================================================
-       MENU
-    ===================================================== */
+/* =====================================================
+   MENU
+===================================================== */
 
-    const menuButton =
-        document.getElementById("menuButton");
+const menuButton =
+    document.getElementById("menuButton");
 
-    const sidebar =
-        document.getElementById("sidebar");
+const sidebar =
+    document.getElementById("sidebar");
 
-    const overlay =
-        document.getElementById("overlay");
+const overlay =
+    document.getElementById("overlay");
 
-    function toggleMenu() {
+menuButton.addEventListener("click", () => {
 
-        sidebar.classList.toggle("open");
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("active");
 
-        overlay.classList.toggle("active");
+});
+
+overlay.addEventListener("click", () => {
+
+    sidebar.classList.remove("open");
+    overlay.classList.remove("active");
+
+});
+
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
+
+let sessions = [];
+
+let analysisStart = null;
+let analysisEnd = null;
+
+const calendarState = {
+
+    start: {
+        date: null,
+        month: new Date()
+    },
+
+    end: {
+        date: null,
+        month: new Date()
     }
 
-    function closeMenu() {
+};
 
-        sidebar.classList.remove("open");
+/* =====================================================
+   UTILITÁRIOS
+===================================================== */
 
-        overlay.classList.remove("active");
+const monthNames = [
+    "janeiro",
+    "fevereiro",
+    "março",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro"
+];
+
+function pad(value) {
+
+    return String(value).padStart(2,"0");
+
+}
+
+function formatDate(date) {
+
+    if (!date) {
+        return "";
     }
 
-    menuButton.addEventListener(
-        "click",
-        toggleMenu
+    return (
+        pad(date.getDate()) +
+        "/" +
+        pad(date.getMonth() + 1) +
+        "/" +
+        date.getFullYear()
     );
 
-    overlay.addEventListener(
-        "click",
-        closeMenu
+}
+
+function formatManualDate(date) {
+
+    if (!date) {
+        return "";
+    }
+
+    return (
+        pad(date.getDate()) +
+        "/" +
+        pad(date.getMonth() + 1) +
+        "/" +
+        date.getFullYear() +
+        " " +
+        pad(date.getHours()) +
+        ":" +
+        pad(date.getMinutes()) +
+        ":" +
+        pad(date.getSeconds())
     );
 
-    /* =====================================================
-       VARIÁVEIS
-    ===================================================== */
+}
 
-    let sessions = [];
+function formatSeconds(totalSeconds) {
 
-    let analysisStart = null;
-    let analysisEnd = null;
+    totalSeconds = Math.max(
+        0,
+        Math.floor(totalSeconds || 0)
+    );
 
-    const calendarState = {
+    const hours =
+        Math.floor(totalSeconds / 3600);
 
-        start: {
-            date: null,
-            month: new Date()
-        },
-
-        end: {
-            date: null,
-            month: new Date()
-        }
-
-    };
-
-    /* =====================================================
-       UTILITÁRIOS
-    ===================================================== */
-
-    const monthNames = [
-        "janeiro",
-        "fevereiro",
-        "março",
-        "abril",
-        "maio",
-        "junho",
-        "julho",
-        "agosto",
-        "setembro",
-        "outubro",
-        "novembro",
-        "dezembro"
-    ];
-
-    function pad(value) {
-
-        return String(value).padStart(
-            2,
-            "0"
+    const minutes =
+        Math.floor(
+            (totalSeconds % 3600) / 60
         );
-    }
 
-    function formatDate(date) {
+    const seconds =
+        totalSeconds % 60;
 
-        if (!date) {
-            return "";
-        }
+    return (
+        hours +
+        ":" +
+        pad(minutes) +
+        ":" +
+        pad(seconds)
+    );
 
-        return (
-            pad(date.getDate()) +
-            "/" +
-            pad(date.getMonth() + 1) +
-            "/" +
-            date.getFullYear()
-        );
-    }
+}
 
-    function formatManualDate(date) {
+function escapeHtml(value) {
 
-        if (!date) {
-            return "";
-        }
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
-        return (
-            pad(date.getDate()) +
-            "/" +
-            pad(date.getMonth() + 1) +
-            "/" +
-            date.getFullYear() +
-            " " +
-            pad(date.getHours()) +
-            ":" +
-            pad(date.getMinutes()) +
-            ":" +
-            pad(date.getSeconds())
-        );
-    }
+}
 
-    function parseManualDate(value) {
+function parseManualDate(value) {
 
-        if (!value) {
-            return null;
-        }
-
-        const match =
-            value.trim().match(
-                /^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/
-            );
-
-        if (!match) {
-            return null;
-        }
-
-        const day =
-            Number(match[1]);
-
-        const month =
-            Number(match[2]) - 1;
-
-        const year =
-            Number(match[3]);
-
-        const hour =
-            Number(match[4]);
-
-        const minute =
-            Number(match[5]);
-
-        const second =
-            Number(match[6]);
-
-        const date =
-            new Date(
-                year,
-                month,
-                day,
-                hour,
-                minute,
-                second
-            );
-
-        if (
-            date.getFullYear() !== year ||
-            date.getMonth() !== month ||
-            date.getDate() !== day ||
-            date.getHours() !== hour ||
-            date.getMinutes() !== minute ||
-            date.getSeconds() !== second
-        ) {
-            return null;
-        }
-
-        return date;
-    }
-
-    function parseMKDate(value) {
-
-        if (
-            value === null ||
-            value === undefined ||
-            value === ""
-        ) {
-            return null;
-        }
-
-        if (value instanceof Date) {
-
-            return isNaN(value.getTime())
-                ? null
-                : new Date(value.getTime());
-        }
-
-        if (typeof value === "number") {
-
-            const excelEpoch =
-                new Date(
-                    Date.UTC(
-                        1899,
-                        11,
-                        30
-                    )
-                );
-
-            const date =
-                new Date(
-                    excelEpoch.getTime() +
-                    value * 86400000
-                );
-
-            return isNaN(date.getTime())
-                ? null
-                : date;
-        }
-
-        const text =
-            String(value).trim();
-
-        if (!text) {
-            return null;
-        }
-
-        const manual =
-            parseManualDate(text);
-
-        if (manual) {
-            return manual;
-        }
-
-        const iso =
-            new Date(text);
-
-        if (!isNaN(iso.getTime())) {
-            return iso;
-        }
-
+    if (!value) {
         return null;
     }
 
-    function formatSeconds(totalSeconds) {
-
-        totalSeconds =
-            Math.max(
-                0,
-                Math.floor(totalSeconds || 0)
+    const match =
+        value
+            .trim()
+            .match(
+                /^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):(\d{2})$/
             );
 
-        const hours =
-            Math.floor(
-                totalSeconds / 3600
-            );
+    if (!match) {
+        return null;
+    }
 
-        const minutes =
-            Math.floor(
-                (totalSeconds % 3600) / 60
-            );
+    const day =
+        Number(match[1]);
 
-        const seconds =
-            totalSeconds % 60;
+    const month =
+        Number(match[2]) - 1;
 
-        return (
-            hours +
-            ":" +
-            pad(minutes) +
-            ":" +
-            pad(seconds)
+    const year =
+        Number(match[3]);
+
+    const hour =
+        Number(match[4]);
+
+    const minute =
+        Number(match[5]);
+
+    const second =
+        Number(match[6]);
+
+    const date =
+        new Date(
+            year,
+            month,
+            day,
+            hour,
+            minute,
+            second
         );
+
+    if (
+        date.getFullYear() !== year ||
+        date.getMonth() !== month ||
+        date.getDate() !== day ||
+        date.getHours() !== hour ||
+        date.getMinutes() !== minute ||
+        date.getSeconds() !== second
+    ) {
+
+        return null;
+
     }
 
-    function escapeHtml(value) {
+    return date;
 
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+}
+
+function parseMKDate(value) {
+
+    if (
+        value instanceof Date &&
+        !isNaN(value.getTime())
+    ) {
+
+        return new Date(
+            value.getTime()
+        );
+
     }
 
-    /* =====================================================
-       CALENDÁRIO
-    ===================================================== */
+    if (typeof value === "number") {
 
-    function renderCalendar(type) {
-
-        const state =
-            calendarState[type];
-
-        const popup =
-            document.getElementById(
-                type === "start"
-                    ? "startCalendar"
-                    : "endCalendar"
+        const parsed =
+            XLSX.SSF.parse_date_code(
+                value
             );
 
-        const year =
-            state.month.getFullYear();
+        if (parsed) {
 
-        const month =
-            state.month.getMonth();
+            return new Date(
+                parsed.y,
+                parsed.m - 1,
+                parsed.d,
+                parsed.H || 0,
+                parsed.M || 0,
+                parsed.S || 0
+            );
 
-        const firstDay =
+        }
+
+    }
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+
+        return null;
+
+    }
+
+    const text =
+        String(value).trim();
+
+    let match =
+        text.match(
+            /^(\d{2})\/(\d{2})\/(\d{4})[ T](\d{2}):(\d{2}):(\d{2})$/
+        );
+
+    if (match) {
+
+        return new Date(
+            Number(match[3]),
+            Number(match[2]) - 1,
+            Number(match[1]),
+            Number(match[4]),
+            Number(match[5]),
+            Number(match[6])
+        );
+
+    }
+
+    match =
+        text.match(
+            /^(\d{2})\/(\d{2})\/(\d{4})$/
+        );
+
+    if (match) {
+
+        return new Date(
+            Number(match[3]),
+            Number(match[2]) - 1,
+            Number(match[1]),
+            0,
+            0,
+            0
+        );
+
+    }
+
+    const native =
+        new Date(text);
+
+    return isNaN(native.getTime())
+        ? null
+        : native;
+
+}
+
+/* =====================================================
+   CALENDÁRIO
+===================================================== */
+
+function renderCalendar(type) {
+
+    const state =
+        calendarState[type];
+
+    const popup =
+        document.getElementById(
+            type === "start"
+                ? "startCalendar"
+                : "endCalendar"
+        );
+
+    const year =
+        state.month.getFullYear();
+
+    const month =
+        state.month.getMonth();
+
+    const firstDay =
+        new Date(
+            year,
+            month,
+            1
+        ).getDay();
+
+    const daysInMonth =
+        new Date(
+            year,
+            month + 1,
+            0
+        ).getDate();
+
+    const previousDays =
+        new Date(
+            year,
+            month,
+            0
+        ).getDate();
+
+    let html = "";
+
+    html += `
+        <div class="calendar-header">
+
+            <button
+                type="button"
+                class="calendar-nav"
+                data-direction="-1"
+            >
+                ‹
+            </button>
+
+            <div class="calendar-title">
+                ${monthNames[month]} ${year}
+            </div>
+
+            <button
+                type="button"
+                class="calendar-nav"
+                data-direction="1"
+            >
+                ›
+            </button>
+
+        </div>
+    `;
+
+    html += `
+        <div class="calendar-weekdays">
+            <div>Dom</div>
+            <div>Seg</div>
+            <div>Ter</div>
+            <div>Qua</div>
+            <div>Qui</div>
+            <div>Sex</div>
+            <div>Sáb</div>
+        </div>
+    `;
+
+    html += `<div class="calendar-days">`;
+
+    for (
+        let i = firstDay - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const day =
+            previousDays - i;
+
+        html += `
+            <button
+                type="button"
+                class="calendar-day other-month"
+                disabled
+            >
+                ${day}
+            </button>
+        `;
+
+    }
+
+    const today =
+        new Date();
+
+    for (
+        let day = 1;
+        day <= daysInMonth;
+        day++
+    ) {
+
+        const current =
             new Date(
                 year,
                 month,
-                1
-            ).getDay();
+                day
+            );
 
-        const daysInMonth =
-            new Date(
-                year,
-                month + 1,
-                0
-            ).getDate();
+        const isToday =
+            current.toDateString() ===
+            today.toDateString();
 
-        const previousDays =
-            new Date(
-                year,
-                month,
-                0
-            ).getDate();
-
-        let html = "";
+        const isSelected =
+            state.date &&
+            current.toDateString() ===
+            state.date.toDateString();
 
         html += `
-            <div class="calendar-header">
-
-                <button
-                    type="button"
-                    class="calendar-nav"
-                    data-direction="-1"
-                >
-                    ‹
-                </button>
-
-                <div class="calendar-title">
-                    ${monthNames[month]} ${year}
-                </div>
-
-                <button
-                    type="button"
-                    class="calendar-nav"
-                    data-direction="1"
-                >
-                    ›
-                </button>
-
-            </div>
+            <button
+                type="button"
+                class="calendar-day ${
+                    isToday
+                        ? "today"
+                        : ""
+                } ${
+                    isSelected
+                        ? "selected"
+                        : ""
+                }"
+                data-day="${day}"
+            >
+                ${day}
+            </button>
         `;
+
+    }
+
+    const totalCells =
+        firstDay + daysInMonth;
+
+    const remaining =
+        (7 - (totalCells % 7)) % 7;
+
+    for (
+        let day = 1;
+        day <= remaining;
+        day++
+    ) {
 
         html += `
-            <div class="calendar-weekdays">
-                <div>Dom</div>
-                <div>Seg</div>
-                <div>Ter</div>
-                <div>Qua</div>
-                <div>Qui</div>
-                <div>Sex</div>
-                <div>Sáb</div>
-            </div>
+            <button
+                type="button"
+                class="calendar-day other-month"
+                disabled
+            >
+                ${day}
+            </button>
         `;
 
-        html += `<div class="calendar-days">`;
-
-        for (
-            let i = firstDay - 1;
-            i >= 0;
-            i--
-        ) {
-
-            const day =
-                previousDays - i;
-
-            html += `
-                <button
-                    type="button"
-                    class="calendar-day other-month disabled"
-                    disabled
-                >
-                    ${day}
-                </button>
-            `;
-        }
-
-        const today =
-            new Date();
-
-        for (
-            let day = 1;
-            day <= daysInMonth;
-            day++
-        ) {
-
-            const current =
-                new Date(
-                    year,
-                    month,
-                    day
-                );
-
-            const isToday =
-                current.toDateString() ===
-                today.toDateString();
-
-            const isSelected =
-                state.date &&
-                current.toDateString() ===
-                state.date.toDateString();
-
-            html += `
-                <button
-                    type="button"
-                    class="calendar-day ${
-                        isToday ? "today" : ""
-                    } ${
-                        isSelected ? "selected" : ""
-                    }"
-                    data-day="${day}"
-                >
-                    ${day}
-                </button>
-            `;
-        }
-
-        const totalCells =
-            firstDay +
-            daysInMonth;
-
-        const remaining =
-            (7 - (totalCells % 7)) % 7;
-
-        for (
-            let day = 1;
-            day <= remaining;
-            day++
-        ) {
-
-            html += `
-                <button
-                    type="button"
-                    class="calendar-day other-month disabled"
-                    disabled
-                >
-                    ${day}
-                </button>
-            `;
-        }
-
-        html += `</div>`;
-
-        popup.innerHTML =
-            html;
-
-        popup
-            .querySelectorAll(
-                ".calendar-nav"
-            )
-            .forEach(
-                function(button) {
-
-                    button.addEventListener(
-                        "click",
-                        function(event) {
-
-                            event.stopPropagation();
-
-                            const direction =
-                                Number(
-                                    button.dataset.direction
-                                );
-
-                            state.month =
-                                new Date(
-                                    state.month.getFullYear(),
-                                    state.month.getMonth() +
-                                        direction,
-                                    1
-                                );
-
-                            renderCalendar(
-                                type
-                            );
-                        }
-                    );
-                }
-            );
-
-        popup
-            .querySelectorAll(
-                ".calendar-day:not(.disabled)"
-            )
-            .forEach(
-                function(button) {
-
-                    button.addEventListener(
-                        "click",
-                        function(event) {
-
-                            event.stopPropagation();
-
-                            const selected =
-                                new Date(
-                                    year,
-                                    month,
-                                    Number(
-                                        button.dataset.day
-                                    )
-                                );
-
-                            state.date =
-                                selected;
-
-                            const display =
-                                document.getElementById(
-                                    type === "start"
-                                        ? "startDisplay"
-                                        : "endDisplay"
-                                );
-
-                            display.value =
-                                formatDate(
-                                    selected
-                                );
-
-                            state.month =
-                                new Date(
-                                    year,
-                                    month,
-                                    1
-                                );
-
-                            updateAnalysisDates();
-
-                            popup.classList.remove(
-                                "open"
-                            );
-
-                            renderCalendar(
-                                type
-                            );
-                        }
-                    );
-                }
-            );
     }
 
-    function openCalendar(type) {
+    html += `</div>`;
 
-        const popup =
-            document.getElementById(
-                type === "start"
-                    ? "startCalendar"
-                    : "endCalendar"
-            );
+    popup.innerHTML = html;
 
-        document
-            .querySelectorAll(
-                ".calendar-popup"
-            )
-            .forEach(
-                function(item) {
+    popup
+        .querySelectorAll(".calendar-nav")
+        .forEach(button => {
 
-                    if (
-                        item !== popup
-                    ) {
+            button.addEventListener(
+                "click",
+                event => {
 
-                        item.classList.remove(
-                            "open"
+                    event.stopPropagation();
+
+                    const direction =
+                        Number(
+                            button.dataset.direction
                         );
-                    }
+
+                    state.month =
+                        new Date(
+                            state.month.getFullYear(),
+                            state.month.getMonth() +
+                                direction,
+                            1
+                        );
+
+                    renderCalendar(type);
+
                 }
             );
 
-        popup.classList.toggle(
-            "open"
-        );
+        });
 
-        if (
-            popup.classList.contains(
-                "open"
-            )
-        ) {
+    popup
+        .querySelectorAll(
+            ".calendar-day:not(.other-month)"
+        )
+        .forEach(button => {
 
-            renderCalendar(
-                type
-            );
-        }
-    }
+            button.addEventListener(
+                "click",
+                event => {
 
-    document
-        .getElementById("startDisplay")
-        .addEventListener(
-            "click",
-            function(event) {
+                    event.stopPropagation();
 
-                event.stopPropagation();
-
-                openCalendar(
-                    "start"
-                );
-            }
-        );
-
-    document
-        .getElementById("endDisplay")
-        .addEventListener(
-            "click",
-            function(event) {
-
-                event.stopPropagation();
-
-                openCalendar(
-                    "end"
-                );
-            }
-        );
-
-    document.addEventListener(
-        "click",
-        function() {
-
-            document
-                .querySelectorAll(
-                    ".calendar-popup"
-                )
-                .forEach(
-                    function(popup) {
-
-                        popup.classList.remove(
-                            "open"
+                    const selected =
+                        new Date(
+                            year,
+                            month,
+                            Number(
+                                button.dataset.day
+                            )
                         );
-                    }
-                );
-        }
-    );
+
+                    state.date =
+                        selected;
+
+                    document.getElementById(
+                        type === "start"
+                            ? "startDisplay"
+                            : "endDisplay"
+                    ).value =
+                        formatDate(
+                            selected
+                        );
+
+                    updateAnalysisDates();
+
+                    popup.classList.remove(
+                        "open"
+                    );
+
+                    renderCalendar(type);
+
+                }
+            );
+
+        });
+
+}
+
+function openCalendar(type) {
+
+    const popup =
+        document.getElementById(
+            type === "start"
+                ? "startCalendar"
+                : "endCalendar"
+        );
 
     document
         .querySelectorAll(
             ".calendar-popup"
         )
-        .forEach(
-            function(popup) {
+        .forEach(item => {
 
-                popup.addEventListener(
-                    "click",
-                    function(event) {
-
-                        event.stopPropagation();
-
-                    }
-                );
-            }
-        );
-
-    /* =====================================================
-       DATAS DA ANÁLISE
-    ===================================================== */
-
-    function updateAnalysisDates() {
-
-        const startDate =
-            calendarState.start.date;
-
-        const endDate =
-            calendarState.end.date;
-
-        analysisStart =
-            startDate
-                ? new Date(
-                    startDate.getFullYear(),
-                    startDate.getMonth(),
-                    startDate.getDate(),
-                    0,
-                    0,
-                    0
-                )
-                : null;
-
-        analysisEnd =
-            endDate
-                ? new Date(
-                    endDate.getFullYear(),
-                    endDate.getMonth(),
-                    endDate.getDate(),
-                    23,
-                    59,
-                    59
-                )
-                : null;
-
-        /*
-         * Só faz a análise quando as DUAS datas
-         * estiverem definidas.
-         */
-        if (
-            analysisStart &&
-            analysisEnd
-        ) {
-
-            if (
-                analysisStart >
-                analysisEnd
-            ) {
-
-                showStatus(
-                    "A data inicial não pode ser maior que a data final.",
-                    "error"
-                );
-
-                analysisStart = null;
-                analysisEnd = null;
-
-                return;
+            if (item !== popup) {
+                item.classList.remove("open");
             }
 
-            renderTable();
-        }
-    }
+        });
 
-    /* =====================================================
-       CÁLCULO DA QUEDA
-    ===================================================== */
+    popup.classList.toggle("open");
 
-    function calculateRowOffline(
-        index,
-        activeSessions
+    if (
+        popup.classList.contains("open")
     ) {
 
-        const current =
-            activeSessions[index];
+        renderCalendar(type);
 
-        if (
-            !current ||
-            !current.start
-        ) {
-            return 0;
-        }
-
-        const next =
-            activeSessions[index + 1];
-
-        if (
-            !next ||
-            !next.stop
-        ) {
-            return 0;
-        }
-
-        const offlineStart =
-            next.stop;
-
-        const offlineEnd =
-            current.start;
-
-        if (
-            offlineEnd <=
-            offlineStart
-        ) {
-            return 0;
-        }
-
-        let start =
-            offlineStart;
-
-        let end =
-            offlineEnd;
-
-        /*
-         * Quando existe período selecionado,
-         * limita a queda ao período.
-         */
-
-        if (analysisStart) {
-
-            if (
-                end <=
-                analysisStart
-            ) {
-                return 0;
-            }
-
-            if (
-                start <
-                analysisStart
-            ) {
-                start =
-                    analysisStart;
-            }
-        }
-
-        if (analysisEnd) {
-
-            if (
-                start >
-                analysisEnd
-            ) {
-                return 0;
-            }
-
-            if (
-                end >
-                analysisEnd
-            ) {
-                end =
-                    analysisEnd;
-            }
-        }
-
-        if (
-            end <=
-            start
-        ) {
-            return 0;
-        }
-
-        return (
-            end.getTime() -
-            start.getTime()
-        ) / 1000;
     }
 
-    /* =====================================================
-       RESULTADO
-    ===================================================== */
+}
 
-    function updateResult(
-        activeSessions,
-        totalOffline,
-        drops
-    ) {
+document
+    .getElementById("startDisplay")
+    .addEventListener(
+        "click",
+        event => {
 
-        document.getElementById(
-            "totalOffline"
-        ).textContent =
-            formatSeconds(
-                totalOffline
-            );
+            event.stopPropagation();
 
-        document.getElementById(
-            "totalDrops"
-        ).textContent =
-            drops;
-    }
+            openCalendar("start");
 
-    /* =====================================================
-       EXCLUSÃO
-    ===================================================== */
-
-    function deleteSession(index) {
-
-        if (
-            !sessions[index]
-        ) {
-            return;
         }
+    );
 
-        sessions[index].deleted =
-            true;
+document
+    .getElementById("endDisplay")
+    .addEventListener(
+        "click",
+        event => {
 
-        renderTable();
+            event.stopPropagation();
 
-        showStatus(
-            "Sessão excluída da análise.",
-            "success"
-        );
-    }
+            openCalendar("end");
 
-    window.deleteSession =
-        deleteSession;
+        }
+    );
 
-    /* =====================================================
-       EDIÇÃO DAS SESSÕES
-    ===================================================== */
-
-    function bindSessionInputs() {
+document.addEventListener(
+    "click",
+    () => {
 
         document
             .querySelectorAll(
-                ".session-input"
+                ".calendar-popup"
             )
-            .forEach(
-                function(input) {
+            .forEach(popup => {
 
-                    input.addEventListener(
-                        "change",
-                        function() {
+                popup.classList.remove(
+                    "open"
+                );
 
-                            const index =
-                                Number(
-                                    input.dataset.index
+            });
+
+    }
+);
+
+document
+    .querySelectorAll(".calendar-popup")
+    .forEach(popup => {
+
+        popup.addEventListener(
+            "click",
+            event => {
+                event.stopPropagation();
+            }
+        );
+
+    });
+
+/* =====================================================
+   DATAS
+===================================================== */
+
+function updateAnalysisDates() {
+
+    analysisStart = null;
+    analysisEnd = null;
+
+    if (
+        calendarState.start.date
+    ) {
+
+        analysisStart =
+            new Date(
+                calendarState.start.date.getFullYear(),
+                calendarState.start.date.getMonth(),
+                calendarState.start.date.getDate(),
+                0,
+                0,
+                0
+            );
+
+    }
+
+    if (
+        calendarState.end.date
+    ) {
+
+        analysisEnd =
+            new Date(
+                calendarState.end.date.getFullYear(),
+                calendarState.end.date.getMonth(),
+                calendarState.end.date.getDate(),
+                23,
+                59,
+                59
+            );
+
+    }
+
+    if (
+        analysisStart &&
+        analysisEnd &&
+        analysisEnd < analysisStart
+    ) {
+
+        showStatus(
+            "A data final não pode ser anterior à data inicial.",
+            "error"
+        );
+
+        analysisEnd = null;
+
+        calendarState.end.date = null;
+
+        document.getElementById(
+            "endDisplay"
+        ).value = "";
+
+        renderCalendar("end");
+
+    }
+
+    renderTable();
+
+}
+
+/* =====================================================
+   SESSÕES VISÍVEIS
+===================================================== */
+
+function sessionIsInPeriod(session) {
+
+    if (session.deleted) {
+        return false;
+    }
+
+    if (
+        !analysisStart ||
+        !analysisEnd
+    ) {
+
+        return true;
+
+    }
+
+    const start =
+        session.start;
+
+    const stop =
+        session.stop;
+
+    if (!start && !stop) {
+        return false;
+    }
+
+    if (
+        start &&
+        start >= analysisStart &&
+        start <= analysisEnd
+    ) {
+
+        return true;
+
+    }
+
+    if (
+        stop &&
+        stop >= analysisStart &&
+        stop <= analysisEnd
+    ) {
+
+        return true;
+
+    }
+
+    if (
+        start &&
+        stop &&
+        start <= analysisStart &&
+        stop >= analysisEnd
+    ) {
+
+        return true;
+
+    }
+
+    return false;
+
+}
+
+function getVisibleSessions() {
+
+    return sessions
+        .filter(sessionIsInPeriod)
+        .sort((a,b) => {
+
+            const aTime =
+                a.start
+                    ? a.start.getTime()
+                    : 0;
+
+            const bTime =
+                b.start
+                    ? b.start.getTime()
+                    : 0;
+
+            return bTime - aTime;
+
+        });
+
+}
+
+/* =====================================================
+   CÁLCULO DO OFFLINE
+===================================================== */
+
+function calculateRowOffline(
+    index,
+    list
+) {
+
+    const current =
+        list[index];
+
+    const next =
+        list[index + 1];
+
+    if (
+        !current ||
+        !next ||
+        !current.start ||
+        !next.stop
+    ) {
+
+        return 0;
+
+    }
+
+    let offlineStart =
+        next.stop;
+
+    let offlineEnd =
+        current.start;
+
+    if (
+        offlineEnd <= offlineStart
+    ) {
+
+        return 0;
+
+    }
+
+    /*
+       Quando existe período selecionado,
+       limita o cálculo ao período.
+    */
+
+    if (
+        analysisStart &&
+        analysisEnd
+    ) {
+
+        offlineStart =
+            new Date(
+                Math.max(
+                    offlineStart.getTime(),
+                    analysisStart.getTime()
+                )
+            );
+
+        offlineEnd =
+            new Date(
+                Math.min(
+                    offlineEnd.getTime(),
+                    analysisEnd.getTime()
+                )
+            );
+
+    }
+
+    if (
+        offlineEnd <= offlineStart
+    ) {
+
+        return 0;
+
+    }
+
+    return Math.floor(
+        (
+            offlineEnd -
+            offlineStart
+        ) / 1000
+    );
+
+}
+
+/* =====================================================
+   CÁLCULO COMPLETO
+===================================================== */
+
+function calculateCurrentAnalysis() {
+
+    const activeSessions =
+        getVisibleSessions();
+
+    let totalOffline = 0;
+    let drops = 0;
+
+    activeSessions.forEach(
+        (session,index) => {
+
+            const seconds =
+                calculateRowOffline(
+                    index,
+                    activeSessions
+                );
+
+            totalOffline +=
+                seconds;
+
+            if (seconds > 0) {
+                drops++;
+            }
+
+        }
+    );
+
+    return {
+        sessions: activeSessions,
+        totalOffline,
+        drops
+    };
+
+}
+
+/* =====================================================
+   RESULTADO
+===================================================== */
+
+function updateResult(
+    totalOffline,
+    drops
+) {
+
+    document.getElementById(
+        "totalOffline"
+    ).textContent =
+        formatSeconds(
+            totalOffline
+        );
+
+    document.getElementById(
+        "totalDrops"
+    ).textContent =
+        drops;
+
+    const pdfButton =
+        document.getElementById(
+            "pdfButton"
+        );
+
+    pdfButton.disabled =
+        !(
+            sessions.length &&
+            analysisStart &&
+            analysisEnd
+        );
+
+}
+
+/* =====================================================
+   TABELA
+===================================================== */
+
+function renderTable() {
+
+    const body =
+        document.getElementById(
+            "sessionsBody"
+        );
+
+    const activeSessions =
+        getVisibleSessions();
+
+    if (
+        !activeSessions.length
+    ) {
+
+        body.innerHTML = `
+            <tr>
+                <td colspan="4">
+                    <div class="empty-state">
+                        ${
+                            sessions.length
+                                ? "Nenhuma sessão encontrada no período selecionado."
+                                : "Nenhuma sessão importada."
+                        }
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        updateResult(0,0);
+
+        document.getElementById(
+            "analysisDescription"
+        ).textContent =
+            "Resultado calculado com base na base importada.";
+
+        return;
+
+    }
+
+    let totalOffline = 0;
+    let drops = 0;
+
+    const durations = [];
+
+    activeSessions.forEach(
+        (session,index) => {
+
+            const seconds =
+                calculateRowOffline(
+                    index,
+                    activeSessions
+                );
+
+            durations.push(seconds);
+
+            totalOffline +=
+                seconds;
+
+            if (seconds > 0) {
+                drops++;
+            }
+
+        }
+    );
+
+    const maximumDuration =
+        Math.max(
+            0,
+            ...durations
+        );
+
+    let html = "";
+
+    activeSessions.forEach(
+        (session,index) => {
+
+            const offlineSeconds =
+                durations[index];
+
+            const originalIndex =
+                sessions.indexOf(
+                    session
+                );
+
+            const isMaximum =
+                offlineSeconds > 0 &&
+                offlineSeconds === maximumDuration;
+
+            html += `
+                <tr>
+
+                    <td>
+
+                        <input
+                            type="text"
+                            class="session-input"
+                            value="${escapeHtml(
+                                formatManualDate(
+                                    session.start
+                                )
+                            )}"
+                            data-index="${originalIndex}"
+                            data-field="start"
+                            placeholder="DD/MM/AAAA HH:MM:SS"
+                        >
+
+                    </td>
+
+                    <td>
+
+                        <input
+                            type="text"
+                            class="session-input"
+                            value="${escapeHtml(
+                                formatManualDate(
+                                    session.stop
+                                )
+                            )}"
+                            data-index="${originalIndex}"
+                            data-field="stop"
+                            placeholder="DD/MM/AAAA HH:MM:SS"
+                        >
+
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="duration ${
+                                isMaximum
+                                    ? "maximum"
+                                    : offlineSeconds > 0
+                                        ? "positive"
+                                        : "zero"
+                            }"
+                        >
+                            ${formatSeconds(
+                                offlineSeconds
+                            )}
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            type="button"
+                            class="small-button"
+                            onclick="deleteSession(${originalIndex})"
+                        >
+                            Excluir
+                        </button>
+
+                    </td>
+
+                </tr>
+            `;
+
+        }
+    );
+
+    body.innerHTML = html;
+
+    updateResult(
+        totalOffline,
+        drops
+    );
+
+    if (
+        analysisStart &&
+        analysisEnd
+    ) {
+
+        document.getElementById(
+            "analysisDescription"
+        ).textContent =
+            `Análise filtrada de ${formatDate(
+                analysisStart
+            )} até ${formatDate(
+                analysisEnd
+            )}.`;
+
+    } else {
+
+        document.getElementById(
+            "analysisDescription"
+        ).textContent =
+            "Análise realizada automaticamente com toda a base importada. Selecione um período para filtrar os resultados.";
+
+    }
+
+    bindSessionInputs();
+
+}
+
+/* =====================================================
+   EDIÇÃO
+===================================================== */
+
+function bindSessionInputs() {
+
+    document
+        .querySelectorAll(
+            ".session-input"
+        )
+        .forEach(input => {
+
+            input.addEventListener(
+                "change",
+                () => {
+
+                    const index =
+                        Number(
+                            input.dataset.index
+                        );
+
+                    const field =
+                        input.dataset.field;
+
+                    const parsed =
+                        parseManualDate(
+                            input.value
+                        );
+
+                    if (!parsed) {
+
+                        showStatus(
+                            "Data inválida. Use o formato DD/MM/AAAA HH:MM:SS.",
+                            "error"
+                        );
+
+                        renderTable();
+
+                        return;
+
+                    }
+
+                    sessions[index][field] =
+                        parsed;
+
+                    sessions.sort(
+                        (a,b) => {
+
+                            const aTime =
+                                a.start
+                                    ? a.start.getTime()
+                                    : 0;
+
+                            const bTime =
+                                b.start
+                                    ? b.start.getTime()
+                                    : 0;
+
+                            return bTime - aTime;
+
+                        }
+                    );
+
+                    renderTable();
+
+                }
+            );
+
+        });
+
+}
+
+function deleteSession(index) {
+
+    if (!sessions[index]) {
+        return;
+    }
+
+    sessions[index].deleted = true;
+
+    renderTable();
+
+    showStatus(
+        "Sessão excluída da análise.",
+        "success"
+    );
+
+}
+
+window.deleteSession =
+    deleteSession;
+
+/* =====================================================
+   IMPORTAÇÃO
+===================================================== */
+
+document
+    .getElementById("importButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            document
+                .getElementById("fileInput")
+                .click();
+
+        }
+    );
+
+document
+    .getElementById("fileInput")
+    .addEventListener(
+        "change",
+        event => {
+
+            const file =
+                event.target.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader =
+                new FileReader();
+
+            reader.onload =
+                e => {
+
+                    try {
+
+                        const data =
+                            new Uint8Array(
+                                e.target.result
+                            );
+
+                        const workbook =
+                            XLSX.read(
+                                data,
+                                {
+                                    type:"array",
+                                    cellDates:true
+                                }
+                            );
+
+                        const firstSheet =
+                            workbook.Sheets[
+                                workbook.SheetNames[0]
+                            ];
+
+                        const rows =
+                            XLSX.utils.sheet_to_json(
+                                firstSheet,
+                                {
+                                    header:1,
+                                    defval:""
+                                }
+                            );
+
+                        if (!rows.length) {
+
+                            throw new Error(
+                                "O arquivo está vazio."
+                            );
+
+                        }
+
+                        const header =
+                            rows[0].map(
+                                value =>
+                                    String(value)
+                                        .trim()
+                                        .toLowerCase()
+                            );
+
+                        let startIndex =
+                            header.findIndex(
+                                value =>
+                                    value === "hr. start" ||
+                                    value === "hr start" ||
+                                    value === "start" ||
+                                    value.includes("hr. start") ||
+                                    value.includes("hr start")
+                            );
+
+                        let stopIndex =
+                            header.findIndex(
+                                value =>
+                                    value === "hr. stop" ||
+                                    value === "hr stop" ||
+                                    value === "stop" ||
+                                    value.includes("hr. stop") ||
+                                    value.includes("hr stop")
+                            );
+
+                        if (
+                            startIndex === -1
+                        ) {
+                            startIndex = 0;
+                        }
+
+                        if (
+                            stopIndex === -1
+                        ) {
+                            stopIndex = 1;
+                        }
+
+                        const imported = [];
+
+                        for (
+                            let i = 1;
+                            i < rows.length;
+                            i++
+                        ) {
+
+                            const row =
+                                rows[i];
+
+                            const start =
+                                parseMKDate(
+                                    row[startIndex]
                                 );
 
-                            const field =
-                                input.dataset.field;
+                            const stop =
+                                parseMKDate(
+                                    row[stopIndex]
+                                );
 
                             if (
-                                !sessions[index]
+                                !start &&
+                                !stop
                             ) {
-                                return;
+                                continue;
                             }
 
-                            const parsed =
-                                parseManualDate(
-                                    input.value
-                                );
+                            imported.push({
+                                start,
+                                stop,
+                                deleted:false
+                            });
 
-                            if (
-                                input.value.trim() &&
-                                !parsed
-                            ) {
+                        }
 
-                                showStatus(
-                                    "Data inválida. Use o formato DD/MM/AAAA HH:MM:SS.",
-                                    "error"
-                                );
+                        if (
+                            !imported.length
+                        ) {
 
-                                input.value =
-                                    formatManualDate(
-                                        sessions[index][
-                                            field
-                                        ]
-                                    );
+                            throw new Error(
+                                "Nenhuma sessão válida foi encontrada no arquivo."
+                            );
 
-                                return;
-                            }
+                        }
 
-                            sessions[index][
-                                field
-                            ] =
-                                parsed;
-
-                            sessions.sort(
-                                function(a, b) {
+                        sessions =
+                            imported.sort(
+                                (a,b) => {
 
                                     const aTime =
                                         a.start
@@ -1985,691 +2507,813 @@
                                         bTime -
                                         aTime
                                     );
+
                                 }
                             );
 
-                            renderTable();
-                        }
-                    );
-                }
-            );
-    }
+                        /*
+                           IMPORTANTE:
+                           renderTable() agora calcula a base inteira
+                           mesmo sem nenhuma data selecionada.
+                        */
 
-    /* =====================================================
-       RENDERIZAÇÃO DA TABELA
-       
-       IMPORTANTE:
-       - Sem datas escolhidas:
-         mostra TODAS as sessões importadas.
-       - Com as duas datas escolhidas:
-         mostra somente as sessões do período.
-    ===================================================== */
+                        renderTable();
 
-    function renderTable() {
+                        const analysis =
+                            calculateCurrentAnalysis();
 
-        const body =
-            document.getElementById(
-                "sessionsBody"
-            );
+                        showStatus(
+                            `${sessions.length} sessões importadas. Base completa analisada automaticamente: ${formatSeconds(analysis.totalOffline)} offline em ${analysis.drops} quedas.`,
+                            "success"
+                        );
 
-        /*
-         * Antes de escolher o período,
-         * todas as quedas ficam visíveis.
-         */
-        const hasPeriod =
-            analysisStart &&
-            analysisEnd;
+                    } catch(error) {
 
-        const visibleSessions =
-            hasPeriod
-                ? getVisibleSessions()
-                : sessions
-                    .filter(
-                        function(session) {
-                            return !session.deleted;
-                        }
-                    )
-                    .sort(
-                        function(a, b) {
+                        console.error(error);
 
-                            const aTime =
-                                a.start
-                                    ? a.start.getTime()
-                                    : 0;
+                        showStatus(
+                            error.message ||
+                            "Não foi possível importar o arquivo.",
+                            "error"
+                        );
 
-                            const bTime =
-                                b.start
-                                    ? b.start.getTime()
-                                    : 0;
-
-                            return (
-                                bTime -
-                                aTime
-                            );
-                        }
-                    );
-
-        if (
-            !visibleSessions.length
-        ) {
-
-            body.innerHTML =
-                `
-                <tr>
-                    <td colspan="4">
-                        <div class="empty-state">
-                            ${
-                                sessions.length
-                                    ? "Nenhuma sessão encontrada."
-                                    : "Nenhuma sessão importada."
-                            }
-                        </div>
-                    </td>
-                </tr>
-                `;
-
-            updateResult(
-                [],
-                0,
-                0
-            );
-
-            return;
-        }
-
-        let totalOffline =
-            0;
-
-        let drops =
-            0;
-
-        let html =
-            "";
-
-        visibleSessions.forEach(
-            function(
-                session,
-                index
-            ) {
-
-                /*
-                 * Antes de escolher o período,
-                 * não mostra cálculo de queda.
-                 * Mostra apenas os dados para conferência.
-                 */
-                const offlineSeconds =
-                    hasPeriod
-                        ? calculateRowOffline(
-                            index,
-                            visibleSessions
-                        )
-                        : 0;
-
-                if (hasPeriod) {
-
-                    totalOffline +=
-                        offlineSeconds;
-
-                    if (
-                        offlineSeconds > 0
-                    ) {
-
-                        drops++;
                     }
-                }
 
-                const originalIndex =
-                    sessions.indexOf(
-                        session
-                    );
+                };
 
-                html +=
-                    `
-                    <tr>
-
-                        <td>
-                            <input
-                                type="text"
-                                class="session-input"
-                                value="${escapeHtml(
-                                    formatManualDate(
-                                        session.start
-                                    )
-                                )}"
-                                data-index="${originalIndex}"
-                                data-field="start"
-                                placeholder="DD/MM/AAAA HH:MM:SS"
-                            >
-                        </td>
-
-                        <td>
-                            <input
-                                type="text"
-                                class="session-input"
-                                value="${escapeHtml(
-                                    formatManualDate(
-                                        session.stop
-                                    )
-                                )}"
-                                data-index="${originalIndex}"
-                                data-field="stop"
-                                placeholder="DD/MM/AAAA HH:MM:SS"
-                            >
-                        </td>
-
-                        <td>
-                            <span class="duration ${
-                                hasPeriod &&
-                                offlineSeconds > 0
-                                    ? "positive"
-                                    : "zero"
-                            }">
-                                ${
-                                    hasPeriod
-                                        ? formatSeconds(
-                                            offlineSeconds
-                                        )
-                                        : "—"
-                                }
-                            </span>
-                        </td>
-
-                        <td class="action-cell">
-
-                            <button
-                                type="button"
-                                class="small-button"
-                                onclick="deleteSession(${originalIndex})"
-                            >
-                                Excluir
-                            </button>
-
-                        </td>
-
-                    </tr>
-                    `;
-            }
-        );
-
-        body.innerHTML =
-            html;
-
-        /*
-         * Sem período, os resultados permanecem zerados.
-         */
-        updateResult(
-            visibleSessions,
-            hasPeriod
-                ? totalOffline
-                : 0,
-            hasPeriod
-                ? drops
-                : 0
-        );
-
-        bindSessionInputs();
-    }
-
-    /* =====================================================
-       IMPORTAÇÃO
-    ===================================================== */
-
-    document
-        .getElementById("importButton")
-        .addEventListener(
-            "click",
-            function() {
-
-                document
-                    .getElementById(
-                        "fileInput"
-                    )
-                    .click();
-            }
-        );
-
-    document
-        .getElementById("fileInput")
-        .addEventListener(
-            "change",
-            function(event) {
-
-                const file =
-                    event.target.files[0];
-
-                if (!file) {
-                    return;
-                }
-
-                try {
-
-                    const reader =
-                        new FileReader();
-
-                    reader.onload =
-                        function(e) {
-
-                            try {
-
-                                const data =
-                                    new Uint8Array(
-                                        e.target.result
-                                    );
-
-                                const workbook =
-                                    XLSX.read(
-                                        data,
-                                        {
-                                            type: "array",
-                                            cellDates: true
-                                        }
-                                    );
-
-                                const firstSheet =
-                                    workbook.Sheets[
-                                        workbook.SheetNames[0]
-                                    ];
-
-                                const rows =
-                                    XLSX.utils.sheet_to_json(
-                                        firstSheet,
-                                        {
-                                            header: 1,
-                                            defval: ""
-                                        }
-                                    );
-
-                                if (
-                                    !rows.length
-                                ) {
-
-                                    throw new Error(
-                                        "O arquivo está vazio."
-                                    );
-                                }
-
-                                const header =
-                                    rows[0].map(
-                                        function(value) {
-
-                                            return String(
-                                                value
-                                            )
-                                                .trim()
-                                                .toLowerCase();
-                                        }
-                                    );
-
-                                let startIndex =
-                                    header.findIndex(
-                                        function(value) {
-
-                                            return (
-                                                value ===
-                                                    "hr. start" ||
-                                                value ===
-                                                    "hr start" ||
-                                                value ===
-                                                    "start" ||
-                                                value.includes(
-                                                    "hr. start"
-                                                ) ||
-                                                value.includes(
-                                                    "hr start"
-                                                )
-                                            );
-                                        }
-                                    );
-
-                                let stopIndex =
-                                    header.findIndex(
-                                        function(value) {
-
-                                            return (
-                                                value ===
-                                                    "hr. stop" ||
-                                                value ===
-                                                    "hr stop" ||
-                                                value ===
-                                                    "stop" ||
-                                                value.includes(
-                                                    "hr. stop"
-                                                ) ||
-                                                value.includes(
-                                                    "hr stop"
-                                                )
-                                            );
-                                        }
-                                    );
-
-                                if (
-                                    startIndex === -1
-                                ) {
-                                    startIndex = 0;
-                                }
-
-                                if (
-                                    stopIndex === -1
-                                ) {
-                                    stopIndex = 1;
-                                }
-
-                                const imported =
-                                    [];
-
-                                for (
-                                    let i = 1;
-                                    i < rows.length;
-                                    i++
-                                ) {
-
-                                    const row =
-                                        rows[i];
-
-                                    const start =
-                                        parseMKDate(
-                                            row[startIndex]
-                                        );
-
-                                    const stop =
-                                        parseMKDate(
-                                            row[stopIndex]
-                                        );
-
-                                    if (
-                                        !start &&
-                                        !stop
-                                    ) {
-                                        continue;
-                                    }
-
-                                    imported.push({
-                                        start: start,
-                                        stop: stop,
-                                        deleted: false
-                                    });
-                                }
-
-                                if (
-                                    !imported.length
-                                ) {
-
-                                    throw new Error(
-                                        "Nenhuma sessão válida foi encontrada no arquivo."
-                                    );
-                                }
-
-                                sessions =
-                                    imported.sort(
-                                        function(a, b) {
-
-                                            const aTime =
-                                                a.start
-                                                    ? a.start.getTime()
-                                                    : 0;
-
-                                            const bTime =
-                                                b.start
-                                                    ? b.start.getTime()
-                                                    : 0;
-
-                                            return (
-                                                bTime -
-                                                aTime
-                                            );
-                                        }
-                                    );
-
-                                /*
-                                 * Importante:
-                                 * aqui NÃO selecionamos período
-                                 * automaticamente.
-                                 *
-                                 * Todas as quedas aparecem
-                                 * para conferência.
-                                 */
-                                renderTable();
-
-                                showStatus(
-                                    `${sessions.length} sessões importadas. Selecione a data inicial e final para realizar a análise.`,
-                                    "success"
-                                );
-
-                            } catch (error) {
-
-                                console.error(
-                                    "Erro ao importar arquivo:",
-                                    error
-                                );
-
-                                showStatus(
-                                    error.message ||
-                                        "Não foi possível importar o arquivo.",
-                                    "error"
-                                );
-                            }
-                        };
-
-                    reader.readAsArrayBuffer(
-                        file
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        error
-                    );
+            reader.onerror =
+                () => {
 
                     showStatus(
                         "Não foi possível ler o arquivo.",
                         "error"
                     );
-                }
 
-                event.target.value =
-                    "";
-            }
+                };
+
+            reader.readAsArrayBuffer(file);
+
+            event.target.value = "";
+
+        }
+    );
+
+/* =====================================================
+   LIMPAR
+===================================================== */
+
+document
+    .getElementById("clearButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            sessions = [];
+
+            analysisStart = null;
+            analysisEnd = null;
+
+            calendarState.start.date =
+                null;
+
+            calendarState.end.date =
+                null;
+
+            calendarState.start.month =
+                new Date();
+
+            calendarState.end.month =
+                new Date();
+
+            document.getElementById(
+                "startDisplay"
+            ).value = "";
+
+            document.getElementById(
+                "endDisplay"
+            ).value = "";
+
+            document.getElementById(
+                "clientName"
+            ).value = "";
+
+            renderTable();
+
+            showStatus(
+                "Todos os dados foram limpos.",
+                "success"
+            );
+
+        }
+    );
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function showStatus(
+    message,
+    type
+) {
+
+    const status =
+        document.getElementById(
+            "status"
         );
 
-    /* =====================================================
-       LIMPAR
-    ===================================================== */
+    status.textContent =
+        message;
 
-    document
-        .getElementById("clearButton")
-        .addEventListener(
-            "click",
-            function() {
+    status.className =
+        "status show " +
+        type;
 
-                sessions = [];
+    clearTimeout(
+        window.centralSACStatusTimer
+    );
 
-                analysisStart = null;
-                analysisEnd = null;
+    window.centralSACStatusTimer =
+        setTimeout(
+            () => {
 
-                calendarState.start.date =
-                    null;
-
-                calendarState.end.date =
-                    null;
-
-                calendarState.start.month =
-                    new Date();
-
-                calendarState.end.month =
-                    new Date();
-
-                document
-                    .getElementById(
-                        "startDisplay"
-                    )
-                    .value = "";
-
-                document
-                    .getElementById(
-                        "endDisplay"
-                    )
-                    .value = "";
-
-                renderTable();
-
-                showStatus(
-                    "Todos os dados foram limpos.",
-                    "success"
+                status.classList.remove(
+                    "show"
                 );
-            }
+
+            },
+            6000
         );
 
-    /* =====================================================
-       STATUS
-    ===================================================== */
+}
 
-    function showStatus(
-        message,
-        type
+/* =====================================================
+   LOGO PARA O PDF
+===================================================== */
+
+function imageToDataURL(src) {
+
+    return new Promise(
+        (resolve,reject) => {
+
+            const img =
+                new Image();
+
+            img.onload =
+                () => {
+
+                    const canvas =
+                        document.createElement(
+                            "canvas"
+                        );
+
+                    canvas.width =
+                        img.naturalWidth;
+
+                    canvas.height =
+                        img.naturalHeight;
+
+                    const context =
+                        canvas.getContext(
+                            "2d"
+                        );
+
+                    context.drawImage(
+                        img,
+                        0,
+                        0
+                    );
+
+                    resolve(
+                        canvas.toDataURL(
+                            "image/png"
+                        )
+                    );
+
+                };
+
+            img.onerror =
+                () => {
+
+                    reject(
+                        new Error(
+                            "Não foi possível carregar logo-alcans.png."
+                        )
+                    );
+
+                };
+
+            img.src =
+                src;
+
+        }
+    );
+
+}
+
+/* =====================================================
+   PDF
+===================================================== */
+
+async function generatePDF() {
+
+    if (
+        !analysisStart ||
+        !analysisEnd
     ) {
 
-        const status =
-            document.getElementById(
-                "status"
-            );
-
-        status.textContent =
-            message;
-
-        status.className =
-            "status show " +
-            type;
-
-        clearTimeout(
-            window.centralSACStatusTimer
+        showStatus(
+            "Selecione a data inicial e a data final para gerar o relatório do período.",
+            "error"
         );
 
-        window.centralSACStatusTimer =
-            setTimeout(
-                function() {
-
-                    status.classList.remove(
-                        "show"
-                    );
-
-                },
-                5000
-            );
+        return;
     }
 
-    /* =====================================================
-       FILTRO
-    ===================================================== */
+    const activeSessions =
+        getVisibleSessions();
 
-    function getVisibleSessions() {
+    if (
+        !activeSessions.length
+    ) {
 
-        return sessions
-            .filter(
-                function(session) {
+        showStatus(
+            "Não existem sessões no período selecionado.",
+            "error"
+        );
+
+        return;
+    }
+
+    const pdfButton =
+        document.getElementById(
+            "pdfButton"
+        );
+
+    pdfButton.disabled = true;
+
+    pdfButton.textContent =
+        "Gerando PDF...";
+
+    try {
+
+        if (
+            !window.jspdf ||
+            !window.jspdf.jsPDF
+        ) {
+
+            throw new Error(
+                "Biblioteca de PDF não carregada."
+            );
+
+        }
+
+        const logoData =
+            await imageToDataURL(
+                "logo-alcans.png"
+            );
+
+        const {
+            jsPDF
+        } = window.jspdf;
+
+        const doc =
+            new jsPDF({
+                orientation:"landscape",
+                unit:"mm",
+                format:"a4"
+            });
+
+        const pageWidth =
+            doc.internal.pageSize.getWidth();
+
+        const pageHeight =
+            doc.internal.pageSize.getHeight();
+
+        const orange =
+            [255,90,0];
+
+        const dark =
+            [17,20,25];
+
+        const gray =
+            [105,112,123];
+
+        /*
+           Cabeçalho
+        */
+
+        doc.setFillColor(
+            ...orange
+        );
+
+        doc.rect(
+            0,
+            0,
+            pageWidth,
+            28,
+            "F"
+        );
+
+        /*
+           Logo Alcans
+        */
+
+        try {
+
+            doc.addImage(
+                logoData,
+                "PNG",
+                15,
+                5,
+                38,
+                16
+            );
+
+        } catch(error) {
+
+            console.warn(
+                "Logo não pôde ser inserida no PDF.",
+                error
+            );
+
+        }
+
+        doc.setTextColor(
+            255,
+            255,
+            255
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(13);
+
+        doc.text(
+            "RELATÓRIO DE ANÁLISE DE CONSUMO",
+            pageWidth - 15,
+            12,
+            {
+                align:"right"
+            }
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(7);
+
+        doc.text(
+            "CENTRALSAC • PORTAL DO ATENDENTE",
+            pageWidth - 15,
+            20,
+            {
+                align:"right"
+            }
+        );
+
+        let y = 37;
+
+        const clientName =
+            document
+                .getElementById(
+                    "clientName"
+                )
+                .value
+                .trim() ||
+            "Não informado";
+
+        doc.setTextColor(
+            ...dark
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "IDENTIFICAÇÃO DA ANÁLISE",
+            15,
+            y
+        );
+
+        y += 7;
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(8);
+
+        doc.text(
+            `Cliente: ${clientName}`,
+            15,
+            y
+        );
+
+        doc.text(
+            `Período: ${formatDate(analysisStart)} a ${formatDate(analysisEnd)}`,
+            pageWidth / 2,
+            y
+        );
+
+        y += 12;
+
+        /*
+           Cálculo
+        */
+
+        let totalOffline = 0;
+        let drops = 0;
+
+        const tableRows = [];
+
+        let maximumDuration = 0;
+
+        activeSessions.forEach(
+            (session,index) => {
+
+                const seconds =
+                    calculateRowOffline(
+                        index,
+                        activeSessions
+                    );
+
+                totalOffline +=
+                    seconds;
+
+                if (
+                    seconds > 0
+                ) {
+
+                    drops++;
+
+                }
+
+                if (
+                    seconds >
+                    maximumDuration
+                ) {
+
+                    maximumDuration =
+                        seconds;
+
+                }
+
+                tableRows.push([
+                    String(index + 1).padStart(
+                        2,
+                        "0"
+                    ),
+
+                    session.start
+                        ? formatManualDate(
+                            session.start
+                        )
+                        : "—",
+
+                    session.stop
+                        ? formatManualDate(
+                            session.stop
+                        )
+                        : "—",
+
+                    formatSeconds(
+                        seconds
+                    )
+                ]);
+
+            }
+        );
+
+        /*
+           Cards de resumo
+        */
+
+        const cardWidth =
+            (pageWidth - 40) / 2;
+
+        doc.setFillColor(
+            248,
+            249,
+            250
+        );
+
+        doc.roundedRect(
+            15,
+            y,
+            cardWidth,
+            22,
+            3,
+            3,
+            "F"
+        );
+
+        doc.roundedRect(
+            25 + cardWidth,
+            y,
+            cardWidth,
+            22,
+            3,
+            3,
+            "F"
+        );
+
+        doc.setTextColor(
+            ...gray
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(7);
+
+        doc.text(
+            "TEMPO TOTAL OFFLINE",
+            22,
+            y + 7
+        );
+
+        doc.text(
+            "QUANTIDADE DE QUEDAS",
+            32 + cardWidth,
+            y + 7
+        );
+
+        doc.setTextColor(
+            ...orange
+        );
+
+        doc.setFontSize(15);
+
+        doc.text(
+            formatSeconds(
+                totalOffline
+            ),
+            22,
+            y + 17
+        );
+
+        doc.text(
+            String(drops),
+            32 + cardWidth,
+            y + 17
+        );
+
+        y += 29;
+
+        doc.setTextColor(
+            ...dark
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(9);
+
+        doc.text(
+            "DETALHAMENTO DAS SESSÕES",
+            15,
+            y
+        );
+
+        y += 4;
+
+        /*
+           Tabela PDF
+        */
+
+        doc.autoTable({
+
+            startY:y,
+
+            head:[
+                [
+                    "Nº",
+                    "INÍCIO DA SESSÃO",
+                    "TÉRMINO DA SESSÃO",
+                    "TEMPO OFFLINE"
+                ]
+            ],
+
+            body:tableRows,
+
+            theme:"grid",
+
+            styles:{
+                font:"helvetica",
+                fontSize:7,
+                cellPadding:3,
+                textColor:[45,49,55],
+                lineColor:[220,223,227],
+                lineWidth:.2
+            },
+
+            headStyles:{
+                fillColor:orange,
+                textColor:[255,255,255],
+                fontStyle:"bold",
+                halign:"center"
+            },
+
+            columnStyles:{
+                0:{
+                    halign:"center",
+                    cellWidth:14
+                },
+
+                1:{
+                    cellWidth:65
+                },
+
+                2:{
+                    cellWidth:65
+                },
+
+                3:{
+                    halign:"center",
+                    cellWidth:45
+                }
+            },
+
+            alternateRowStyles:{
+                fillColor:[
+                    248,
+                    249,
+                    250
+                ]
+            },
+
+            didParseCell:data => {
+
+                /*
+                   Maior tempo offline
+                   também fica vermelho no PDF.
+                */
+
+                if (
+                    data.section === "body" &&
+                    data.column.index === 3
+                ) {
+
+                    const rowIndex =
+                        data.row.index;
+
+                    const seconds =
+                        calculateRowOffline(
+                            rowIndex,
+                            activeSessions
+                        );
 
                     if (
-                        session.deleted
+                        seconds > 0 &&
+                        seconds === maximumDuration
                     ) {
-                        return false;
+
+                        data.cell.styles.textColor =
+                            [239,68,68];
+
+                        data.cell.styles.fontStyle =
+                            "bold";
+
                     }
 
-                    return sessionIsInPeriod(
-                        session
-                    );
                 }
-            )
-            .sort(
-                function(a, b) {
 
-                    const aTime =
-                        a.start
-                            ? a.start.getTime()
-                            : 0;
+            },
 
-                    const bTime =
-                        b.start
-                            ? b.start.getTime()
-                            : 0;
+            didDrawPage:data => {
 
-                    return (
-                        bTime -
-                        aTime
-                    );
-                }
+                const footerY =
+                    pageHeight - 9;
+
+                doc.setDrawColor(
+                    ...orange
+                );
+
+                doc.setLineWidth(
+                    .5
+                );
+
+                doc.line(
+                    15,
+                    footerY - 4,
+                    pageWidth - 15,
+                    footerY - 4
+                );
+
+                doc.setTextColor(
+                    ...gray
+                );
+
+                doc.setFont(
+                    "helvetica",
+                    "normal"
+                );
+
+                doc.setFontSize(7);
+
+                doc.text(
+                    "Alcans Telecom • CentralSAC",
+                    15,
+                    footerY
+                );
+
+                doc.text(
+                    `Relatório gerado em ${formatManualDate(new Date())}`,
+                    pageWidth / 2,
+                    footerY,
+                    {
+                        align:"center"
+                    }
+                );
+
+                doc.text(
+                    `Página ${data.pageNumber}`,
+                    pageWidth - 15,
+                    footerY,
+                    {
+                        align:"right"
+                    }
+                );
+
+            }
+
+        });
+
+        /*
+           Nome do arquivo
+        */
+
+        const fileName =
+            `Relatorio_Analise_Consumo_${formatDate(analysisStart).replaceAll("/","-")}_a_${formatDate(analysisEnd).replaceAll("/","-")}.pdf`;
+
+        doc.save(
+            fileName
+        );
+
+        showStatus(
+            "Relatório PDF gerado com sucesso, incluindo a logo da Alcans.",
+            "success"
+        );
+
+    } catch(error) {
+
+        console.error(
+            "Erro ao gerar PDF:",
+            error
+        );
+
+        showStatus(
+            error.message ||
+            "Não foi possível gerar o relatório PDF.",
+            "error"
+        );
+
+    } finally {
+
+        pdfButton.disabled =
+            !(
+                sessions.length &&
+                analysisStart &&
+                analysisEnd
             );
+
+        pdfButton.textContent =
+            "📄 Gerar relatório PDF";
+
     }
 
-    function sessionIsInPeriod(session) {
+}
 
-        /*
-         * Se ainda não escolheu as duas datas,
-         * não usamos este filtro.
-         */
-        if (
-            !analysisStart ||
-            !analysisEnd
-        ) {
-            return false;
-        }
+document
+    .getElementById("pdfButton")
+    .addEventListener(
+        "click",
+        generatePDF
+    );
 
-        /*
-         * Uma sessão entra no período quando
-         * seu início ou término está dentro
-         * do intervalo.
-         */
-        const start =
-            session.start;
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
 
-        const stop =
-            session.stop;
-
-        if (
-            !start &&
-            !stop
-        ) {
-            return false;
-        }
-
-        if (
-            start &&
-            start >= analysisStart &&
-            start <= analysisEnd
-        ) {
-            return true;
-        }
-
-        if (
-            stop &&
-            stop >= analysisStart &&
-            stop <= analysisEnd
-        ) {
-            return true;
-        }
-
-        /*
-         * Também considera sessões que atravessam
-         * o período inteiro.
-         */
-        if (
-            start &&
-            stop &&
-            start < analysisStart &&
-            stop > analysisEnd
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /* =====================================================
-       INICIALIZAÇÃO
-    ===================================================== */
-
-    renderTable();
+renderCalendar("start");
+renderCalendar("end");
+renderTable();
 
 </script>
 
 </body>
-
 </html>
