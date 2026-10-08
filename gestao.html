@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestão | CentralSAC</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --laranja: #FF5A00;
+            --laranja-hover: #FF6A1A;
+            --fundo: #111419;
+            --fundo-menu: #15181E;
+            --card: #191D24;
+            --card-hover: #20252D;
+            --borda: #303640;
+            --texto: #F5F6F8;
+            --texto-secundario: #9BA3AE;
+            --verde: #12A66A;
+            --vermelho: #E05252;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fundo);
+            color: var(--texto);
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            min-height: 100vh;
+            background: var(--fundo-menu);
+            border-right: 1px solid var(--borda);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            height: 74px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--borda);
+        }
+
+        .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--laranja);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 800;
+            box-shadow: 0 5px 18px rgba(255, 90, 0, .22);
+        }
+
+        .logo-text strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .logo-text span {
+            display: block;
+            margin-top: 3px;
+            color: var(--texto-secundario);
+            font-size: 9px;
+            letter-spacing: .08em;
+        }
+
+        .sidebar-menu {
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .menu-label {
+            color: #69717C;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: 9px 10px 7px;
+        }
+
+        .menu-item {
+            width: 100%;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--texto-secundario);
+            border-radius: 8px;
+            padding: 11px 12px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            text-align: left;
+            font-size: 12px;
+            transition: .18s;
+        }
+
+        .menu-item:hover {
+            background: var(--card);
+            color: var(--texto);
+        }
+
+        .menu-item.active {
+            background: rgba(255, 90, 0, .10);
+            border-color: rgba(255, 90, 0, .20);
+            color: var(--laranja);
+        }
+
+        .menu-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 15px;
+            border-top: 1px solid var(--borda);
+        }
+
+        .sidebar-footer small {
+            color: #68717C;
+            font-size: 9px;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 74px;
+            padding: 0 28px;
+            border-bottom: 1px solid var(--borda);
+            background: rgba(17, 20, 25, .96);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            backdrop-filter: blur(10px);
+        }
+
+        .topbar-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-title span {
+            color: var(--laranja);
+            font-size: 17px;
+        }
+
+        .topbar-title strong {
+            font-size: 14px;
+        }
+
+        .status {
+            color: #7F8995;
+            border: 1px solid var(--borda);
+            background: var(--card);
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+        }
+
+        .content {
+            padding: 28px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            margin-bottom: 25px;
+        }
+
+        .eyebrow {
+            color: var(--laranja);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+            margin-bottom: 9px;
+        }
+
+        .hero h1 {
+            margin: 0 0 9px;
+            font-size: 35px;
+            line-height: 1.04;
+            letter-spacing: -.04em;
+        }
+
+        .hero h1 span {
+            color: var(--laranja);
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--texto-secundario);
+            max-width: 680px;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .btn {
+            border-radius: 8px;
+            padding: 10px 14px;
+            border: 1px solid var(--borda);
+            background: var(--card);
+            color: var(--texto);
+            font-size: 11px;
+            font-weight: 700;
+            transition: .18s;
+        }
+
+        .btn:hover {
+            background: var(--card-hover);
+        }
+
+        .btn-primary {
+            background: var(--laranja);
+            border-color: var(--laranja);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--laranja-hover);
+        }
+
+        .btn-danger {
+            color: #ff7777;
+            border-color: rgba(224, 82, 82, .35);
+            background: rgba(224, 82, 82, .06);
+        }
+
+        .btn-small {
+            padding: 6px 9px;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           CARDS
+        ===================================================== */
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+        }
+
+        .management-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 17px;
+            margin-bottom: 18px;
+        }
+
+        .management-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .management-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255, 90, 0, .10);
+            color: var(--laranja);
+            display: grid;
+            place-items: center;
+            font-size: 18px;
+        }
+
+        .management-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .management-info small {
+            display: block;
+            color: var(--texto-secundario);
+            font-size: 9px;
+            margin-top: 4px;
+        }
+
+        .management-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* =====================================================
+           EQUIPES
+        ===================================================== */
+
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .team-card {
+            padding: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--laranja);
+        }
+
+        .team-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .team-title {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .team-status {
+            font-size: 8px;
+            color: #3BD18B;
+            background: rgba(18, 166, 106, .10);
+            padding: 5px 7px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .team-leader {
+            margin-top: 16px;
+            padding: 11px;
+            border: 1px solid var(--borda);
+            border-radius: 9px;
+            background: #15191F;
+        }
+
+        .team-leader small {
+            display: block;
+            color: #727C88;
+            font-size: 8px;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .team-leader strong {
+            font-size: 11px;
+        }
+
+        .team-members {
+            margin-top: 12px;
+            color: var(--texto-secundario);
+            font-size: 10px;
+        }
+
+        .team-actions {
+            display: flex;
+            gap: 7px;
+            margin-top: 15px;
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            padding: 55px 20px;
+            text-align: center;
+            color: #747E89;
+        }
+
+        .empty-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .empty strong {
+            display: block;
+            color: var(--texto);
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .empty span {
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .68);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-box {
+            width: min(550px, 100%);
+            background: var(--card);
+            border: 1px solid var(--borda);
+            border-radius: 14px;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, .5);
+        }
+
+        .modal-head {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--borda);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-head h2 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .close {
+            width: 35px;
+            height: 35px;
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            background: var(--fundo-menu);
+            color: var(--texto);
+            font-size: 18px;
+        }
+
+        .form {
+            padding: 20px;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        .field label {
+            display: block;
+            color: #8D96A2;
+            font-size: 9px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            height: 43px;
+            padding: 0 12px;
+            border-radius: 8px;
+            border: 1px solid var(--borda);
+            background: var(--fundo);
+            color: var(--texto);
+            outline: none;
+            font-size: 11px;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--laranja);
+            box-shadow: 0 0 0 3px rgba(255, 90, 0, .10);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px;
+            color: var(--texto-secundario);
+        }
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+            .teams-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 750px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .content {
+                padding: 18px 14px;
+            }
+
+            .management-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .teams-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app" style="display:none;">
+
+        <div class="app">
+
+            <!-- =====================================================
+                 SIDEBAR
+            ===================================================== -->
+
+            <aside class="sidebar">
+
+                <div class="sidebar-header">
+
+                    <div class="logo">
+                        A
+                    </div>
+
+                    <div class="logo-text">
+                        <strong>CENTRAL SAC</strong>
+                        <span>PORTAL DE GESTÃO</span>
+                    </div>
+
+                </div>
+
+                <nav class="sidebar-menu">
+
+                    <div class="menu-label">
+                        Navegação
+                    </div>
+
+                    <button class="menu-item" type="button" onclick="window.location.href='index.html'">
+                        <span class="menu-icon">🏠</span>
+                        Início
+                    </button>
+
+                    <button class="menu-item" type="button" onclick="window.location.href='calculadora.html'">
+                        <span class="menu-icon">🧮</span>
+                        Calcular multas
+                    </button>
+
+                    <button class="menu-item" type="button" onclick="window.location.href='procedimentos.html'">
+                        <span class="menu-icon">📋</span>
+                        Procedimentos
+                    </button>
+
+                    <button class="menu-item" type="button" onclick="window.location.href='sistemas.html'">
+                        <span class="menu-icon">🖥️</span>
+                        Sistemas
+                    </button>
+
+                    <button class="menu-item" type="button" onclick="window.location.href='indisponibilidade.html'">
+                        <span class="menu-icon">📊</span>
+                        Análise de Consumo
+                    </button>
+
+                    <button class="menu-item" type="button" onclick="window.location.href='escala.html'">
+                        <span class="menu-icon">📅</span>
+                        Escala
+                    </button>
+
+                    <!-- =================================================
+                         GESTÃO
+                         Esta página só deve ser acessada por gestão.
+                    ================================================== -->
+
+                    <button class="menu-item active" id="gestaoMenu" type="button">
+                        <span class="menu-icon">👥</span>
+                        Gestão
+                    </button>
+
+                </nav>
+
+                <div class="sidebar-footer">
+                    <small>
+                        CentralSAC • Gestão operacional
+                    </small>
+                </div>
+
+            </aside>
+
+            <!-- =====================================================
+                 MAIN
+            ===================================================== -->
+
+            <div class="main">
+
+                <header class="topbar">
+
+                    <div class="topbar-title">
+                        <span>👥</span>
+                        <strong>Gestão</strong>
+                    </div>
+
+                    <div>
+                        <span class="status" id="status">
+                            ● Conectando...
+                        </span>
+                    </div>
+
+                </header>
+
+                <main class="content">
+
+                    <section class="hero">
+
+                        <div class="eyebrow">
+                            ↗ Administração
+                        </div>
+
+                        <h1>
+                            Gestão de <span>equipes.</span>
+                        </h1>
+
+                        <p>
+                            Crie e organize as equipes de atendimento.
+                            Nesta primeira etapa, você poderá cadastrar
+                            as equipes diretamente no Supabase.
+                        </p>
+
+                    </section>
+
+                    <section class="card management-bar">
+
+                        <div class="management-info">
+
+                            <div class="management-icon">
+                                👥
+                            </div>
+
+                            <div>
+                                <strong>
+                                    Equipes
+                                </strong>
+
+                                <small>
+                                    Crie, visualize e organize suas equipes.
+                                </small>
+                            </div>
+
+                        </div>
+
+                        <div class="management-actions">
+
+                            <button class="btn btn-primary" id="addTeamBtn" type="button">
+                                + Criar equipe
+                            </button>
+
+                        </div>
+
+                    </section>
+
+                    <section class="teams-grid" id="teamsGrid">
+                        <div class="loading">
+                            Carregando equipes...
+                        </div>
+                    </section>
+
+                </main>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+         MODAL CRIAR EQUIPE
+    ========================================================== -->
+
+    <div class="modal" id="teamModal">
+
+        <div class="modal-box">
+
+            <div class="modal-head">
+
+                <h2>
+                    Criar equipe
+                </h2>
+
+                <button class="close" id="closeTeamModal" type="button">
+                    ×
+                </button>
+
+            </div>
+
+            <form class="form" id="teamForm">
+
+                <div class="field">
+
+                    <label for="teamName">
+                        NOME DA EQUIPE
+                    </label>
+
+                    <input type="text" id="teamName" placeholder="Ex.: Equipe Manhã" maxlength="100" required>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button class="btn" type="button" id="cancelTeamBtn">
+                        Cancelar
+                    </button>
+
+                    <button class="btn btn-primary" type="submit">
+                        Criar equipe
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        /* =====================================================
+           SUPABASE
+        ===================================================== */
+
+        const SUPABASE_URL =
+            "https://adjrbgwnvagdqbqzfgwf.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_YFkBbmCNye3C74aJuu7BcA_zmvSdRnT";
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+        /* =====================================================
+           ELEMENTOS
+        ===================================================== */
+
+        const app =
+            document.getElementById("app");
+
+        const statusEl =
+            document.getElementById("status");
+
+        const teamsGrid =
+            document.getElementById("teamsGrid");
+
+        const teamModal =
+            document.getElementById("teamModal");
+
+        const teamForm =
+            document.getElementById("teamForm");
+
+        const teamName =
+            document.getElementById("teamName");
+
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        function openTeamModal() {
+
+            teamModal.classList.add("open");
+
+            setTimeout(
+                () => teamName.focus(),
+                100
+            );
+        }
+
+
+        function closeTeamModal() {
+
+            teamModal.classList.remove("open");
+
+            teamForm.reset();
+        }
+
+
+        document
+            .getElementById("addTeamBtn")
+            .addEventListener(
+                "click",
+                openTeamModal
+            );
+
+
+        document
+            .getElementById("closeTeamModal")
+            .addEventListener(
+                "click",
+                closeTeamModal
+            );
+
+
+        document
+            .getElementById("cancelTeamBtn")
+            .addEventListener(
+                "click",
+                closeTeamModal
+            );
+
+
+        teamModal.addEventListener(
+            "click",
+            event => {
+
+                if (event.target === teamModal) {
+                    closeTeamModal();
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           VERIFICAR GESTÃO
+
+           IMPORTANTE:
+
+           Existem somente dois perfis no sistema:
+
+           call.center
+               -> atendente
+
+           gestores.alcans
+               -> gestao
+
+           Não criamos usuários novos.
+
+           Não alteramos RLS.
+
+           A função is_gestor() do banco é usada como fonte
+           de verdade para verificar se o usuário atual pode
+           acessar esta página.
+        ===================================================== */
+
+        async function verificarAcesso() {
+
+            const {
+                data: { user },
+                error: authError
+            } = await supabaseClient.auth.getUser();
+
+
+            if (authError) {
+
+                console.error(
+                    "Erro ao obter usuário autenticado:",
+                    authError
+                );
+
+                mostrarErroAcesso(
+                    "Erro de autenticação",
+                    "Não foi possível verificar sua sessão.",
+                    authError.message
+                );
+
+                return false;
+            }
+
+
+            if (!user) {
+
+                window.location.href =
+                    "login.html";
+
+                return false;
+            }
+
+
+            console.log(
+                "Usuário autenticado:",
+                user.id
+            );
+
+            console.log(
+                "Login/e-mail:",
+                user.email
+            );
+
+
+            /* =================================================
+               AQUI ESTÁ A VERIFICAÇÃO CORRETA
+
+               Não fazemos:
+
+                   perfis.id === auth.uid
+
+               Não fazemos:
+
+                   comparação manual de UUID
+
+               Não criamos usuários.
+
+               O próprio banco decide através de is_gestor().
+            ================================================= */
+
+            const {
+                data: permitido,
+                error: erroGestor
+            } = await supabaseClient.rpc(
+                "is_gestor"
+            );
+
+
+            console.log(
+                "is_gestor() ->",
+                permitido
+            );
+
+            console.log(
+                "is_gestor() erro ->",
+                erroGestor
+            );
+
+
+            /* =================================================
+               ERRO NA RPC
+
+               Um erro na função NÃO significa que o usuário
+               não é gestor.
+
+               Por isso mostramos o erro real.
+            ================================================= */
+
+            if (erroGestor) {
+
+                console.error(
+                    "Erro ao executar is_gestor():",
+                    erroGestor
+                );
+
+                mostrarErroAcesso(
+                    "Erro ao verificar o acesso",
+                    "O login foi reconhecido, mas o Supabase não conseguiu executar a validação de gestor.",
+                    erroGestor.message ||
+                    "Erro desconhecido."
+                );
+
+                return false;
+            }
+
+
+            /* =================================================
+               RETORNO DA FUNÇÃO
+
+               O esperado é:
+
+                   true  -> gestor
+                   false -> atendente
+
+               Também aceitamos "true" e 1 para evitar
+               problemas de conversão de tipo.
+            ================================================= */
+
+            const ehGestor =
+                permitido === true ||
+                permitido === "true" ||
+                permitido === 1;
+
+
+            /* =================================================
+               USUÁRIO NÃO É GESTOR
+            ================================================= */
+
+            if (!ehGestor) {
+
+                console.warn(
+                    "Acesso negado.",
+                    "is_gestor() retornou:",
+                    permitido
+                );
+
+                document.body.innerHTML = `
+                    <div style="
+                        min-height:100vh;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        background:#111419;
+                        color:#F5F6F8;
+                        font-family:Arial;
+                        text-align:center;
+                        padding:30px;
+                    ">
+
+                        <div>
+
+                            <div style="
+                                font-size:45px;
+                                margin-bottom:15px;
+                            ">
+                                🔒
+                            </div>
+
+                            <h2>
+                                Acesso restrito
+                            </h2>
+
+                            <p style="
+                                color:#9BA3AE;
+                                font-size:13px;
+                            ">
+                                Esta área está disponível somente
+                                para usuários de gestão.
+                            </p>
+
+                            <button
+                                onclick="window.location.href='index.html'"
+                                style="
+                                    margin-top:15px;
+                                    padding:10px 16px;
+                                    border:0;
+                                    border-radius:8px;
+                                    background:#FF5A00;
+                                    color:white;
+                                    cursor:pointer;
+                                    font-weight:700;
+                                "
+                            >
+                                Voltar
+                            </button>
+
+                        </div>
+
+                    </div>
+                `;
+
+                return false;
+            }
+
+
+            console.log(
+                "Acesso de gestão confirmado."
+            );
+
+            return true;
+        }
+
+
+        /* =====================================================
+           ERRO DE ACESSO
+        ===================================================== */
+
+        function mostrarErroAcesso(
+            titulo,
+            mensagem,
+            detalhe
+        ) {
+
+            document.body.innerHTML = `
+                <div style="
+                    min-height:100vh;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    background:#111419;
+                    color:#F5F6F8;
+                    font-family:Arial;
+                    text-align:center;
+                    padding:30px;
+                ">
+
+                    <div style="
+                        max-width:680px;
+                    ">
+
+                        <div style="
+                            font-size:45px;
+                            margin-bottom:15px;
+                        ">
+                            ⚠️
+                        </div>
+
+                        <h2>
+                            ${escapeHtml(titulo)}
+                        </h2>
+
+                        <p style="
+                            color:#9BA3AE;
+                            font-size:13px;
+                            line-height:1.6;
+                        ">
+                            ${escapeHtml(mensagem)}
+                        </p>
+
+                        <div style="
+                            margin-top:18px;
+                            padding:14px;
+                            border:1px solid #303640;
+                            border-radius:10px;
+                            background:#191D24;
+                            color:#9BA3AE;
+                            font-size:11px;
+                            text-align:left;
+                            word-break:break-word;
+                        ">
+                            ${escapeHtml(
+                detalhe ||
+                "Sem detalhes adicionais."
+            )}
+                        </div>
+
+                        <button
+                            onclick="window.location.reload()"
+                            style="
+                                margin-top:15px;
+                                padding:10px 16px;
+                                border:0;
+                                border-radius:8px;
+                                background:#FF5A00;
+                                color:white;
+                                cursor:pointer;
+                                font-weight:700;
+                            "
+                        >
+                            Tentar novamente
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+        }
+
+
+        /* =====================================================
+           CARREGAR EQUIPES
+        ===================================================== */
+
+        async function carregarEquipes() {
+
+            teamsGrid.innerHTML = `
+                <div class="loading">
+                    Carregando equipes...
+                </div>
+            `;
+
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("teams")
+                .select(`
+                    id,
+                    nome,
+                    ativo,
+                    leader_id
+                `)
+                .eq(
+                    "ativo",
+                    true
+                )
+                .order(
+                    "nome",
+                    {
+                        ascending: true
+                    }
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "Erro ao carregar equipes:",
+                    error
+                );
+
+                teamsGrid.innerHTML = `
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            ⚠️
+                        </div>
+
+                        <strong>
+                            Não foi possível carregar as equipes.
+                        </strong>
+
+                        <span>
+                            ${escapeHtml(error.message)}
+                        </span>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            if (!data || data.length === 0) {
+
+                teamsGrid.innerHTML = `
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            👥
+                        </div>
+
+                        <strong>
+                            Nenhuma equipe cadastrada
+                        </strong>
+
+                        <span>
+                            Clique em "Criar equipe" para começar.
+                        </span>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            teamsGrid.innerHTML =
+                data
+                    .map(
+                        equipe => `
+                            <article class="card team-card">
+
+                                <div class="team-top">
+
+                                    <div class="team-title">
+                                        ${escapeHtml(equipe.nome)}
+                                    </div>
+
+                                    <div class="team-status">
+                                        Ativa
+                                    </div>
+
+                                </div>
+
+                                <div class="team-leader">
+
+                                    <small>
+                                        Líder
+                                    </small>
+
+                                    <strong>
+                                        ${equipe.leader_id
+                                ? "Definido"
+                                : "Ainda não definido"
+                            }
+                                    </strong>
+
+                                </div>
+
+                                <div class="team-members">
+                                    👥 Equipe criada no Supabase
+                                </div>
+
+                                <div class="team-actions">
+
+                                    <button
+                                        class="btn btn-small"
+                                        type="button"
+                                        onclick="editarEquipe('${equipe.id}')"
+                                    >
+                                        Editar
+                                    </button>
+
+                                    <button
+                                        class="btn btn-small btn-danger"
+                                        type="button"
+                                        onclick="desativarEquipe('${equipe.id}')"
+                                    >
+                                        Remover
+                                    </button>
+
+                                </div>
+
+                            </article>
+                        `
+                    )
+                    .join("");
+        }
+
+
+        /* =====================================================
+           CRIAR EQUIPE
+        ===================================================== */
+
+        teamForm.addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                const nome =
+                    teamName.value.trim();
+
+
+                if (!nome) {
+
+                    alert(
+                        "Digite o nome da equipe."
+                    );
+
+                    return;
+                }
+
+
+                const {
+                    data: { user }
+                } =
+                    await supabaseClient.auth.getUser();
+
+
+                if (!user) {
+
+                    alert(
+                        "Sua sessão expirou. Faça login novamente."
+                    );
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+                }
+
+
+                /*
+                 * A RLS do Supabase continua sendo a proteção real.
+                 * Como o usuário já passou pelo is_gestor(), podemos
+                 * tentar executar o INSERT normalmente.
+                 */
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from("teams")
+                        .insert({
+                            nome: nome,
+                            ativo: true
+                        });
+
+
+                if (error) {
+
+                    console.error(
+                        "Erro ao criar equipe:",
+                        error
+                    );
+
+                    alert(
+                        "Não foi possível criar a equipe:\n\n" +
+                        error.message
+                    );
+
+                    return;
+                }
+
+
+                closeTeamModal();
+
+                await carregarEquipes();
+
+                statusEl.textContent =
+                    "● Equipe salva no Supabase";
+            }
+        );
+
+
+        /* =====================================================
+           DESATIVAR EQUIPE
+        ===================================================== */
+
+        window.desativarEquipe =
+            async function (id) {
+
+                const confirmar =
+                    confirm(
+                        "Deseja remover esta equipe?"
+                    );
+
+
+                if (!confirmar) {
+                    return;
+                }
+
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from("teams")
+                        .update({
+                            ativo: false
+                        })
+                        .eq(
+                            "id",
+                            id
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "Erro ao remover equipe:",
+                        error
+                    );
+
+                    alert(
+                        "Não foi possível remover a equipe:\n\n" +
+                        error.message
+                    );
+
+                    return;
+                }
+
+
+                await carregarEquipes();
+
+                statusEl.textContent =
+                    "● Equipe removida";
+            };
+
+
+        /* =====================================================
+           EDITAR EQUIPE
+        ===================================================== */
+
+        window.editarEquipe =
+            async function (id) {
+
+                const novoNome =
+                    prompt(
+                        "Digite o novo nome da equipe:"
+                    );
+
+
+                if (
+                    novoNome === null ||
+                    !novoNome.trim()
+                ) {
+                    return;
+                }
+
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from("teams")
+                        .update({
+                            nome: novoNome.trim()
+                        })
+                        .eq(
+                            "id",
+                            id
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "Erro ao alterar equipe:",
+                        error
+                    );
+
+                    alert(
+                        "Não foi possível alterar a equipe:\n\n" +
+                        error.message
+                    );
+
+                    return;
+                }
+
+
+                await carregarEquipes();
+
+                statusEl.textContent =
+                    "● Equipe atualizada";
+            };
+
+
+        /* =====================================================
+           ESCAPAR HTML
+        ===================================================== */
+
+        function escapeHtml(value) {
+
+            return String(
+                value ?? ""
+            )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+        }
+
+
+        /* =====================================================
+           REALTIME
+        ===================================================== */
+
+        function iniciarRealtime() {
+
+            supabaseClient
+                .channel(
+                    "gestao-equipes"
+                )
+                .on(
+                    "postgres_changes",
+                    {
+                        event: "*",
+                        schema: "public",
+                        table: "teams"
+                    },
+                    () => {
+
+                        carregarEquipes();
+
+                    }
+                )
+                .subscribe();
+        }
+
+
+        /* =====================================================
+           INICIALIZAÇÃO
+        ===================================================== */
+
+        async function iniciar() {
+
+            statusEl.textContent =
+                "● Verificando acesso...";
+
+
+            /*
+             * Primeiro verificamos se existe uma sessão.
+             */
+
+            const {
+                data: { session },
+                error: sessionError
+            } =
+                await supabaseClient.auth.getSession();
+
+
+            if (sessionError) {
+
+                console.error(
+                    "Erro ao recuperar sessão:",
+                    sessionError
+                );
+            }
+
+
+            if (!session) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+            }
+
+
+            /*
+             * Agora verificamos se o usuário atual é gestor.
+             */
+
+            const permitido =
+                await verificarAcesso();
+
+
+            if (!permitido) {
+                return;
+            }
+
+
+            app.style.display =
+                "block";
+
+
+            statusEl.textContent =
+                "● Gestão conectada ao Supabase";
+
+
+            await carregarEquipes();
+
+
+            iniciarRealtime();
+        }
+
+
+        iniciar();
+
+    </script>
+
+</body>
+
+</html>

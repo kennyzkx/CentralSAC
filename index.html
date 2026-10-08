@@ -10,6 +10,7 @@
     <title>Alcans | Portal do Atendente</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script src="auth.js"></script>
 
     <style>
@@ -248,7 +249,16 @@
 
         /* =====================================================
            SIDEBAR
-        ===================================================== */
+           
+           IMPORTANTE:
+           TODAS AS ABAS DO MENU FICAM NESTA ÁREA.
+
+           Para adicionar, remover ou alterar uma aba no futuro,
+           procure por:
+
+           "LOCAL DAS ABAS DO MENU"
+
+           ===================================================== */
 
         .sidebar {
 
@@ -874,6 +884,10 @@
         }
 
 
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
         @media (max-width: 800px) {
 
             .topbar {
@@ -940,7 +954,8 @@
 
             .cards {
 
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns:
+                    repeat(2, 1fr);
 
             }
 
@@ -992,7 +1007,17 @@
 
 
     <!-- =====================================================
-         SIDEBAR
+         LOCAL DAS ABAS DO MENU
+         
+         TODAS AS ABAS PRINCIPAIS FICAM AQUI.
+
+         Para adicionar uma nova aba no futuro:
+         1. Copie um bloco .menu-item
+         2. Altere o nome
+         3. Altere o ícone
+         4. Altere o arquivo no window.location.href
+
+         A aba Gestão abaixo é controlada pelo perfil.
     ===================================================== -->
 
     <aside class="sidebar" id="sidebar">
@@ -1002,9 +1027,11 @@
         </div>
 
 
+        <!-- ABA: INÍCIO -->
+
         <button class="menu-item active" onclick="window.location.href='index.html'">
 
-            <span class="menu-icon">
+            <span class="menu-icon" aria-hidden="true">
                 🏠
             </span>
 
@@ -1012,6 +1039,8 @@
 
         </button>
 
+
+        <!-- ABA: CALCULAR MULTAS -->
 
         <button class="menu-item" onclick="window.location.href='calculadora.html'">
 
@@ -1024,6 +1053,8 @@
         </button>
 
 
+        <!-- ABA: PROCEDIMENTOS -->
+
         <button class="menu-item" onclick="window.location.href='procedimentos.html'">
 
             <span class="menu-icon" aria-hidden="true">
@@ -1034,6 +1065,8 @@
 
         </button>
 
+
+        <!-- ABA: SISTEMAS -->
 
         <button class="menu-item" onclick="window.location.href='sistemas.html'">
 
@@ -1046,7 +1079,7 @@
         </button>
 
 
-        <!-- NOVA PÁGINA -->
+        <!-- ABA: ANÁLISE DE CONSUMO -->
 
         <button class="menu-item" onclick="window.location.href='indisponibilidade.html'">
 
@@ -1059,6 +1092,8 @@
         </button>
 
 
+        <!-- ABA: ESCALA -->
+
         <button class="menu-item" onclick="window.location.href='escala.html'">
 
             <span class="menu-icon" aria-hidden="true">
@@ -1070,10 +1105,30 @@
         </button>
 
 
+        <!-- =================================================
+             ABA: GESTÃO
+             
+             SOMENTE PERFIL "gestao"
+             O botão começa oculto e o JavaScript abaixo
+             verifica o perfil no Supabase.
+        ================================================= -->
+
+        <button class="menu-item" id="gestaoMenuItem" style="display:none;" onclick="window.location.href='gestao.html'">
+
+            <span class="menu-icon" aria-hidden="true">
+                👥
+            </span>
+
+            Gestão
+
+        </button>
+
+
     </aside>
 
 
-    <div class="overlay" id="overlay"></div>
+    <div class="overlay" id="overlay">
+    </div>
 
 
     <!-- =====================================================
@@ -1285,6 +1340,7 @@
 
                 </div>
 
+
             </div>
 
 
@@ -1296,6 +1352,7 @@
                     de números.
 
                     É uma história construída por pessoas.
+
                     Pessoas que começaram com uma necessidade,
                     enxergaram uma oportunidade e transformaram
                     uma pequena conexão via rádio em uma empresa
@@ -1540,7 +1597,179 @@
     </script>
 
 
-    <!-- AUTENTICAÇÃO -->
+    <!-- =====================================================
+         CONTROLE DA ABA GESTÃO
+
+         SOMENTE O PERFIL "gestao" PODE VER A ABA.
+
+         Este bloco procura o usuário logado no Supabase
+         e consulta seu próprio registro em public.perfis.
+
+         Para alterar esta regra no futuro, procure no VS Code:
+
+         "CONTROLE DA ABA GESTÃO"
+    ===================================================== -->
+
+    <script>
+
+        (async function controlarAbaGestao() {
+
+            const botaoGestao =
+                document.getElementById(
+                    "gestaoMenuItem"
+                );
+
+
+            if (!botaoGestao) {
+
+                return;
+
+            }
+
+
+            /*
+                A aba começa escondida.
+
+                Isso significa que o atendente não verá
+                Gestão enquanto o perfil não for confirmado.
+            */
+
+            botaoGestao.style.display = "none";
+
+
+            try {
+
+                const SUPABASE_URL =
+                    "https://adjrbgwnvagdqbqzfgwf.supabase.co";
+
+
+                const SUPABASE_PUBLISHABLE_KEY =
+                    "sb_publishable_YFkBbmCNye3C74aJuu7BcA_zmvSdRnT";
+
+
+                const supabaseClient =
+                    window.supabase.createClient(
+                        SUPABASE_URL,
+                        SUPABASE_PUBLISHABLE_KEY
+                    );
+
+
+                /*
+                    Pega o usuário atualmente logado.
+                */
+
+                const {
+                    data: {
+                        user
+                    },
+                    error: authError
+                } =
+                    await supabaseClient.auth.getUser();
+
+
+                if (
+                    authError ||
+                    !user
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                    Consulta SOMENTE o próprio perfil.
+
+                    Não estamos criando usuários.
+
+                    Os dois perfis continuam sendo:
+
+                    gestao
+                    atendente
+                */
+
+                const {
+                    data: perfil,
+                    error: perfilError
+                } =
+                    await supabaseClient
+                        .from("perfis")
+                        .select("*")
+                        .eq(
+                            "id",
+                            user.id
+                        )
+                        .single();
+
+
+                if (
+                    perfilError ||
+                    !perfil
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                    Verifica se algum campo do registro
+                    possui o valor "gestao".
+                */
+
+                const valores =
+                    Object.values(perfil)
+                        .map(
+                            valor =>
+                                String(
+                                    valor ?? ""
+                                )
+                                    .trim()
+                                    .toLowerCase()
+                        );
+
+
+                const isGestao =
+                    valores.includes(
+                        "gestao"
+                    );
+
+
+                /*
+                    SOMENTE GESTÃO VÊ A ABA.
+                */
+
+                if (isGestao) {
+
+                    botaoGestao.style.display =
+                        "flex";
+
+                }
+
+            }
+            catch (erro) {
+
+                console.error(
+                    "Erro ao verificar perfil:",
+                    erro
+                );
+
+
+                /*
+                    Se acontecer qualquer erro,
+                    a aba continua escondida.
+                */
+
+                botaoGestao.style.display =
+                    "none";
+
+            }
+
+        })();
+
+    </script>
+
+
     <script src="auth.js?v=2"></script>
 
 </body>
